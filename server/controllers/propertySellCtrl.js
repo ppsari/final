@@ -40,6 +40,8 @@ const editProp = (req,res) => {
       if (typeof req.body._categoryId != 'undefined') property._categoryId = req.body._categoryId;
       if (typeof req.body._accessId != 'undefined')property._accessId = req.body._accessId
       else property._accessId = [];
+      if (typeof req.body._roomId != 'undefined')property._roomId = req.body._roomId;
+      else property._roomId = [];
       property.save((err,edproperty)=> {res.send(err ? {err: err} : edproperty)} );
     }
   })

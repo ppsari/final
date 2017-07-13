@@ -1,6 +1,45 @@
 const mongoose = require('mongoose');
 let Trans = require('../models/transaction');
+let login = require('../helpers/login');
 
+const checkAuth = (req,res, next) => {
+  let method = req.method;
+  let hasParam = req.path === '/';
+
+  if (req.headers.hasOwnProperty('token')){
+    let decoded = login.getUserDetail(req.headers.token);
+    if (decoded) next();
+    else res.send({err:'You must login'})
+  } else res.send({err:'You must login'})
+}
+const getTranssByBuyer = (req,res) => {
+  let decoded = login.getUserDetail(req.headers.token);
+
+  Trans.find({_userId: decoded._id})
+  .populate('_userId _sellerId _categoryId')
+  .populate({
+    path: 'connections._propertyId',
+    populate: {path: '_accessId'}
+  })
+  .exec( (err,transs) => {
+    res.send(err? {err:err} : transs );
+  })
+
+}
+const getTranssBySeller = (req,res) => {
+  let decoded = login.getUserDetail(req.headers.token);
+
+  Trans.find({_sellerId: decoded._id})
+  .populate('_userId _sellerId _categoryId')
+  .populate({
+    path: 'connections._propertyId',
+    populate: {path: '_accessId'}
+  })
+  .exec( (err,transs) => {
+    res.send(err? {err:err} : transs );
+  })
+
+}
 const getTranss = (req,res) => {
   Trans.find({}, (err,transs) => {
     res.send(err ? err : transs);
@@ -10,6 +49,7 @@ const getTrans = (req,res) => {
   let id = req.params.id;
   Trans.findById(id)
   .populate('_userId _categoryId')
+  .populate('_sellerId')
   .populate({
     path: 'connections._propertyId',
     populate: {path: '_accessId'}
@@ -33,5 +73,8 @@ const addTrans = (req,res) => {
 module.exports = {
   getTranss,
   getTrans,
-  addTrans
+  getTranssByBuyer,
+  getTranssBySeller,
+  addTrans,
+  checkAuth
 }

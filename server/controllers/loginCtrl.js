@@ -14,7 +14,7 @@ const login = (req,res) => {
       if (err || user === null) res.send({err:'Invalid Email / Password'});
       else if (!helper.checkPassword(password,user.password)) res.send({err: 'Invalid Email / Password'})
       else {
-        token = helper.createToken({_id : user._id, email : user.email})
+        token = helper.createToken({_id : user._id, email : user.email, role: user.role})
         res.send({token: token})
       }
     })
@@ -25,7 +25,8 @@ const login = (req,res) => {
 const register = (req,res) => {
   let user = new User({
     email: `${req.body.email}` || '',
-    password: req.body.password || ''
+    password: req.body.password || '',
+    role: 'user'
   });
 
   user.save((err,n_user)=> {
