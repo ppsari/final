@@ -3,6 +3,7 @@ const express = require('express');
 let router = express.Router();
 const propertyRentCtrl = require('../controllers/propertyRentCtrl');
 
+router.use(propertyRentCtrl.checkAuth)
 // router.get('/search',propertyRentCtrl.searchProps)
 // router.get('/search/:searchKey/:searchValue',propertyRentCtrl.searchProps)//
 router.get('/searchENull',propertyRentCtrl.searchPropsENull)

@@ -273,7 +273,7 @@ describe('Category', () => {
       })
     });
   })
-  
+
   after( done => {
     global.data = data;
     done();
