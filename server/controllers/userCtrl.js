@@ -4,20 +4,22 @@ let login = require('../helpers/login');
 
 const checkAuth = (req,res, next) => {
   let method = req.method;
-  let hasParam = req.path === '/';
+  let hasParam = req.path !== '/';
 
+// console.log(req.path)
   if (req.headers.hasOwnProperty('token')){
     let decoded = login.getUserDetail(req.headers.token);
     if (decoded) {
       if (!hasParam) {
-        if ( (method === 'GET' || method === 'POST') && decoded.role === 'admin') next();
+        if ( (method === 'GET' || method === 'POST') && decoded.role === 'admin'){ next();}
         else res.send({err: 'Invalid Access'})
       }
-      else if (decoded) {
+      else {
         let id = req.path.substr(1);
         switch(method) {
           case 'GET' : next(); break;
           case 'PUT' : case 'POST' :
+            console.log(decoded.role === 'admin' || decoded._id === `${id}`)
             if (decoded.role === 'admin' || decoded._id === `${id}`) { console.log(decoded._id); next(); break;}
           case 'DELETE' :
             if (decoded.role === 'admin') { next(); break; }
@@ -25,9 +27,7 @@ const checkAuth = (req,res, next) => {
             res.send({err: 'You dont have access'}); break;
         }
       }
-      else res.send({err: 'You must login'})
-    }
-    else res.send({err:'You must login'})
+    } else res.send({err:'You must login'})
   } else res.send({err:'You must login'})
 }
 

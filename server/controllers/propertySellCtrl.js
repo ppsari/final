@@ -4,7 +4,7 @@ let login = require('../helpers/login');
 
 const checkAuth = (req,res, next) => {
   let method = req.method;
-  let hasParam = req.path === '/';
+  let hasParam = req.path !== '/';
   let decoded = req.headers.hasOwnProperty('token') ? login.getUserDetail(req.headers.token) : false;
 
   if (!hasParam) next()
@@ -26,6 +26,7 @@ const getProps = (req,res) => {
     res.send(err ? err : properties);
   })
 }
+
 const getProp = (req,res) => {
   let id = req.params.id;
   Props.findById(id)
@@ -52,7 +53,7 @@ const searchProps = (req,res) => {
 }
 
 const addProp = (req,res) => {
-  llet propertyDt = req.body;
+  let propertyDt = req.body;
   let decoded = login.getUserDetail(req.headers.token);
   propertyDt._ownerId = decoded._id;
 

@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
+
 let Request = require('../models/request');
+let User = require('../models/user');
 let login = require('../helpers/login');
+let contact = require('../helpers/contact');
 
 const checkAuth = (req,res, next) => {
   let method = req.method;
-  let hasParam = req.path === '/';
+  let hasParam = req.path !== '/';
 
   if (req.headers.hasOwnProperty('token')){
     let decoded = login.getUserDetail(req.headers.token);
@@ -57,14 +60,29 @@ const addRequest = (req,res) => {
   let decoded = login.getUserDetail(req.headers.token);
   requestDt._userId = decoded._id;
 
-  if (requestDt._userId === decoded._id) res.send({err:'You cant rent/sell your own product'})
+  if (requestDt._sellerId === requestDt._userId) res.send({err:'You cant rent/sell your own product'})
   else {
-    let newrequest = new Request(requestDt);
-    //send email
-    // tambahcron
-    newrequest.save((err,request) => {
-      res.send(err? {err:err} : request );
+    User.findById(requestDt._sellerId, (err,seller)=> {
+      if (err) res.send({err: 'invalid seller'})
+      else {
+        let newrequest = new Request(requestDt);
+        newrequest.save((err,request) => {
+          if (err) res.send({err:err})
+          else {
+            let msg = {
+              subject: 'There is a request for you',
+              body: 'Please check your request page to approve/reject'
+            }
+            contact.contact(seller,msg);
+            res.send(request);
+          }
+          // res.send(err? {err:err} : request );
+        })
+
+      }
     })
+
+
   }
 
 }

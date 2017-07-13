@@ -2,7 +2,6 @@ let User = require('../models/user');
 let helper = require('../helpers/login');
 
 const login = (req,res) => {
-
   if (typeof req.body.email === 'undefined') res.send({err: 'Email must be filled'})
   else if (typeof req.body.password === 'undefined') res.send({err: 'Password must be filled'})
   else {
@@ -26,6 +25,7 @@ const register = (req,res) => {
   let user = new User({
     email: `${req.body.email}` || '',
     password: req.body.password || '',
+    username: req.body.username || '',
     role: 'user'
   });
 

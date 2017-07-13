@@ -4,7 +4,7 @@ let login = require('../helpers/login');
 
 const checkAuth = (req,res, next) => {
   let method = req.method;
-  let hasParam = req.path === '/';
+  let hasParam = req.path !== '/';
 
   if (req.headers.hasOwnProperty('token')){
     let decoded = login.getUserDetail(req.headers.token);

@@ -5,7 +5,7 @@ let login = require('../helpers/login');
 
 const checkAuth = (req,res, next) => {
   let method = req.method;
-  let hasParam = req.path === '/';
+  let hasParam = req.path !== '/';
   let decoded = req.headers.hasOwnProperty('token') ? login.getUserDetail(req.headers.token) : false;
 
   if (!hasParam) next()
@@ -92,6 +92,7 @@ const editProp = (req,res) => {
     }
   })
 }
+
 const deleteProp = (req,res) => {
   let id = req.params.id;
 
