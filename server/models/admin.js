@@ -6,7 +6,7 @@ let adminSchema = new Schema({
     type: String,
     required : [true,'{PATH} must be filled'],
     validate: {
-      validator: function(val){ return /[a-z]{3,20}/gi.test(val) },
+      validator: function(val){ return /.{3,20}/gi.test(val) },
       message: `{PATH}'s length must be between 3 and 20 char`
     },
     unique: true,
@@ -16,8 +16,8 @@ let adminSchema = new Schema({
     type: String,
     required: [true, '{PATH} must be filled'],
     validate: {
-      validator: function(val){ return /.{10,20}/.test(val)},
-      message: `{PATH}'s length must be between 10 and 20 char`
+      validator: function(val){ return /.{8,20}/.test(val)},
+      message: `{PATH}'s length must be between 8 and 20 char`
     }
   }
 });

@@ -30,6 +30,9 @@ const editUser = (req,res) => {
     else {
       if (typeof req.body.phone != 'undefined') user.phone = req.body.phone;
       if (typeof req.body.password != 'undefined') user.password = req.body.password;
+      if (typeof req.body.name != 'undefined') user.name = req.body.name;
+      // if (typeof req.body.email != 'undefined') user.email = req.body.email;
+      //   if (typeof req.body.username != 'undefined') user.username = req.body.username;
       user.save((err,eduser)=> {res.send(err ? {err: err} : eduser)} );
     }
   })

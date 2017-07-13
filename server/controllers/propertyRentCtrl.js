@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-let Props = require('../models/propertyRent');
+let Props = require('../models/PropertyRent');
 
 
 const getProps = (req,res) => {

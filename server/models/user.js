@@ -16,13 +16,12 @@ let userSchema = new Schema({
     type: String,
     required: [true, '{PATH} must be filled'],
     validate: {
-      validator: function(val){ return /.{10,20}/.test(val)},
-      message: `{PATH}'s length must be between 10 and 20 char`
+      validator: function(val){ return /.{8,20}/.test(val)},
+      message: `{PATH}'s length must be between 8 and 20 char`
     }
   },
   name: {
     type: String,
-    required: [true, '{PATH} must be filled'],
     validate: {
       validator: function(val){ return /.{3,200}/.test(val)},
       message: `{PATH}'s length must be between 3 and 200 char`
@@ -30,7 +29,6 @@ let userSchema = new Schema({
   },
   phone: {
     type: String,
-    required : [true,'{PATH} must be filled'],
     validate: {
       validator: function(val){ return /^\+[0-9]{10,32}/gi.test(val) },
       message: `{PATH}'s length must be between 10 and 32 char`

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-let Category = require('../models/category');
+let Category = require('../models/Category');
 
 const getCategories = (req,res) => {
   Category.find({}, (err,categories) => {

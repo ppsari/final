@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-let Trans = require('../models/transaction');
+let Trans = require('../models/Transaction');
 
 const getTranss = (req,res) => {
   Trans.find({}, (err,transs) => {
@@ -9,11 +9,16 @@ const getTranss = (req,res) => {
 const getTrans = (req,res) => {
   let id = req.params.id;
   Trans.findById(id)
-  .populate('connections._propertyId')
+  .populate('_userId _categoryId')
+  .populate({
+    path: 'connections._propertyId',
+    populate: {path: '_accessId'}
+  })
   .exec( (err,trans) => {
     res.send(err? {err:err} : trans );
   })
 }
+
 const addTrans = (req,res) => {
   let trans = new Trans(req.body);
   trans.save((err,newtrans) => {

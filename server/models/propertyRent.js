@@ -25,6 +25,6 @@ let propertyRentSchema = new Schema({
   _accessId: [{type:Schema.Types.ObjectId, ref: 'Access'}],
 })
 
-let propertyRent =  mongoose.model('propertyRent',propertyRentSchema)
+let PropertyRent =  mongoose.model('PropertyRent',propertyRentSchema)
 
-module.exports = propertyRent;
+module.exports = PropertyRent;

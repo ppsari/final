@@ -17,6 +17,5 @@ let propertySellSchema = new Schema({
   _accessId: [{type:Schema.Types.ObjectId, ref: 'Access'}],
 })
 
-let propertySell =  mongoose.model('propertySell',propertySellSchema)
-
-module.exports = propertySell;
+let PropertySell =  mongoose.model('PropertySell',propertySellSchema)
+module.exports = PropertySell;
