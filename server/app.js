@@ -19,7 +19,7 @@ let admin = require('./routes/admin')
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
-app.use('/index', index);
+app.use('/', index);
 app.use('/api/transaction', transaction);
 app.use('/api/propertySell', propertySell);
 app.use('/api/propertyRent', propertyRent);

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-let Trans = require('../models/Transaction');
+let Trans = require('../models/transaction');
 
 const getTranss = (req,res) => {
   Trans.find({}, (err,transs) => {
