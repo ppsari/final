@@ -38,20 +38,94 @@ const getProp = (req,res) => {
   })
 }
 
-const searchProps = (req,res) => {
-  //owner, location, category
-  if (typeof req.params.searchKey === 'undefined') res.send({err: 'Invalid Search Keyword'})
-  else if (typeof req.params.searchValue === 'undefined') res.send({err: 'Invalid Search Value'})
+/*
+  searchProps
+  1. multiParam
+    a. kosong semua ga error  => searchPropsENull
+    b. kosong semua error     => searchPropsNNull
+  2. withOutPopulate
+    a. kosong error           => searchPropENull
+    b. kosong ga error        => searchPropNNull
+*/
+
+const searchPropsENull = (req,res) => {
+  let find = {}
+
+  for (let key in req.query)
+    if (req.query[key] !== '') find[key] = req.query[key];
+
+  Props.find(find)
+  .populate('_price _categoryId _accessId _ownerId _testimonyId')
+  .exec( (err,property) => {
+    res.send(err? {err:err.message} : property );
+  })
+
+
+}
+const searchPropsNNull = (req,res) => {
+  let find = {}
+
+  for (let key in req.query)
+    if (req.query[key] !== '') find[key] = req.query[key];
+
+  if (Object.keys(find).length === 0) res.send({err:'Please insert at least one keyword'})
   else {
-    let searchValue = new RegExp(req.params.searchValue, "i")
-    Props.find({
-      [req.params.searchKey] : searchValue
-    })
+    Props.find(find)
     .populate('_price _categoryId _accessId _ownerId _testimonyId')
     .exec( (err,property) => {
       res.send(err? {err:err.message} : property );
     })
   }
+}
+const searchPropENull = (req,res) => {
+  let find = {}
+
+  for (let key in req.query)
+    if (req.query[key] !== '') find[key] = req.query[key];
+
+  Props.find(find)
+  .exec( (err,property) => {
+    res.send(err? {err:err.message} : property );
+  })
+}
+const searchPropNNull = (req,res) => {
+  let find = {}
+
+  for (let key in req.query)
+    if (req.query[key] !== '') find[key] = req.query[key];
+
+  if (Object.keys(find).length === 0) res.send({err:'Please insert at least one keyword'})
+  else {
+    Props.find(find)
+    .exec( (err,property) => {
+      res.send(err? {err:err.message} : property );
+    })
+  }
+}
+
+
+//http://localhost:3000/api/propertyRent/search?id=asdasd&lolo=lele
+const searchProps = (req,res) => {
+  // res.send(req.query)
+  // let find = {}
+  //
+  // for (let key in req.query)
+  //    find[key] = req.query[key];
+  // res.send(find)
+
+  // owner, location, category
+  // if (typeof req.params.searchKey === 'undefined') res.send({err: 'Invalid Search Keyword'})
+  // else if (typeof req.params.searchValue === 'undefined') res.send({err: 'Invalid Search Value'})
+  // else {
+  //   let searchValue = new RegExp(req.params.searchValue, "i")
+  //   Props.find({
+  //     [req.params.searchKey] : searchValue
+  //   })
+  //   .populate('_price _categoryId _accessId _ownerId _testimonyId')
+  //   .exec( (err,property) => {
+  //     res.send(err? {err:err.message} : property );
+  //   })
+  // }
 }
 const addProp = (req,res) => {
   let propertyDt = req.body;
@@ -113,5 +187,8 @@ module.exports = {
   editProp,
   deleteProp,
   checkAuth,
-  searchProps
+  searchPropsENull,
+  searchPropsNNull,
+  searchPropENull,
+  searchPropNNull
 }
