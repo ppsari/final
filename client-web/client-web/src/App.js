@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Link, Redirect } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 
 import './App.css';
 import Register from './components/Register';
 import Login from './components/Login';
 import Home from './containers/Home';
 import Dashboard from './containers/protected/Dashboard';
-import { logout } from './helpers/auth';
 import { firebaseAuth } from './config/constants';
 import Page404 from './containers/Page404.js'
 
@@ -41,7 +40,6 @@ class App extends Component {
       loading: true,
     }
   }
-
   componentDidMount () {
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
       if (user) {
