@@ -51,7 +51,7 @@ const getProp = (req,res) => {
 const searchPropsENull = (req,res) => {
   let find = {}
   for (let key in req.query)
-    if (req.query[key] !== '') find[key] = new RegExp(req.query['city'], "i")
+    if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
   Props.find(find)
   .populate('_price _categoryId _accessId _ownerId _testimonyId')
   .exec( (err,property) => {
@@ -64,7 +64,7 @@ const searchPropsNNull = (req,res) => {
   let find = {}
 
   for (let key in req.query)
-    if (req.query[key] !== '') find[key] = new RegExp(req.query['city'], "i")
+    if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
 
   if (Object.keys(find).length === 0) res.send({err:'Please insert at least one keyword'})
   else {
@@ -79,8 +79,8 @@ const searchPropENull = (req,res) => {
   let find = {}
 
   for (let key in req.query)
-    if (req.query[key] !== '') find[key] = new RegExp(req.query['city'], "i")
-
+    if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
+  // console.log(find)
   Props.find(find)
   .populate('_categoryId')
   .exec( (err,property) => {
@@ -91,7 +91,7 @@ const searchPropENull = (req,res) => {
     // })
 
     // console.log(props)
-    res.send(err? {err:err.message} : property );
+    res.send(err? {err:err} : property );
 
   })
 }
@@ -99,9 +99,9 @@ const searchPropNNull = (req,res) => {
   let find = {}
 
   for (let key in req.query)
-    if (req.query[key] !== '') find[key] = new RegExp(req.query['city'], "i")
-
-  if (Object.keys(find).length === 0) res.send({err:'Please insert at least one keyword'})
+    if ( req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
+  if ( Object.keys(find).length === 0)
+    res.send({err:'Please insert at least one keyword'})
   else {
     Props.find(find)
     .populate('_categoryId')
