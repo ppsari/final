@@ -470,8 +470,26 @@ describe('User', () => {
             done();
         });
       });
-      it('should put user as admin', (done)=> {
+      it('should put user as user', (done)=> {
         let newname = 'user edited'
+        chai.request(server)
+        .put(`/api/user/${data.user3.id}`)
+        .send({name: newname})
+        .set('token',data.user3.token)
+        .end((err,user) => {
+          if (err) done(err);
+          else if (typeof user.body.err !== 'undefined') done(err);
+          else {
+            user.should.have.status(200);
+            user.body.should.be.a('object');
+            user.body.should.have.property('name',newname)
+            // console.log(user.body)
+            done();
+          }
+        })
+      });
+      it('should put user as admin', (done)=> {
+        let newname = 'user'
         chai.request(server)
         .put(`/api/user/${data.user3.id}`)
         .send({name: newname})
