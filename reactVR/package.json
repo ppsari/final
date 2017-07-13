@@ -10,13 +10,16 @@
     "test": "jest"
   },
   "dependencies": {
+    "ovr-audio": "^0.1.6",
+    "ovr-video": "^0.1.2",
     "ovrui": "~1.4.0",
     "react": "~15.4.1",
     "react-native": "~0.42.0",
     "react-router-dom": "^4.1.1",
     "react-vr": "~1.4.0",
     "react-vr-web": "~1.4.0",
-    "three": "^0.80.1"
+    "three": "^0.80.1",
+    "xopen": "^1.0.0"
   },
   "devDependencies": {
     "babel-jest": "^19.0.0",
