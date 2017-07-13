@@ -18,7 +18,6 @@ const login = (req,res) => {
       }
     })
   }
-
 }
 
 const register = (req,res) => {
@@ -41,7 +40,31 @@ const register = (req,res) => {
   });
 }
 
+const seedUser = (req,res) => {
+  let user = new User({
+    email: `${req.body.email}` || '',
+    password: req.body.password || '',
+    username: req.body.username || '',
+    name: req.body.name || '',
+    phone: req.body.phone || '',
+    role: req.body.role || 'user',
+  });
+
+  user.save((err,n_user)=> {
+    if (err){
+      let err_msg = [];
+      if (typeof err.errors != 'undefined')
+        for(let key in err.errors) err_msg.push(err.errors[key].message);
+      res.send ({err: err_msg.length > 0 ? err_msg.join(',') : err});
+    }
+    else res.send(n_user);
+
+  });
+}
+
+
 module.exports = {
   login,
-  register
+  register,
+  seedUser
 }

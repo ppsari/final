@@ -4,7 +4,7 @@
   "description": "server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test mocha",
     "start": "nodemon app.js"
   },
   "author": "ppsari <poppymighty@gmail.com> (https://github.com/ppsari/)",
@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "chai": "^4.1.0",
+    "chai-http": "^3.0.0",
     "cors": "^2.8.3",
     "crypto-js": "^3.1.9-1",
     "dotenv": "^4.0.0",

@@ -32,8 +32,14 @@ app.use('/api/admin', admin);
 
 app.use(cors());
 
-mongoose.connect(process.env.DATABASE_URL,(err,res)=>{
-  console.log(err?err:'Berhasil connect ke db');
+var env = app.settings.env;
+var db_config = {
+  development: process.env.DATABASE_URL,
+  test: process.env.DATABASE_TEST_URL
+}
+
+mongoose.connect(db_config[env],(err,res)=>{
+  console.log(err?err:'Berhasil connect ke db '+db_config[env]);
 })
 
 
@@ -42,3 +48,4 @@ console.log('port : '+app.get('port'))
 app.listen(app.get('port'), () => {
   console.log('magic happen at http://localhost:',app.get('port'))
 })
+module.exports = app;

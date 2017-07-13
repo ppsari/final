@@ -8,7 +8,6 @@ let userSchema = new Schema({
       validator: function(val){ return /[a-z]{3,20}/gi.test(val) },
       message: `{PATH}'s length must be between 3 and 20 char`
     },
-    unique: true,
     lowercase: true,
     required : [true,'{PATH} must be filled']
   },
@@ -36,6 +35,7 @@ let userSchema = new Schema({
   },
   email: {
     type: String,
+    unique: true,
     validate: {
       validator: function(val){ return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val)},
       message: `{PATH} invalid`
