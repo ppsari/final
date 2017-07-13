@@ -56,8 +56,9 @@ const getTrans = (req,res) => {
     populate: {path: '_accessId'}
   })
   .exec( (err,trans) => {
+    console.log(trans)
     if (err) res.send(err);
-    else if (trans._userId === decoded._id || trans._sellerId === decoded._id || decoded.role === 'admin') res.send(trans);
+    else if (trans._userId._id == decoded._id || trans._sellerId._id == decoded._id || decoded.role === 'admin') res.send(trans);
     else res.send({err:'Invalid Access'});
   })
 }
@@ -67,7 +68,7 @@ const addTrans = (req,res) => {
   let decoded = login.getUserDetail(req.headers.token);
   transDt._sellerId = decoded._id;
 
-  if (transDt._userId === decoded._id) res.send({err:'You cant rent/sell your own product'})
+  if (transDt._userId == decoded._id) res.send({err:'You cant rent/sell your own product'})
   else {
     let trans = new Trans(transDt);
     trans.save((err,newtrans) => {
