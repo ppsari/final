@@ -38,14 +38,15 @@ const getTranssBySeller = (req,res) => {
   .exec( (err,transs) => {
     res.send(err? {err:err} : transs );
   })
-
 }
+
 const getTranss = (req,res) => {
   Trans.find({}, (err,transs) => {
     res.send(err ? err : transs);
   })
 }
 const getTrans = (req,res) => {
+  let decoded = login.getUserDetail(req.headers.token);
   let id = req.params.id;
   Trans.findById(id)
   .populate('_userId _categoryId')
@@ -55,19 +56,28 @@ const getTrans = (req,res) => {
     populate: {path: '_accessId'}
   })
   .exec( (err,trans) => {
-    res.send(err? {err:err} : trans );
+    if (err) res.send(err);
+    else if (trans._userId === decoded._id || trans._sellerId === decoded._id || decoded.role === 'admin') res.send(trans);
+    else res.send({err:'Invalid Access'});
   })
 }
 
 const addTrans = (req,res) => {
-  let trans = new Trans(req.body);
-  trans.save((err,newtrans) => {
-    if (err) {
-      let err_msg = [];
-      for (let error in err.errors) err_msg.push(err.errors[error].message);
-      res.send({err : err_msg.join(',')});
-    } else res.send(newtrans)
-  })
+  let transDt = req.body;
+  let decoded = login.getUserDetail(req.headers.token);
+  transDt._sellerId = decoded._id;
+
+  if (transDt._userId === decoded._id) res.send({err:'You cant rent/sell your own product'})
+  else {
+    let trans = new Trans(transDt);
+    trans.save((err,newtrans) => {
+      if (err) {
+        let err_msg = [];
+        for (let error in err.errors) err_msg.push(err.errors[error].message);
+        res.send({err : err_msg.join(',')});
+      } else res.send(newtrans)
+    })
+  }
 }
 
 module.exports = {
