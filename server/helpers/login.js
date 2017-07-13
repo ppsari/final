@@ -2,8 +2,13 @@ require('dotenv').config();
 let jwt = require('jsonwebtoken');
 let CryptoJS = require('crypto-js');
 
-const getUserDetail = (token,callback) => {
-  jwt.verify(token, process.env.SECRET_KEY, callback);
+const getUserDetail = (token) => {
+  try {
+    let decoded = jwt.verify(token, process.env.SECRET_KEY) ;
+    return decoded;
+  } catch(err) {
+    return false;
+  }
 }
 
 //udah cek pasti ada makanya ga perlu callback
@@ -30,6 +35,6 @@ module.exports = {
   getUserDetail,
   getUserId,
   createToken,
-  hashPassword,
+  hashPassword
 
 }

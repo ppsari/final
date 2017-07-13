@@ -3,6 +3,8 @@ const express = require('express');
 let router = express.Router();
 const userCtrl = require('../controllers/userCtrl');
 
+router.use(userCtrl.checkAuth); //v
+
 router.get('/',userCtrl.getUsers ); //v
 router.get('/:id',userCtrl.getUser); //v
 router.post('/',userCtrl.addUser); //v

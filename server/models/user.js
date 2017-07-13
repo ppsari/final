@@ -4,13 +4,13 @@ const helper = require('../helpers/login')
 let userSchema = new Schema({
   username: {
     type: String,
-    required : [true,'{PATH} must be filled'],
     validate: {
       validator: function(val){ return /[a-z]{3,20}/gi.test(val) },
       message: `{PATH}'s length must be between 3 and 20 char`
     },
     unique: true,
-    lowercase: true
+    lowercase: true,
+    required : [true,'{PATH} must be filled']
   },
   password: {
     type: String,
@@ -36,11 +36,16 @@ let userSchema = new Schema({
   },
   email: {
     type: String,
-    required: [true, '{PATH} must be filled'],
     validate: {
       validator: function(val){ return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val)},
       message: `{PATH} invalid`
-    }
+    },
+    required: [true, '{PATH} must be filled']
+  },
+  role : {
+    type: String,
+    required: [true, '{PATH} must be filled'],
+    default: 'user'
   }
 });
 

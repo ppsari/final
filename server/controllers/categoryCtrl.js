@@ -1,5 +1,20 @@
 const mongoose = require('mongoose');
 let Category = require('../models/category');
+let login = require('../helpers/login');
+
+const checkAuth = (req,res, next) => {
+  let method = req.method;
+  let hasParam = req.path === '/';
+
+  if (req.headers.hasOwnProperty('token')){
+    let decoded = login.getUserDetail(req.headers.token);
+    if (decoded) {
+      if (decoded.role === 'admin') next()
+      else res.send({err: 'Invalid Access'})
+    }
+    else res.send({err:'You must login'})
+  } else res.send({err:'You must login'})
+}
 
 const getCategories = (req,res) => {
   Category.find({}, (err,categories) => {
@@ -47,5 +62,6 @@ module.exports = {
   getCategory,
   addCategory,
   editCategory,
-  deleteCategory
+  deleteCategory,
+  checkAuth
 }

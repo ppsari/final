@@ -1,5 +1,35 @@
 const mongoose = require('mongoose');
 let User = require('../models/user');
+let login = require('../helpers/login');
+
+const checkAuth = (req,res, next) => {
+  let method = req.method;
+  let hasParam = req.path !== '/';
+
+// console.log(req.path)
+  if (req.headers.hasOwnProperty('token')){
+    let decoded = login.getUserDetail(req.headers.token);
+    if (decoded) {
+      if (!hasParam) {
+        if ( (method === 'GET' || method === 'POST') && decoded.role === 'admin'){ next();}
+        else res.send({err: 'Invalid Access'})
+      }
+      else {
+        let id = req.path.substr(1);
+        switch(method) {
+          case 'GET' : next(); break;
+          case 'PUT' : case 'POST' :
+            console.log(decoded.role === 'admin' || decoded._id === `${id}`)
+            if (decoded.role === 'admin' || decoded._id === `${id}`) { console.log(decoded._id); next(); break;}
+          case 'DELETE' :
+            if (decoded.role === 'admin') { next(); break; }
+          default:
+            res.send({err: 'You dont have access'}); break;
+        }
+      }
+    } else res.send({err:'You must login'})
+  } else res.send({err:'You must login'})
+}
 
 const getUsers = (req,res) => {
   User.find({}, (err,users) => {
@@ -31,7 +61,7 @@ const editUser = (req,res) => {
       if (typeof req.body.phone != 'undefined') user.phone = req.body.phone;
       if (typeof req.body.password != 'undefined') user.password = req.body.password;
       if (typeof req.body.name != 'undefined') user.name = req.body.name;
-      // if (typeof req.body.email != 'undefined') user.email = req.body.email;
+      // if (typeof req.body.role != 'undefined') user.role = req.body.role;
       //   if (typeof req.body.username != 'undefined') user.username = req.body.username;
       user.save((err,eduser)=> {res.send(err ? {err: err} : eduser)} );
     }
@@ -50,5 +80,6 @@ module.exports = {
   getUser,
   addUser,
   editUser,
-  deleteUser
+  deleteUser,
+  checkAuth
 }
