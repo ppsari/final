@@ -84,8 +84,17 @@ const searchPropENull = (req,res) => {
     if (req.query[key] !== '') find[key] = req.query[key];
 
   Props.find(find)
+  .populate('_categoryId')
   .exec( (err,property) => {
-    res.send(err? {err:err.message} : property );
+    let props = {}
+    property.forEach((prop)=>{
+      if (typeof props[_categoryId.name] === 'undefined') props[_categoryId.name] = [];
+      props[_categoryId.name].push(prop);
+    })
+
+    // console.log(props)
+    res.send(err? {err:err.message} : props );
+
   })
 }
 const searchPropNNull = (req,res) => {
@@ -97,8 +106,16 @@ const searchPropNNull = (req,res) => {
   if (Object.keys(find).length === 0) res.send({err:'Please insert at least one keyword'})
   else {
     Props.find(find)
+    .populate('_categoryId')
     .exec( (err,property) => {
-      res.send(err? {err:err.message} : property );
+      let props = {}
+      property.forEach((prop)=>{
+        if (typeof props[_categoryId.name] === 'undefined') props[_categoryId.name] = [];
+        props[_categoryId.name].push(prop);
+      })
+
+      // console.log(props)
+      res.send(err? {err:err.message} : props );
     })
   }
 }
