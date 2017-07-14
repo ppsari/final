@@ -51,6 +51,19 @@ class App extends Component {
     }
   }
   componentDidMount () {
+    // this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
+    //   if (user) {
+    //     this.setState({
+    //       authed: true,
+    //       loading: false,
+    //     })
+    //   } else {
+    //     this.setState({
+    //       authed: false,
+    //       loading: false,
+    //     })
+    //   }
+    // })
     this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({

@@ -1,20 +1,42 @@
 import React from 'react'
+import axios from 'axios'
 import { login, resetPassword } from '../helpers/auth'
+import { connect } from 'react-redux';
 
+import {
+  loginAction,
+} from '../actions';
+
+const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com'
 function setErrorMsg(error) {
   return {
     loginMessage: error
   }
 }
 
-export default class Login extends React.Component {
+class Login extends React.Component {
   state = { loginMessage: null }
   handleSubmit = (e) => {
     e.preventDefault()
-    login(this.email.value, this.pw.value)
-      .catch((error) => {
+    let user = {}
+    user.email = this.email.value
+    user.password = this.pw.value
+    axios.post(`${api}/login`, user)
+    .then((data) => {
+      if(data.data.hasOwnProperty('err')){
         this.setState(setErrorMsg('Invalid username/password'))
-      })
+      } else {
+        console.log(data.data);
+        this.props.login(data.data);
+      }
+    })
+    .catch((error) => {
+      this.setState(setErrorMsg('Invalid username/password'))
+    })
+    // login(this.email.value, this.pw.value)
+    //   .catch((error) => {
+    //     this.setState(setErrorMsg('Invalid username/password'))
+    //   })
   }
   resetPassword = () => {
     resetPassword(this.email.value)
@@ -48,3 +70,11 @@ export default class Login extends React.Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (data) => dispatch(loginAction(data)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Login);

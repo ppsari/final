@@ -5,7 +5,8 @@ const initialState = {
     "name": "user2",
     "password": "U2FsdGVkX19IJfJL0T8m\/Rttnqcym+\/UJWe2dlcS5KQ=",
     "username": "Lena",
-    "__v": 0
+    "__v": 0,
+    "token": null,
   }
 
 export default (state = initialState, action) => {
@@ -16,6 +17,10 @@ export default (state = initialState, action) => {
       password: action.password
     };
   }
-
+  else if (action.type === 'LOGIN') {
+    return {...state,
+      token: action.payload
+    };
+  }
   return state
 }
