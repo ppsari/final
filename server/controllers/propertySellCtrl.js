@@ -14,9 +14,11 @@ const checkAuth = (req,res, next) => {
     case 'PUT' : case 'DELETE' : case 'POST' :
       if (decoded){
         next(); break
-      } else {res.send({err: 'You must login'}); }
-    default:
-      res.send({err: 'You dont have access'}); break;
+      } else {
+        res.send({err: 'You must login'});
+      }
+      break;
+    default: res.send({err: 'You dont have access'}); break;
   }
 }
 
@@ -70,7 +72,15 @@ const searchPropsNNull = (req,res) => {
     Props.find(find)
     .populate('_price _categoryId _accessId _ownerId _testimonyId')
     .exec( (err,property) => {
-      res.send(err? {err:err.message} : property );
+      if (err) res.send({err:err})
+      else {
+        //hitung jumlah Room
+        let roomTotal = [];
+        for (let room in property._roomId)
+          roomTotal[room] =  (typeof property._roomId[room] === 'undefined')  ? 1 : (roomTotal[room]+1);
+        property.roomTotal = roomTotal;
+        res.send(property);
+      }
     })
   }
 }
@@ -83,14 +93,15 @@ const searchPropENull = (req,res) => {
   Props.find(find)
   .populate('_categoryId')
   .exec( (err,property) => {
-    // let props = {}
-    // property.forEach((prop)=>{
-    //   if (typeof props[_categoryId.name] === 'undefined') props[_categoryId.name] = [];
-    //   props[_categoryId.name].push(prop);
-    // })
-
-    // console.log(props)
-    res.send(err? {err:err.message} : property );
+    if (err) res.send({err:err})
+    else {
+      //hitung jumlah Room
+      let roomTotal = [];
+      for (let room in property._roomId)
+        roomTotal[room] =  (typeof property._roomId[room] === 'undefined')  ? 1 : (roomTotal[room]+1);
+      property.roomTotal = roomTotal;
+      res.send(property);
+    }
 
   })
 }
@@ -100,22 +111,21 @@ const searchPropNNull = (req,res) => {
   for (let key in req.query)
     if (req.query[key] !== '')
       find[key] = new RegExp(req.query[key], "i")
-  console.log(Object.keys(find).length);
-  console.log('find sell');
   if (Object.keys(find).length === 0)
     res.send({err:'Please insert at least one keyword'})
   else {
     Props.find(find)
     .populate('_categoryId')
     .exec( (err,property) => {
-      // let props = {}
-      // property.forEach((prop)=>{
-      //   if (typeof props[_categoryId.name] === 'undefined') props[_categoryId.name] = [];
-      //   props[_categoryId.name].push(prop);
-      // })
-
-      // console.log(props)
-      res.send(err? {err:err.message} : property );
+      if (err) res.send({err:err})
+      else {
+        //hitung jumlah Room
+        let roomTotal = [];
+        for (let room in property._roomId)
+          roomTotal[room] =  (typeof property._roomId[room] === 'undefined')  ? 1 : (roomTotal[room]+1);
+        property.roomTotal = roomTotal;
+        res.send(property);
+      }
     })
   }
 }
