@@ -41,9 +41,12 @@ const getTranssBySeller = (req,res) => {
 }
 
 const getTranss = (req,res) => {
-  Trans.find({}, (err,transs) => {
-    res.send(err ? err : transs);
-  })
+  let decoded = login.getUserDetail(req.headers.token);
+  if(req.params.id==='admin')
+    Trans.find({}, (err,transs) => {
+      res.send(err ? err : transs);
+    })
+  else res.send({err:'You must login'})
 }
 const getTrans = (req,res) => {
   let decoded = login.getUserDetail(req.headers.token);
@@ -57,7 +60,7 @@ const getTrans = (req,res) => {
   })
   .exec( (err,trans) => {
     console.log(trans)
-    if (err) res.send(err);
+    if (err) res.send({err:err});
     else if (trans._userId._id == decoded._id || trans._sellerId._id == decoded._id || decoded.role === 'admin') res.send(trans);
     else res.send({err:'Invalid Access'});
   })

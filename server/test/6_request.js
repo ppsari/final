@@ -247,7 +247,8 @@ describe('Request', () => {
           .set('token',data.admin.token)
           .end((err,transaction) => {
             //cek masuk transaksi ato kaga
-            console.log(transaction.body)
+            data.transaction.push(transaction.body._id);
+            // console.log(transaction.body)
             done();
           });
         }
