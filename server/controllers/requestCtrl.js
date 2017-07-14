@@ -5,6 +5,9 @@ let Request = require('../models/request');
 let User = require('../models/user');
 let login = require('../helpers/login');
 let contact = require('../helpers/contact');
+// pas dia approve
+let PropertySell = require('../models/propertySell');
+let PropertyRent = require('../models/propertyRent');
 
 const checkAuth = (req,res, next) => {
   let method = req.method;
@@ -108,9 +111,12 @@ const deleteRequest = (req,res) => {
         body: body
       }
 
+
       User.findById(requestDt._sellerId, (err,user)=> {
         if (err) res.send({err:err})
         else if (requestDt.response === 'approved') {
+
+
           let transDt = req.body;
           transDt._userId = request._userId;
           transDt._sellerId = decoded._id;
@@ -121,8 +127,30 @@ const deleteRequest = (req,res) => {
               for (let error in err.errors) err_msg.push(err.errors[error].message);
               res.send({err : err_msg.join(',')});
             } else {
-              res.send(newtrans)
-              contact.contact(user,msg);
+              // if (request.connections.kind === 'PropertyRent') {
+              //   // PropertyRent.findById(request.connections._propertyId, (err,prop) => {
+              //   //   prop.isActive = false;
+              //   //   prop.save((err,nprop) => {
+              //   //     res.send(err? {err:err} : newtrans);
+              //   //     contact.contact(user,msg);
+              //   //   })
+              //   // })
+              // }
+              if (request.connections.kind === 'PropertySell') {
+                PropertySell.findById(request.connections._propertyId, (err,prop) => {
+                  prop.isActive = false;
+                  prop.save((err,nprop) => {
+                    res.send(err? {err:err} : newtrans);
+                    contact.contact(user,msg);
+                  })
+                })
+              } else {
+                res.send(err? {err:err} : newtrans);
+                contact.contact(user,msg);
+              }
+
+
+
             }
           })
         } else {

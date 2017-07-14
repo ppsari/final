@@ -11,7 +11,7 @@ describe('PropertyRent', () => {
   before(done => {
     data = global.data;
     data.propertyRent = [];
-
+    // this.timeout(15000);
     PropertyRent.remove({}, err=>{
       pr1 = {
         name: 'apartemen mewah jakarta barat',
