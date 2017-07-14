@@ -9,7 +9,8 @@ import {
   Image,
   Mesh,
   VideoPano,
-  Sphere
+  Sphere,
+  StyleSheet
 } from 'react-vr';
 
 export default class reactVR extends React.Component {
@@ -20,7 +21,7 @@ export default class reactVR extends React.Component {
       room: 'chess-world.jpg',
       img: {},
       desc: "",
-      isRead: false,
+      isIcons: true,
       limit: 2,
       space: 2,
       start: 0,
@@ -122,6 +123,8 @@ export default class reactVR extends React.Component {
     return (
       <View>
         <Pano source={asset(this.state.room)}/>
+        {(this.state.isIcons === true)
+         ? <View>
            {this.state.images.slice(this.state.start,this.state.space).map((img,index)=> {
             let icon = {uri: this.state.icons[img.type]};
             let x = -3
@@ -143,20 +146,12 @@ export default class reactVR extends React.Component {
                </VrButton>
              </View>)
           })}
+          </View>
+        : <VrButton></VrButton>
+        }
         {(this.state.desc !== "")
         ?<Text
-          style={{
-            color: 'white',
-            fontSize: 0.3,
-            fontWeight: '100',
-            layoutOrigin: [0.5, 0.5],
-            paddingLeft: 0.2,
-            paddingRight: 0.2,
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            transform: [{translate: [3, 2,-1]},
-                        {rotateY: -45}]
-          }}>
+          style={styles.desc}>
           {this.state.desc}
          </Text>
         :<VrButton></VrButton>
@@ -169,7 +164,7 @@ export default class reactVR extends React.Component {
                     transform: [{translate: [5.1, 2.5, 0]},
                                 {rotateY: -80}]}} />
         </VrButton>
-        {(this.state.images.length > this.state.space)
+        {(this.state.images.length > this.state.space && this.state.isIcons === true)
         ? <VrButton onClick={()=> this.next()}>
            <Image
             source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzzy_3OCG4HsujWkupN29XNKPBrvBAOftMsiQdIT-7r4MgC4RKXw'}}
@@ -178,28 +173,28 @@ export default class reactVR extends React.Component {
                     transform: [{translate: [-2.2, 2.5, -3]},
                                 {rotateY: 0}]}} />
          </VrButton>
-        :<VrButton><Image
-         style={{width: 0.3,
-                 height: 0.3,
-                 transform: [{translate: [-2.2, 2.48, -3]},
-                             {rotateY: 0}]}} /></VrButton>
+        :<VrButton></VrButton>
        }
-        {(this.state.start > 0)
+        {(this.state.start > 0 && this.state.isIcons === true)
         ?<VrButton onClick={()=> this.back()}>
            <Image
             source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6vguGtVqUlynlSkdS0xu_Nhhf8UMJd69YBILsNUnLM4TLPa1x'}}
             style={{width: 0.3,
                     height: 0.3,
-                    transform: [{translate: [-3.4, 2.72, -3]},
+                    transform: [{translate: [-3.4, 2.77, -3]},
                                 {rotateY: 0}]}} />
          </VrButton>
-        :<VrButton><Image
-         style={{width: 0.3,
-                 height: 0.3,
-                 transform: [{translate: [-3.4, 2.5, -3]},
-                             {rotateY: 0}]}} /></VrButton>
+        :<VrButton></VrButton>
        }
 
+       <VrButton onClick={()=> this.minimize()}>
+          <Image
+           source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP93hxTrLSSWh3q69xPx6xfkf8nwo19FYJgTcMA35nmnD9UwgpXw'}}
+           style={{width: 0.1,
+                   height: 0.1,
+                   transform: [{translate: [-2.7, 3.2, -3]},
+                               {rotateY: 0}]}} />
+        </VrButton>
 
         <Text
           style={{
@@ -220,10 +215,16 @@ export default class reactVR extends React.Component {
     );
   }
 
-  closeDesc(){
-    this.setState({
-      desc:""
-    })
+  minimize(){
+    if(this.state.isIcons === true){
+      this.setState({
+        isIcons: false
+      })
+    } else{
+      this.setState({
+        isIcons: true
+      })
+    }
   }
 
   back(){
@@ -250,7 +251,6 @@ export default class reactVR extends React.Component {
   }
 
   desc(img){
-    console.log(this.state.images[img]);
     if(this.state.desc === ""){
       this.setState({
         desc: img.description
@@ -277,6 +277,33 @@ export default class reactVR extends React.Component {
   //   })
   // }
 };
+
+var styles = StyleSheet.create({
+desc: {
+  color: 'white',
+  fontSize: 0.3,
+  fontWeight: '100',
+  layoutOrigin: [0.5, 0.5],
+  paddingLeft: 0.2,
+  paddingRight: 0.2,
+  textAlign: 'center',
+  textAlignVertical: 'center',
+  transform: [{translate: [3, 2,-1]},
+              {rotateY: -45}]
+},
+descBox:{
+  borderRadius: 4,
+  borderWidth: 0.5,
+  borderColor: '#d6d7da',
+},
+title: {
+  fontSize: 19,
+  fontWeight: 'bold',
+},
+activeTitle: {
+  color: 'red',
+},
+});
 
 
 AppRegistry.registerComponent('reactVR', () => reactVR);
