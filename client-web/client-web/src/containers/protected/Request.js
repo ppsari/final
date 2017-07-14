@@ -13,11 +13,13 @@ class Request extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  
+
+const mapStateToProps = (state) =>{
+
 }
 
-const mapDispatchToProps = (dispatch) =>{
+const mapDispatchToProps = (dispatch)=>{
+
   acceptRequest: (id) => dispatch(acceptRequest(id))
   rejectRequest: (id) => dispatch(rejectRequest(id))
 }

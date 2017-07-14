@@ -19,11 +19,19 @@ let propertyRentSchema = new Schema({
       required: [true, `{PATH} must be filled`]
     }
   },
+  detail : {
+    luasBangunan: Number,
+    luasTanah: Number,
+    perabotan: Boolean,
+    listrik: Boolean,
+    lantai: {type: Number, default:1},
+    fasilitas: [String]
+  },
   rentUntil: Date,
   _ownerId: {type:Schema.Types.ObjectId, ref: 'User'},
   _categoryId: {type:Schema.Types.ObjectId, ref: 'Category'},
   _accessId: [{type:Schema.Types.ObjectId, ref: 'Access'}],
-  _roomId: [{type:Schema.Types.ObjectId, ref: 'Room'}],
+  _roomId: [{type:Schema.Types.ObjectId, ref: 'RoomRent'}],
   _testimonyId: [{type:Schema.Types.ObjectId, ref: 'Testimony'}]
 })
 

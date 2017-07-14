@@ -8,14 +8,22 @@ let propertySellSchema = new Schema({
   city: {type: String, required : [true,'{PATH} must be filled']},
   descr: {type: String, required: [true, `{PATH} must be filled`]},
   price: {
-    type : Number,
-    required: [true, `{PATH} must be filled`]
+    amount : Number,
+    descr: {type: String, default:'forever'}
+  },
+  detail : {
+    luasBangunan: Number,
+    luasTanah: Number,
+    perabotan: Boolean,
+    listrik: Boolean,
+    lantai: Number,
+    fasilitas: [String]
   },
   isActive: {type: Boolean, default: true},
   _ownerId: {type:Schema.Types.ObjectId, ref: 'User'},
   _categoryId: {type:Schema.Types.ObjectId, ref: 'Category'},
   _accessId: [{type:Schema.Types.ObjectId, ref: 'Access'}],
-  _roomId: [{type:Schema.Types.ObjectId, ref: 'Room'}]
+  _roomId: [{type:Schema.Types.ObjectId, ref: 'RoomSell'}]
 })
 
 let PropertySell =  mongoose.model('PropertySell',propertySellSchema)

@@ -32,6 +32,7 @@ export const editProfile = (data,id) =>{
 
 export const acceptRequest = (id) =>{
   return(dispatch)=>{
+
     axios.delete(api+`${id}`,{
       response: 'approved'
     })
@@ -45,12 +46,14 @@ export const acceptRequest = (id) =>{
 
 export const rejectRequest = (id) =>{
   return(dispatch)=>{
+
     axios.delete(api+`${id}`,{
       response: 'rejected'
     })
     .then(response=>{
       dispatch(
         console.log(response.data)
+
       )
     })
   }

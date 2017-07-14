@@ -18,7 +18,7 @@ describe('PropertySell', () => {
         image: 'apartemen.jpg',
         city: 'Jakarta Barat',
         descr: 'Apartemen baru bangun sangat indah sekali',
-        price: 1000000000000,
+        price: {amount: 1000000000000},
         // _ownerId: data.user1.id,
         _categoryId: data.category[1],
         _accessId: [data.access[0], data.access[1]]
@@ -28,7 +28,7 @@ describe('PropertySell', () => {
         image: 'apartemen.jpg',
         city: 'Jakarta Selatan',
         descr: 'Apartemen lama tempat obama waktu kecil',
-        price: 1250000000000,
+        price: {amount: 1250000000000},
         // _ownerId: data.user1.id,
         _categoryId: data.category[1],
         _accessId: [data.access[0], data.access[1]]
@@ -38,18 +38,18 @@ describe('PropertySell', () => {
         image: 'villa.jpg',
         city: 'Jakarta Timur',
         descr: 'Villa mewah tempat raja salman menginap di jakarta',
-        price: 99999999999999999,
+        price: {amount: 99999999999999999},
         // _ownerId: data.user2.id,
         _categoryId: data.category[0],
         _accessId: [data.access[0]]
       }
       prUncomplete = {}
       prInvalid = {
-        name: 'villa mewah jakarta timur',
+        name: '',
         image: 'villa.jpg',
         city: 'Jakarta Timur',
         descr: 'Villa mewah tempat raja salman menginap di jakarta',
-        price: { amount: 99999999, descr: 'hourly'},
+        price: 999999999,
         // _ownerId: data.user2.id,
         _categoryId: data.category[0].id
       }
@@ -76,6 +76,8 @@ describe('PropertySell', () => {
       .set('token',data.user1.token)
       .send(prInvalid)
       .end((err,propertySell) => {
+        console.log('invalid propertySell');
+        console.log(propertySell.body);
           propertySell.should.have.status(200);
           propertySell.body.should.be.a('object');
           propertySell.body.should.have.property('err');
