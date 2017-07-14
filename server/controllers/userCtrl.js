@@ -46,10 +46,10 @@ const addUser = (req,res) => {
   let newuser = new User(req.body);
   newuser.save((err,user) => {
     if (err) {
-      let err_msg = [];
-      for (let error in err.errors) err_msg.push(err.errors[error].message);
-      if (err.code == 11000) err_msg.push(`Username already exist`);
-      res.send({err : err_msg.join(',')});
+      let err_msg = '';
+      for (let error in err.errors) err_msg+= err.errors[error].message+',';
+      if (err.code == 11000) err_msg+=`Username already exist`;
+      res.send({err : err_msg});
     } else res.send(user)
   })
 }
