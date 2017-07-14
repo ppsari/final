@@ -28,6 +28,12 @@
   margin-top: -60px;
 }
 
+.social-container {
+  background-color: #f7f7f7;
+  padding: 30px;
+  margin-top: -15px;
+}
+
 .App-intro {
   font-size: large;
 }
