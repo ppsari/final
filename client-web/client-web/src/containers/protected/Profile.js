@@ -1,11 +1,36 @@
 import React from 'react'
+import {connect} from 'react-redux'
 
-export default class Profile extends React.Component {
+import {editProfile} from '../../actions/index.js'
+
+class Profile extends React.Component {
+  constructor(props){
+    super(props)
+    this.state={
+
+    }
+  }
   render () {
     return (
       <div>
-        Profile. This is a protected route. You can only see this if you're authed.
+        <h3>Name</h3>
+        <input type="text" ref="name"/>
+        <h3>Phone</h3>
+        <input type="text" ref="phone"/>
+        <h3>Password</h3>
+        <input type="password" ref="password"/>
+        <button type="submit" />
       </div>
     )
   }
 }
+
+const mapStateToProps = (state)=>{
+
+}
+
+const mapDispatchToProps = (dispatch) =>{
+  editProfile: (data) => dispatch(editProfile(data))
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

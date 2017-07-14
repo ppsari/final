@@ -9,14 +9,13 @@ const initialState = {
   }
 
 export default (state = initialState, action) => {
-  if(action.type === 'CHANGE_EMAIL') {
-    return {...state, email: action.payload};
+  if(action.type === 'Edit Profile') {
+    return {...state,
+      phone: action.phone,
+      name: action.name,
+      password: action.password
+    };
   }
-  else if(action.type === 'CHANGE_NAME') {
-    return {...state, name: action.payload};
-  }
-  else if(action.type === 'CHANGE_PASSWORD') {
-    return {...state, password: action.payload};
-  }
+
   return state
 }

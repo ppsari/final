@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export const getRentDataAction = (data) => {
   return {
     type: 'GET_DATA_RENT',
@@ -8,5 +10,42 @@ export const getSellDataAction = (data) => {
   return {
     type: 'GET_DATA_SELL',
     payload: data,
+  }
+}
+
+export const editProfile = (data) =>{
+  return (dispatch) =>{
+    axios.get('')
+    .then(response=>{
+      dispatch({
+        type: 'Edit Profile',
+        payload: response.data
+      })
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+  }
+}
+
+export const acceptRequest = (id) =>{
+  return(dispatch)=>{
+    axios.get('')
+    .then(response=>{
+      dispatch(
+        console.log(response)
+      )
+    })
+  }
+}
+
+export const rejectRequest = (id) =>{
+  return(dispatch)=>{
+    axios.get('')
+    .then(response=>{
+      dispatch(
+        console.log(response)
+      )
+    })
   }
 }
