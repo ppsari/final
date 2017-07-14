@@ -18,35 +18,103 @@ export default class reactVR extends React.Component {
     this.state={
       roomName: 'Chess',
       room: 'chess-world.jpg',
-      index: 0,
+      img: {},
       desc: "",
       isRead: false,
       limit: 2,
       space: 2,
       start: 0,
       images:[{
+          _id: 0,
           name: 'chess',
           image: 'chess-world.jpg',
           type: 'bathRoom',
           description: 'aku chess'
         },
         {
+          _id: 1,
           name: 'hacktiv',
           image:'PANO_20170712_204306_1.jpg.jpeg',
           type: 'bedRoom',
           description: 'aku hacktiv'
         },
         {
+          _id: 2,
           name: 'Pondok Indah Office Tower',
           image: 'PANO_20170713_094911_0.jpg.jpeg',
           type: 'livingRoom',
           description: 'aku pim'
-        }
+        },
+        {
+            _id: 3,
+            name: 'chess',
+            image: 'chess-world.jpg',
+            type: 'bathRoom',
+            description: 'aku chess'
+          },
+          {
+            _id: 4,
+            name: 'hacktiv',
+            image:'PANO_20170712_204306_1.jpg.jpeg',
+            type: 'bedRoom',
+            description: 'aku hacktiv'
+          },
+          {
+            _id: 5,
+            name: 'Pondok Indah Office Tower',
+            image: 'PANO_20170713_094911_0.jpg.jpeg',
+            type: 'livingRoom',
+            description: 'aku pim'
+          },
+          {
+              _id: 6,
+              name: 'chess',
+              image: 'chess-world.jpg',
+              type: 'bathRoom',
+              description: 'aku chess'
+            },
+            {
+              _id: 7,
+              name: 'hacktiv',
+              image:'PANO_20170712_204306_1.jpg.jpeg',
+              type: 'bedRoom',
+              description: 'aku hacktiv'
+            },
+            {
+              _id: 8,
+              name: 'Pondok Indah Office Tower',
+              image: 'PANO_20170713_094911_0.jpg.jpeg',
+              type: 'livingRoom',
+              description: 'aku pim'
+            },
+            {
+                _id: 9,
+                name: 'chess',
+                image: 'chess-world.jpg',
+                type: 'bathRoom',
+                description: 'aku chess'
+              },
+              {
+                _id: 10,
+                name: 'hacktiv',
+                image:'PANO_20170712_204306_1.jpg.jpeg',
+                type: 'bedRoom',
+                description: 'aku hacktiv'
+              },
+              {
+                _id: 11,
+                name: 'Pondok Indah Office Tower',
+                image: 'PANO_20170713_094911_0.jpg.jpeg',
+                type: 'livingRoom',
+                description: 'aku pim'
+              }
       ],
       icons:
-        {bathRoom : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRmIdSODOyQhIiwvubG7Xe0iaBJlrTFgmoEtMS-P3GjC49GmZ4',
+        {
+        bathRoom : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRmIdSODOyQhIiwvubG7Xe0iaBJlrTFgmoEtMS-P3GjC49GmZ4',
         bedRoom : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa7DiBD56aB4XGgEZFVYQtORUeszCUJIeAFowRXKQ-Su8SMI1H',
-        livingRoom: 'http://img.freepik.com/free-vector/modern-living-room-furniture_23-2147518147.jpg?size=338&ext=jpg'}
+        livingRoom: 'http://img.freepik.com/free-vector/modern-living-room-furniture_23-2147518147.jpg?size=338&ext=jpg'
+      }
     }
 
   }
@@ -66,7 +134,7 @@ export default class reactVR extends React.Component {
                       margin: 0.1,
                       transform: [{translate: [x, y, d]}]}}
                 key={index}>
-              <VrButton onClick={()=>this.go(img,index)}>
+              <VrButton onClick={()=>this.go(img)}>
                 <Image
                 source={icon}
                 style={{width: 0.5,
@@ -93,7 +161,7 @@ export default class reactVR extends React.Component {
          </Text>
         :<VrButton></VrButton>
         }
-        <VrButton onClick={()=> this.desc(this.state.index)}>
+        <VrButton onClick={()=> this.desc(this.state.img)}>
           <Image
             source={{uri:'https://thumbs.dreamstime.com/x/glassy-button-question-mark-24185998.jpg'}}
             style={{width: 0.5,
@@ -110,7 +178,11 @@ export default class reactVR extends React.Component {
                     transform: [{translate: [-2.2, 2.5, -3]},
                                 {rotateY: 0}]}} />
          </VrButton>
-        :<VrButton></VrButton>
+        :<VrButton><Image
+         style={{width: 0.3,
+                 height: 0.3,
+                 transform: [{translate: [-2.2, 2.48, -3]},
+                             {rotateY: 0}]}} /></VrButton>
        }
         {(this.state.start > 0)
         ?<VrButton onClick={()=> this.back()}>
@@ -118,10 +190,14 @@ export default class reactVR extends React.Component {
             source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6vguGtVqUlynlSkdS0xu_Nhhf8UMJd69YBILsNUnLM4TLPa1x'}}
             style={{width: 0.3,
                     height: 0.3,
-                    transform: [{translate: [-3.4, 2.5, -3]},
+                    transform: [{translate: [-3.4, 2.72, -3]},
                                 {rotateY: 0}]}} />
          </VrButton>
-        :<VrButton></VrButton>
+        :<VrButton><Image
+         style={{width: 0.3,
+                 height: 0.3,
+                 transform: [{translate: [-3.4, 2.5, -3]},
+                             {rotateY: 0}]}} /></VrButton>
        }
 
 
@@ -164,24 +240,21 @@ export default class reactVR extends React.Component {
     })
   }
 
-  go(img,index){
-    console.log(img.name);
-    console.log(img.image);
-    console.log(index);
+  go(img){
     this.setState({
       roomName: img.name,
       room: img.image,
-      index: index,
+      img: img,
       desc: ""
     })
   }
 
-  desc(i){
+  desc(img){
+    console.log(this.state.images[img]);
     if(this.state.desc === ""){
       this.setState({
-        desc: this.state.images[i].description
+        desc: img.description
       })
-        console.log(i);
     } else{
       this.setState({
         desc: ""
