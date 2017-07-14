@@ -12,6 +12,12 @@ export const getSellDataAction = (data) => {
     payload: data,
   }
 }
+export const loginAction = (data) => {
+  return {
+    type: 'LOGIN',
+    payload: data,
+  }
+}
 
 export const editProfile = (data,id) =>{
   return (dispatch) =>{

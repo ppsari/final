@@ -30,11 +30,10 @@ class MenuBar extends React.Component {
                 <NavItem>
                   <NavLink href="/sell">Sell Your Property</NavLink>
                 </NavItem>
-                { this.props.userFirebase.authed
+                { localStorage.getItem('user') !== null
                   ? (<NavItem>
                       <NavLink onClick={() => {
                         logout()
-                        console.log('logout');
                       }}>Logout</NavLink>
                   </NavItem>)
                   : (<NavItem>
@@ -52,7 +51,7 @@ class MenuBar extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    userFirebase: state.firebaseUserReducer,
+    user: state.user,
   };
 }
 
