@@ -6,6 +6,10 @@ export function register (email, pw) {
 }
 
 export function logout () {
+  return localStorage.removeItem('user')
+}
+
+export function logoutFirebase () {
   return firebaseAuth().signOut()
 }
 

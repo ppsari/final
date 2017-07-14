@@ -28,7 +28,7 @@ export default class DetailProperty extends React.Component {
   }
 
   render () {
-    let id = this.props.match.params.id;
+    // let id = this.props.match.params.id;
     let data = this.state;
     console.log(data);
     return (

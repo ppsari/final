@@ -27,6 +27,7 @@ class Login extends React.Component {
       if(data.data.hasOwnProperty('err')){
         this.setState(setErrorMsg('Invalid username/password'))
       } else {
+        console.log('et');
         let user = jwtDecode(data.data.token)
         console.log(user)
         this.props.login(user);
