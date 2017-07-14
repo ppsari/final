@@ -5,8 +5,6 @@ let login = require('../helpers/login');
 const checkAuth = (req,res, next) => {
   let method = req.method;
   let hasParam = req.path !== '/';
-
-// console.log(req.path)
   if (req.headers.hasOwnProperty('token')){
     let decoded = login.getUserDetail(req.headers.token);
     if (decoded) {
@@ -19,7 +17,7 @@ const checkAuth = (req,res, next) => {
         switch(method) {
           case 'GET' : next(); break;
           case 'PUT' : case 'POST' :
-            console.log(decoded.role === 'admin' || decoded._id === `${id}`)
+            // console.log(decoded.role === 'admin' || decoded._id === `${id}`)
             if (decoded.role === 'admin' || decoded._id === `${id}`) { console.log(decoded._id); next(); break;}
           case 'DELETE' :
             if (decoded.role === 'admin') { next(); break; }
@@ -28,7 +26,9 @@ const checkAuth = (req,res, next) => {
         }
       }
     } else res.send({err:'You must login'})
-  } else res.send({err:'You must login'})
+  }
+  else if (method === 'GET' && hasParam) next();
+  else res.send({err:'You must login'})
 }
 
 const getUsers = (req,res) => {

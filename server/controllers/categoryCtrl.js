@@ -9,11 +9,13 @@ const checkAuth = (req,res, next) => {
   if (req.headers.hasOwnProperty('token')){
     let decoded = login.getUserDetail(req.headers.token);
     if (decoded) {
-      if (decoded.role === 'admin') next()
+      if (decoded.role === 'admin' || method === 'GET') next()
       else res.send({err: 'Invalid Access'})
     }
     else res.send({err:'You must login'})
-  } else res.send({err:'You must login'})
+  }
+  else if (method === 'GET') next();
+  else res.send({err:'You must login'})
 }
 
 const getCategories = (req,res) => {

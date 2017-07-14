@@ -7,6 +7,6 @@ const loginCtrl = require('../controllers/loginCtrl');
 
 router.post('/login',loginCtrl.login); //
 router.post('/register',loginCtrl.register); //
-
+router.post('/seedUser',loginCtrl.seedUser); //
 
 module.exports = router;

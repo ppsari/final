@@ -3,6 +3,8 @@ const express = require('express');
 let router = express.Router();
 const requestCtrl = require('../controllers/requestCtrl');
 
+router.use(requestCtrl.checkAuth);
+
 router.get('/',requestCtrl.getRequests ); //v
 router.get('/:id',requestCtrl.getRequest); //v
 router.post('/',requestCtrl.addRequest); //v

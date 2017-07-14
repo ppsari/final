@@ -6,18 +6,17 @@ const checkAuth = (req,res, next) => {
   let method = req.method;
   let hasParam = req.path !== '/';
   let decoded = req.headers.hasOwnProperty('token') ? login.getUserDetail(req.headers.token) : false;
-
-  if (!hasParam) next()
-  else {
-    switch(method) {
-      case 'GET' : next(); break;
-      case 'PUT' : case 'DELETE' :
-        if (decoded) next();
-        else res.send({err: 'You must login'});
-        break;
-      default:
-        res.send({err: 'You dont have access'}); break;
-    }
+  // console.log(method);
+  // console.log(decoded)
+  // console.log('masuk switch')
+  switch(method) {
+    case 'GET' : next(); break;
+    case 'PUT' : case 'DELETE' : case 'POST' :
+      if (decoded){
+        next(); break
+      } else {res.send({err: 'You must login'}); }
+    default:
+      res.send({err: 'You dont have access'}); break;
   }
 }
 
@@ -47,16 +46,14 @@ const getProp = (req,res) => {
     b. kosong ga error        => searchPropNNull
 */
 
+
 const searchPropsENull = (req,res) => {
   let find = {}
-
   for (let key in req.query)
-    if (req.query[key] !== '') find[key] = req.query[key];
-
+    if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
   Props.find(find)
-  .populate('_price _categoryId _accessId _ownerId')
+  .populate('_price _categoryId _accessId _ownerId _testimonyId')
   .exec( (err,property) => {
-    let propertyByCat = {};
     res.send(err? {err:err.message} : property );
   })
 
@@ -66,12 +63,12 @@ const searchPropsNNull = (req,res) => {
   let find = {}
 
   for (let key in req.query)
-    if (req.query[key] !== '') find[key] = req.query[key];
+    if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
 
   if (Object.keys(find).length === 0) res.send({err:'Please insert at least one keyword'})
   else {
     Props.find(find)
-    .populate('_price _categoryId _accessId _ownerId')
+    .populate('_price _categoryId _accessId _ownerId _testimonyId')
     .exec( (err,property) => {
       res.send(err? {err:err.message} : property );
     })
@@ -81,19 +78,19 @@ const searchPropENull = (req,res) => {
   let find = {}
 
   for (let key in req.query)
-    if (req.query[key] !== '') find[key] = req.query[key];
+    if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
 
   Props.find(find)
   .populate('_categoryId')
   .exec( (err,property) => {
-    let props = {}
-    property.forEach((prop)=>{
-      if (typeof props[_categoryId.name] === 'undefined') props[_categoryId.name] = [];
-      props[_categoryId.name].push(prop);
-    })
+    // let props = {}
+    // property.forEach((prop)=>{
+    //   if (typeof props[_categoryId.name] === 'undefined') props[_categoryId.name] = [];
+    //   props[_categoryId.name].push(prop);
+    // })
 
     // console.log(props)
-    res.send(err? {err:err.message} : props );
+    res.send(err? {err:err.message} : property );
 
   })
 }
@@ -101,21 +98,24 @@ const searchPropNNull = (req,res) => {
   let find = {}
 
   for (let key in req.query)
-    if (req.query[key] !== '') find[key] = req.query[key];
-
-  if (Object.keys(find).length === 0) res.send({err:'Please insert at least one keyword'})
+    if (req.query[key] !== '')
+      find[key] = new RegExp(req.query[key], "i")
+  console.log(Object.keys(find).length);
+  console.log('find sell');
+  if (Object.keys(find).length === 0)
+    res.send({err:'Please insert at least one keyword'})
   else {
     Props.find(find)
     .populate('_categoryId')
     .exec( (err,property) => {
-      let props = {}
-      property.forEach((prop)=>{
-        if (typeof props[_categoryId.name] === 'undefined') props[_categoryId.name] = [];
-        props[_categoryId.name].push(prop);
-      })
+      // let props = {}
+      // property.forEach((prop)=>{
+      //   if (typeof props[_categoryId.name] === 'undefined') props[_categoryId.name] = [];
+      //   props[_categoryId.name].push(prop);
+      // })
 
       // console.log(props)
-      res.send(err? {err:err.message} : props );
+      res.send(err? {err:err.message} : property );
     })
   }
 }
