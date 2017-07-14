@@ -213,7 +213,7 @@ export default class reactVR extends React.Component {
                         {rotateX: 10},
                         {rotateY: 35}]
           }}>
-          click to clear, i'll wait at top
+          click to clear screen, i'll wait at top
          </Text>
         : <Text
           style={{
@@ -242,7 +242,7 @@ export default class reactVR extends React.Component {
             paddingRight: 0.2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            transform: [{translate: [0, 3, -3]}]
+            transform: [{translate: [0, 4.5, -3]}]
           }}>
           {this.state.roomName}
         </Text>
