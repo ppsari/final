@@ -7,9 +7,6 @@ const checkAuth = (req,res, next) => {
   let method = req.method;
   let hasParam = req.path !== '/';
   let decoded = req.headers.hasOwnProperty('token') ? login.getUserDetail(req.headers.token) : false;
-  // console.log(method);
-  // console.log(decoded)
-  // console.log('masuk switch')
   switch(method) {
     case 'GET' : next(); break;
     case 'PUT' : case 'DELETE' : case 'POST' :
@@ -181,7 +178,7 @@ const editProp = (req,res) => {
 
   Props.findById(id, (err,property) => {
     if (err) res.send({err: 'Invalid Property'})
-    else if (decoded._id !== property._ownerId) res.send({err : 'Invalid Access'})
+    else if (decoded._id != property._ownerId) res.send({err : 'Invalid Access'})
     else {
       if (typeof req.body.name != 'undefined') property.name = req.body.name;
       if (typeof req.body.image != 'undefined') property.image = req.body.image;
@@ -199,8 +196,8 @@ const editProp = (req,res) => {
       if (typeof req.body._categoryId != 'undefined') property._categoryId = req.body._categoryId;
       property.detail.fasilitas = (typeof req.body['detail.fasilitas'] != 'undefined') ? req.body['detail.fasilitas'] : [];
       property._accessId = (typeof req.body._accessId != 'undefined') ? req.body._accessId : [];
-      property._roomId = (typeof req.body._roomId != 'undefined') ? req.body._roomId : [];
-      property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
+      // property._roomId = (typeof req.body._roomId != 'undefined') ? req.body._roomId : [];
+      // property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
 
       property.save((err,edproperty)=> {res.send(err ? {err: err} : edproperty)} );
     }
@@ -214,7 +211,7 @@ const deleteProp = (req,res) => {
 
   Props.findById(id, (err,property) => {
     if (err) res.send({err: 'Invalid Property'})
-    else if (decoded._id !== property._ownerId) res.send({err : 'Invalid Access'})
+    else if (decoded._id != property._ownerId) res.send({err : 'Invalid Access'})
     else property.remove((err,deleted) => {res.send(err? err : deleted)})
   })
 

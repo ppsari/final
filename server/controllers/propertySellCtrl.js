@@ -13,7 +13,7 @@ const checkAuth = (req,res, next) => {
     case 'GET' : next(); break;
     case 'PUT' : case 'DELETE' : case 'POST' :
       if (decoded){
-        next(); break
+        next(); break;
       } else {
         res.send({err: 'You must login'});
       }
@@ -169,7 +169,7 @@ const editProp = (req,res) => {
 
   Props.findById(id, (err,property) => {
     if (err) res.send({err: 'Invalid Property'})
-    else if (decoded._id !== property._ownerId) res.send({err : 'Invalid Access'})
+    else if (decoded._id != property._ownerId) res.send({err : 'Invalid Access'})
     else {
       if (typeof req.body.name != 'undefined') property.name = req.body.name;
       if (typeof req.body.image != 'undefined') property.image = req.body.image;
@@ -179,8 +179,8 @@ const editProp = (req,res) => {
       if (typeof req.body.isActive != 'undefined') property.isActive = req.body.isActive;
       // if (typeof req.body._ownerId != 'undefined') property._ownerId = req.body._ownerId;
       property._accessId = (typeof req.body._accessId != 'undefined') ? req.body._accessId : [];
-      property._roomId = (typeof req.body._roomId != 'undefined') ? req.body._roomId : [];
-      property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
+      // property._roomId = (typeof req.body._roomId != 'undefined') ? req.body._roomId : [];
+      // property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
 
       property.save((err,edproperty)=> {res.send(err ? {err: err} : edproperty)} );
     }
@@ -192,7 +192,7 @@ const deleteProp = (req,res) => {
 
   Props.findById(id, (err,property) => {
     if (err) res.send({err: 'Invalid Property'})
-    else if (decoded._id !== property._ownerId) res.send({err : 'Invalid Access'})
+    else if (decoded._id != property._ownerId) res.send({err : 'Invalid Access'})
     else property.remove((err,deleted) => {res.send(err? err : deleted)})
   })
 }
