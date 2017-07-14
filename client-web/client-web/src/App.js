@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { Provider } from 'react-redux'
 
+import store from './store/configureStore';
 import './App.css';
 import { firebaseAuth } from './config/constants';
 import Page404 from './containers/Page404.js'
@@ -70,25 +72,27 @@ class App extends Component {
 
   render() {
     return this.state.loading === true ? <h1>Loading</h1> : (
-      <BrowserRouter>
-        <div>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <PublicRoute authed={this.state.authed} exact path='/property' component={ListProperty} />
-            <PublicRoute authed={this.state.authed} exact path='/property/:id' component={DetailProperty} />
-            <PublicRoute authed={this.state.authed} path='/login' component={Login} />
-            <PublicRoute authed={this.state.authed} path='/register' component={Register} />
-            <PrivateRoute authed={this.state.authed} exact path='/dashboard' component={Dashboard} />
-            <PrivateRoute authed={this.state.authed} exact path='/dashboard/profile' component={Profile} />
-            <PrivateRoute authed={this.state.authed} exact path='/dashboard/requests' component={Request} />
-            <PrivateRoute authed={this.state.authed} exact path='/dashboard/transactions' component={Transaction} />
-            <PrivateRoute authed={this.state.authed} exact path='/dashboard/property' component={MyProperties} />
-            <PrivateRoute authed={this.state.authed} exact path='/dashboard/property/:id' component={MyDetailProperty} />
-            <PrivateRoute authed={this.state.authed} exact path='/dashboard/property/:id/:idroom' component={MyDetailRoom} />
-            <Route component={Page404} />
-          </Switch>
-        </div>
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <div>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path='/property/:id' component={DetailProperty} />
+              <Route exact path='/property' component={ListProperty} />
+              <PublicRoute authed={this.state.authed} path='/login' component={Login} />
+              <PublicRoute authed={this.state.authed} path='/register' component={Register} />
+              <PrivateRoute authed={this.state.authed} exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute authed={this.state.authed} exact path='/dashboard/profile' component={Profile} />
+              <PrivateRoute authed={this.state.authed} exact path='/dashboard/requests' component={Request} />
+              <PrivateRoute authed={this.state.authed} exact path='/dashboard/transactions' component={Transaction} />
+              <PrivateRoute authed={this.state.authed} exact path='/dashboard/property' component={MyProperties} />
+              <PrivateRoute authed={this.state.authed} exact path='/dashboard/property/:id' component={MyDetailProperty} />
+              <PrivateRoute authed={this.state.authed} exact path='/dashboard/property/:id/:idroom' component={MyDetailRoom} />
+              <Route component={Page404} />
+            </Switch>
+          </div>
+        </BrowserRouter>
+      </Provider>
     );
   }
 }
