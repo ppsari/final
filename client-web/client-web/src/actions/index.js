@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api/user/'
 export const getRentDataAction = (data) => {
   return {
     type: 'GET_DATA_RENT',
@@ -13,9 +13,11 @@ export const getSellDataAction = (data) => {
   }
 }
 
-export const editProfile = (data) =>{
+export const editProfile = (data,id) =>{
   return (dispatch) =>{
-    axios.get('')
+    axios.get(api+`${id}`,{
+      response
+    })
     .then(response=>{
       dispatch({
         type: 'Edit Profile',
@@ -24,6 +26,32 @@ export const editProfile = (data) =>{
     })
     .catch(err=>{
       console.log(err);
+    })
+  }
+}
+
+export const acceptRequest = (id) =>{
+  return(dispatch)=>{
+    axios.delete(api+`${id}`,{
+      response: 'approved'
+    })
+    .then(response=>{
+      dispatch(
+        console.log(response.data)
+      )
+    })
+  }
+}
+
+export const rejectRequest = (id) =>{
+  return(dispatch)=>{
+    axios.delete(api+`${id}`,{
+      response: 'rejected'
+    })
+    .then(response=>{
+      dispatch(
+        console.log(response.data)
+      )
     })
   }
 }

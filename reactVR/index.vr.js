@@ -135,7 +135,9 @@ export default class reactVR extends React.Component {
                 style={{width: 0.5,
                       height: 0.5,
                       margin: 0.1,
-                      transform: [{translate: [x, y, d]}]}}
+                      transform: [{translate: [x, y, d]},
+                                  {rotateX: 0},
+                                  {rotateY: 30}]}}
                 key={index}>
               <VrButton onClick={()=>this.go(img)}>
                 <Image
@@ -158,7 +160,7 @@ export default class reactVR extends React.Component {
         }
         <VrButton onClick={()=> this.desc(this.state.img)}>
           <Image
-            source={{uri:'https://thumbs.dreamstime.com/x/glassy-button-question-mark-24185998.jpg'}}
+            source={{uri:'https://upload.wikimedia.org/wikipedia/commons/1/13/Glossy_3d_blue_questionmark.png'}}
             style={{width: 0.5,
                     height: 0.5,
                     transform: [{translate: [5.1, 2.5, 0]},
@@ -167,35 +169,37 @@ export default class reactVR extends React.Component {
         {(this.state.images.length > this.state.space && this.state.isIcons === true)
         ? <VrButton onClick={()=> this.next()}>
            <Image
-            source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzzy_3OCG4HsujWkupN29XNKPBrvBAOftMsiQdIT-7r4MgC4RKXw'}}
+            source={{uri:'https://upload.wikimedia.org/wikipedia/commons/1/12/Glossy_3d_blue_arrow_right.png'}}
             style={{width: 0.3,
                     height: 0.3,
                     transform: [{translate: [-2.2, 2.5, -3]},
-                                {rotateY: 0}]}} />
+                                {rotateX: 0},
+                                {rotateY: 30}]}} />
          </VrButton>
         :<VrButton></VrButton>
        }
         {(this.state.start > 0 && this.state.isIcons === true)
         ?<VrButton onClick={()=> this.back()}>
            <Image
-            source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6vguGtVqUlynlSkdS0xu_Nhhf8UMJd69YBILsNUnLM4TLPa1x'}}
+            source={{uri:'https://upload.wikimedia.org/wikipedia/commons/8/86/Glossy_3d_blue_arrow_left.png'}}
             style={{width: 0.3,
                     height: 0.3,
-                    transform: [{translate: [-3.4, 2.77, -3]},
-                                {rotateY: 0}]}} />
+                    transform: [{translate: [-3.45, 2.65, -2.9]},
+                                {rotateX: 0},
+                                {rotateY: 30}]}} />
          </VrButton>
         :<VrButton></VrButton>
        }
-
        <VrButton onClick={()=> this.minimize()}>
           <Image
-           source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP93hxTrLSSWh3q69xPx6xfkf8nwo19FYJgTcMA35nmnD9UwgpXw'}}
+           source={{uri:'http://2.bp.blogspot.com/-Xy0IfbMCvU0/UC8fQzYfzkI/AAAAAAAAA08/FciCBs0MAAs/s200-c/minimize.png'}}
            style={{width: 0.1,
                    height: 0.1,
                    transform: [{translate: [-2.7, 3.9, -3]},
-                               {rotateY: 0}]}} />
+                               {rotateY: 30}]}} />
         </VrButton>
-        <Text
+        {(this.state.isIcons === true)
+        ? <Text
           style={{
             color: 'white',
             fontSize: 0.1,
@@ -205,10 +209,29 @@ export default class reactVR extends React.Component {
             paddingRight: 0.2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            transform: [{translate: [-2.7, 4.1, -3]}]
+            transform: [{translate: [-2.7, 4.1, -3]},
+                        {rotateX: 0},
+                        {rotateY: 30}]
           }}>
           click to clear, i'll wait at top
-        </Text>
+         </Text>
+        : <Text
+          style={{
+            color: 'white',
+            fontSize: 0.1,
+            fontWeight: '100',
+            layoutOrigin: [0.5, 0.5],
+            paddingLeft: 0.2,
+            paddingRight: 0.2,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            transform: [{translate: [-2.7, 4.1, -3]},
+                        {rotateX: 0},
+                        {rotateY: 30}]
+          }}>
+          click to bring back the room icons
+         </Text>
+      }
         <Text
           style={{
             color: 'white',
