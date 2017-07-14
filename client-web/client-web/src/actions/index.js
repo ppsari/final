@@ -27,3 +27,25 @@ export const editProfile = (data) =>{
     })
   }
 }
+
+export const acceptRequest = (id) =>{
+  return(dispatch)=>{
+    axios.get('')
+    .then(response=>{
+      dispatch(
+        console.log(response)
+      )
+    })
+  }
+}
+
+export const rejectRequest = (id) =>{
+  return(dispatch)=>{
+    axios.get('')
+    .then(response=>{
+      dispatch(
+        console.log(response)
+      )
+    })
+  }
+}
