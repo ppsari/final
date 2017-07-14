@@ -19,10 +19,20 @@ class Profile extends React.Component {
         <input type="text" ref="phone"/>
         <h3>Password</h3>
         <input type="password" ref="password"/>
-        <button type="submit" />
+        <button type="submit"
+          onClick={()=>this.edit()}>Submit</button>
       </div>
     )
   }
+  edit(){
+    let newData = {
+      name: this.refs.name.value,
+      phone: this.refs.phone.value,
+      password: this.refs.password.value
+    }
+    this.props.editProfile(newData,`butuh user_id`)
+  }
+
 }
 
 const mapStateToProps = (state)=>{
@@ -30,7 +40,7 @@ const mapStateToProps = (state)=>{
 }
 
 const mapDispatchToProps = (dispatch) =>{
-  editProfile: (data) => dispatch(editProfile(data))
+  editProfile: (data,id) => dispatch(editProfile(data,id))
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
