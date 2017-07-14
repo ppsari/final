@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {editProfile} from '../store/configureStore.js'
+import {editProfile} from '../../actions/index.js'
 
 class Profile extends React.Component {
   constructor(props){
