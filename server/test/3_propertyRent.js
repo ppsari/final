@@ -237,7 +237,7 @@ describe('PropertyRent', () => {
     });
     it('shouldnt search & populate propertyRent -- searchPropsNNull', done => {
       chai.request(server)
-      .get(`/api/propertyRent/searchENull?city=`)
+      .get(`/api/propertyRent/searchPropsNNull?city=`)
       .end((err,propertyRent) => {
         propertyRent.should.have.status(200);
         propertyRent.body.should.be.a('object');
