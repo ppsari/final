@@ -1,10 +1,12 @@
 import React from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logout } from '../helpers/auth';
 
-export default class MenuBar extends React.Component {
+class MenuBar extends React.Component {
   constructor(props) {
     super(props);
-
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false
@@ -16,6 +18,7 @@ export default class MenuBar extends React.Component {
     });
   }
   render() {
+    console.log(this.props.userFirebase);
     return (
       <div>
         <Navbar color="faded" light toggleable>
@@ -27,9 +30,17 @@ export default class MenuBar extends React.Component {
                 <NavItem>
                   <NavLink href="/sell">Sell Your Property</NavLink>
                 </NavItem>
-                <NavItem>
-                  <NavLink href="/login">Login / Register</NavLink>
-                </NavItem>
+                { this.props.userFirebase.authed
+                  ? (<NavItem>
+                      <NavLink onClick={() => {
+                        logout()
+                        console.log('logout');
+                      }}>Logout</NavLink>
+                  </NavItem>)
+                  : (<NavItem>
+                      <NavLink href="/login">Login / Register</NavLink>
+                  </NavItem>)
+                }
               </Nav>
             </Collapse>
           </div>
@@ -38,3 +49,11 @@ export default class MenuBar extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    userFirebase: state.firebaseUserReducer,
+  };
+}
+
+export default connect(mapStateToProps, null)(MenuBar);

@@ -13,7 +13,7 @@ var config = {
 
 // FirebaseUI config.
 export const uiConfig = {
- signInSuccessUrl: 'google.com',
+ signInSuccessUrl: '/dashboard',
  signInOptions: [
    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
