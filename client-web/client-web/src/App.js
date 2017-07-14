@@ -64,19 +64,17 @@ class App extends Component {
     //     })
     //   }
     // })
-    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({
-          authed: true,
-          loading: false,
-        })
-      } else {
-        this.setState({
-          authed: false,
-          loading: false,
-        })
-      }
-    })
+    if(localStorage.getItem('user') !== null) {
+      this.setState({
+        authed: true,
+        loading: false,
+      })
+    } else {
+      this.setState({
+        authed: false,
+        loading: false,
+      })
+    }
   }
 
   componentWillUnmount () {
