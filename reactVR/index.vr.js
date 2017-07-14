@@ -192,10 +192,23 @@ export default class reactVR extends React.Component {
            source={{uri:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP93hxTrLSSWh3q69xPx6xfkf8nwo19FYJgTcMA35nmnD9UwgpXw'}}
            style={{width: 0.1,
                    height: 0.1,
-                   transform: [{translate: [-2.7, 3.2, -3]},
+                   transform: [{translate: [-2.7, 3.9, -3]},
                                {rotateY: 0}]}} />
         </VrButton>
-
+        <Text
+          style={{
+            color: 'white',
+            fontSize: 0.1,
+            fontWeight: '100',
+            layoutOrigin: [0.5, 0.5],
+            paddingLeft: 0.2,
+            paddingRight: 0.2,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            transform: [{translate: [-2.7, 4.1, -3]}]
+          }}>
+          click to clear, i'll wait at top
+        </Text>
         <Text
           style={{
             color: 'white',
