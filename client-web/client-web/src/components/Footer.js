@@ -10,24 +10,24 @@ const Footer = (props) => {
           <div className="footer-left">
             <h3>Jual Rumah</h3>
             <p className="footer-links">
-              <a href="#">Home</a>
+              <a>Home</a>
               ·
-              <a href="#">Blog</a>
+              <a>Blog</a>
               ·
-              <a href="#">Pricing</a>
+              <a>Pricing</a>
               ·
-              <a href="#">About</a>
+              <a>About</a>
               ·
-              <a href="#">Faq</a>
+              <a>Faq</a>
               ·
-              <a href="#">Contact</a>
+              <a>Contact</a>
             </p>
             <p className="footer-company-name">Company Name &copy; 2017</p>
             <div className="footer-icons">
-              <a href="#"><i className="fa fa-facebook"></i></a>
-              <a href="#"><i className="fa fa-twitter"></i></a>
-              <a href="#"><i className="fa fa-linkedin"></i></a>
-              <a href="#"><i className="fa fa-github"></i></a>
+              <a><i className="fa fa-facebook"></i></a>
+              <a><i className="fa fa-twitter"></i></a>
+              <a><i className="fa fa-linkedin"></i></a>
+              <a><i className="fa fa-github"></i></a>
             </div>
           </div>
           <div className="footer-right">

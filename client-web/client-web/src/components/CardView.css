@@ -7,7 +7,7 @@
   }
 
   a:hover {
-    text-decoration: none;
+    text-decoration: none !important;
   }
   .thumbnail-view {
     padding: 5px;

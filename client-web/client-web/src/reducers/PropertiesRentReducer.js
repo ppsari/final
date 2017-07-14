@@ -2,7 +2,7 @@ const initialState = [
   {
     "_id": "5966c710af03e056224c474e",
     "descr": "rumah bagus diatas bukit banyak bonus setan ed",
-    "image": "rumahPDI.jpg",
+    "image": "http://modeltheme.com/mt_urbanpoint/wp-content/uploads/2017/05/duplex_house_01-800x500.jpg",
     "_ownerId": "5966bacbbc397545e2290f93",
     "_categoryId": "5966c422b3a95452ff5018bc",
     "name": "rumah pondok indah ed",
@@ -21,7 +21,7 @@ const initialState = [
   {
     "_id": "5966c96e61351559ee979d3f",
     "descr": "rumah jeruk purut",
-    "image": "rumahPDI.jpg",
+    "image": "http://modeltheme.com/mt_urbanpoint/wp-content/uploads/2017/05/villa_02-800x500.jpg",
     "name": "rumah jeruk purut",
     "city": "Jakarta barat",
     "__v": 1,
