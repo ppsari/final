@@ -1,5 +1,7 @@
 import React from 'react'
 import { register } from '../helpers/auth'
+import axios from 'axios'
+const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com'
 
 function setErrorMsg(error) {
   return {
@@ -10,10 +12,19 @@ function setErrorMsg(error) {
 export default class Register extends React.Component {
   state = { registerError: null }
   handleSubmit = (e) => {
-    console.log(this);
     e.preventDefault()
-    // register(this.email.value, this.pw.value)
-    // .catch(e => this.setState(setErrorMsg(e)))
+    let user = {}
+    user.username = this.username.value
+    user.email = this.email.value
+    user.password = this.pw.value
+    axios.post(`${api}/register`, user)
+    .then((data) => {
+      console.log(data.data);
+    })
+    .catch(err => console.log(err))
+    console.log(user);
+    register(this.email.value, this.pw.value)
+    .catch(e => this.setState(setErrorMsg(e)))
   }
 
   render () {
