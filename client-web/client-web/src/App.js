@@ -7,7 +7,7 @@ import './App.css';
 import { firebaseAuth } from './config/constants';
 import Page404 from './containers/Page404.js'
 import Register from './components/Register';
-import Login from './components/Login';
+import LoginRegisterPage from './containers/LoginRegisterPage';
 import Home from './containers/Home';
 import ListProperty from './containers/ListProperty';
 import DetailProperty from './containers/DetailProperty';
@@ -79,7 +79,7 @@ class App extends Component {
               <Route exact path="/" component={Home} />
               <Route exact path='/property/:id' component={DetailProperty} />
               <Route exact path='/property' component={ListProperty} />
-              <PublicRoute authed={this.state.authed} path='/login' component={Login} />
+              <PublicRoute authed={this.state.authed} path='/login' component={LoginRegisterPage} />
               <PublicRoute authed={this.state.authed} path='/register' component={Register} />
               <PrivateRoute authed={this.state.authed} exact path='/dashboard' component={Dashboard} />
               <PrivateRoute authed={this.state.authed} exact path='/dashboard/profile' component={Profile} />

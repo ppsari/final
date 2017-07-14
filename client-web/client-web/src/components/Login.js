@@ -23,7 +23,7 @@ export default class Login extends React.Component {
   }
   render () {
     return (
-      <div className="col-sm-6 col-sm-offset-3">
+      <div className="col-sm-12">
         <h1> Login </h1>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
