@@ -15,6 +15,9 @@ let access = require('./routes/access')
 let category = require('./routes/category')
 let user = require('./routes/user')
 let admin = require('./routes/admin')
+let roomRent = require('./routes/roomRent')
+let roomSell = require('./routes/roomSell')
+let testimony = require('./routes/testimony')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
@@ -28,6 +31,9 @@ app.use('/api/access', access);
 app.use('/api/category', category);
 app.use('/api/user', user);
 app.use('/api/admin', admin);
+app.use('/api/roomRent', roomRent);
+app.use('/api/roomSell', roomSell);
+app.use('/api/testimony', testimony);
 
 
 app.use(cors());
