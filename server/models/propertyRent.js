@@ -27,12 +27,19 @@ let propertyRentSchema = new Schema({
     lantai: {type: Number, default:1},
     fasilitas: [String]
   },
-  rentUntil: Date,
+  renter: [{
+    _renterId: {type:Schema.Types.ObjectId, ref: 'User'},
+    start: Date,
+    end: Date
+  }],
+  rentercount: {type: Number, default: 0}, //for faster sorting
   _ownerId: {type:Schema.Types.ObjectId, ref: 'User'},
   _categoryId: {type:Schema.Types.ObjectId, ref: 'Category'},
   _accessId: [{type:Schema.Types.ObjectId, ref: 'Access'}],
   _roomId: [{type:Schema.Types.ObjectId, ref: 'RoomRent'}],
-  _testimonyId: [{type:Schema.Types.ObjectId, ref: 'Testimony'}]
+  _testimonyId: [{type:Schema.Types.ObjectId, ref: 'Testimony'}],
+  address: {type: String, required: [true, `{PATH} must be filled`]},
+  createdDate: {type:Date, default: new Date()}
 })
 
 let PropertyRent =  mongoose.model('PropertyRent',propertyRentSchema)

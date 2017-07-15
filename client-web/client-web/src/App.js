@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 
 import store from './store/configureStore';
 import './App.css';
-import { firebaseAuth } from './config/constants';
+// import { firebaseAuth } from './config/constants';
 import Page404 from './containers/Page404.js'
 import Register from './components/Register';
 import LoginRegisterPage from './containers/LoginRegisterPage';
@@ -12,12 +12,6 @@ import Home from './containers/Home';
 import ListProperty from './containers/ListProperty';
 import DetailProperty from './containers/DetailProperty';
 import Dashboard from './containers/protected/Dashboard';
-import Profile from './containers/protected/Profile';
-import Request from './containers/protected/Request';
-import Transaction from './containers/protected/Transaction';
-import MyProperties from './containers/protected/MyProperties';
-import MyDetailProperty from './containers/protected/MyDetailProperty';
-import MyDetailRoom from './containers/protected/MyDetailRoom';
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -92,13 +86,7 @@ class App extends Component {
               <Route exact path='/property' component={ListProperty} />
               <PublicRoute authed={this.state.authed} path='/login' component={LoginRegisterPage} />
               <PublicRoute authed={this.state.authed} path='/register' component={Register} />
-              <PrivateRoute authed={this.state.authed} exact path='/dashboard' component={Dashboard} />
-              <PrivateRoute authed={this.state.authed} exact path='/dashboard/profile' component={Profile} />
-              <PrivateRoute authed={this.state.authed} exact path='/dashboard/requests' component={Request} />
-              <PrivateRoute authed={this.state.authed} exact path='/dashboard/transactions' component={Transaction} />
-              <PrivateRoute authed={this.state.authed} exact path='/dashboard/property' component={MyProperties} />
-              <PrivateRoute authed={this.state.authed} exact path='/dashboard/property/:id' component={MyDetailProperty} />
-              <PrivateRoute authed={this.state.authed} exact path='/dashboard/property/:id/:idroom' component={MyDetailRoom} />
+              <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} />
               <Route component={Page404} />
             </Switch>
           </div>

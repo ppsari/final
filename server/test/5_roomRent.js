@@ -200,7 +200,33 @@ describe('RoomRent', () => {
           nroomRent.should.have.status(200);
           nroomRent.body.should.be.a('object');
           nroomRent.body.should.have.property('msg',"deleted");
-          done();
+
+
+          //buat contoh data
+          chai.request(server)
+          .post(`/api/roomRent/${_propertyId}`)
+          .set('token',data.user1.token)
+          .send(room_data1)
+          .end((err,nroomRent) => {
+            if (err) done(err);
+            else if (typeof nroomRent.body.err !== 'undefined') done(err);
+            else {
+              // console.log("((((((((((((((((((((( nroomRent.body )))))))))))))))))))))");
+              // console.log(nroomRent.body);
+              nroomRent.should.have.status(200);
+              nroomRent.body.should.be.a('object');
+              nroomRent.body.should.have.property('image',room_data1.image);
+              nroomRent.body.should.have.property('descr',room_data1.descr);
+              nroomRent.body.should.have.property('name',room_data1.name);
+              nroomRent.body.should.have.property('_propertyId',_propertyId);
+              nroomRent.body.should.have.property('_userId',data.user1.id);
+              // nroomRent.body.should.have.property('_id');
+              data.roomRent.push(nroomRent.body._id);
+              done();
+            }
+          })
+
+          // done();
         }
       })
     })
