@@ -82,7 +82,7 @@ class App extends Component {
           <div>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path='/:status/:id' component={DetailProperty} />
+              <Route exact path='/detail/:status/:id' component={DetailProperty} />
               <Route exact path='/property' component={ListProperty} />
               <PublicRoute authed={this.state.authed} path='/login' component={LoginRegisterPage} />
               <PublicRoute authed={this.state.authed} path='/register' component={Register} />

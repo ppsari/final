@@ -6,3 +6,9 @@
   display: flex;
   justify-content: space-between;
 }
+.excerpt {
+  white-space: nowrap;
+  width: 19em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

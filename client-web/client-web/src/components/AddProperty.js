@@ -4,7 +4,7 @@ export default class AddProperty extends React.Component {
   render () {
     console.log(this.props);
     return (
-      <div>
+      <div className="AddProperty">
         AddProperty. This is a protected route. You can only see this if you're authed.
       </div>
     )

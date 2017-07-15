@@ -8,7 +8,7 @@ const CardView = (props) => {
     <div className="col-4">
       <div className="thumbnail-view">
         <div className="thumbnail">
-          <Link to={`/${data.status}/${data._id}`} >
+          <Link to={`/detail/${data.status}/${data._id}`} >
             <img src={data.image} alt="thumbnail" className="img-responsive" />
             <div className="caption">
               {/* <h5>Rp {data.price.amount},-</h5> */}
