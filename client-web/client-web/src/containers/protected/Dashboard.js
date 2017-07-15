@@ -7,8 +7,6 @@ import Profile from './Profile';
 import Request from './Request';
 import Transaction from './Transaction';
 import MyProperties from './MyProperties';
-import MyDetailProperty from './MyDetailProperty';
-import MyDetailRoom from './MyDetailRoom';
 
 export default class Dashboard extends React.Component {
   render () {
@@ -25,9 +23,7 @@ export default class Dashboard extends React.Component {
                 <Route path='/dashboard/profile' component={Profile} />
                 <Route exact path='/dashboard/requests' component={Request} />
                 <Route exact path='/dashboard/transactions' component={Transaction} />
-                <Route exact path='/dashboard/property' component={MyProperties} />
-                <Route exact path='/dashboard/property/:id' component={MyDetailProperty} />
-                <Route exact path='/dashboard/property/:id/:idroom' component={MyDetailRoom} />
+                <Route path='/dashboard/property' component={MyProperties} />
               </Switch>
             </div>
           </div>

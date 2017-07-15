@@ -15,7 +15,7 @@ class ShowProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="text" className="form-control" value="johndoe" readonly />
+                  <input type="text" className="form-control" value="johndoe" disabled />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -23,7 +23,7 @@ class ShowProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="text" className="form-control" value="John Doe" readonly />
+                  <input type="text" className="form-control" value="John Doe" disabled />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -31,7 +31,7 @@ class ShowProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="email" className="form-control" value="johndoe@gmail.com" readonly />
+                  <input type="email" className="form-control" value="johndoe@gmail.com" disabled />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -39,7 +39,7 @@ class ShowProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="number" className="form-control"  value="+6298472847883" readonly />
+                  <input type="number" className="form-control"  value="+6298472847883" disabled />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -47,7 +47,7 @@ class ShowProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="password" className="form-control"  value="lalaland" readonly />
+                  <input type="password" className="form-control"  value="lalaland" disabled />
                 </div>
               </div>
             </div>
