@@ -47,8 +47,8 @@ class DetailProperty extends React.Component {
     )
   }
 enter(){
- let vr = 'http://localhost:8081/vr/index.html'
-   window.location.href = vr+`?key=${this.state.propStatus}/${this.state.id}`
+ let vr = 'https://dqz7rmlbt5xt6.cloudfront.net/'
+   window.location = vr+`?key=${this.state.propStatus}/${this.state.id}`
   }
 
   componentDidMount(){

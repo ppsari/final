@@ -37,7 +37,7 @@ class reactVR extends React.Component {
       rooms: [],
       icons:
         {
-        bathRoom : 'https://c1.staticflickr.com/7/6111/6325190163_31f3ce748a_b.jpg',
+        bathRoom : 'https://s3-ap-southeast-1.amazonaws.com/room360/teshome.jpg',
         bedRoom : 'https://encrypted-tbn0.gstatic.com/rooms?q=tbn:ANd9GcSa7DiBD56aB4XGgEZFVYQtORUeszCUJIeAFowRXKQ-Su8SMI1H',
         livingRoom: 'http://img.freepik.com/free-vector/modern-living-room-furniture_23-2147518147.jpg?size=338&ext=jpg'
       }
@@ -125,7 +125,7 @@ class reactVR extends React.Component {
        }
        <VrButton onClick={()=> this.minimize()}>
           <Image
-           source={{uri:'http://2.bp.blogspot.com/-Xy0IfbMCvU0/UC8fQzYfzkI/AAAAAAAAA08/FciCBs0MAAs/s200-c/minimize.png'}}
+           source={{uri:'https://upload.wikimedia.org/wikipedia/commons/2/2b/Glossy_3d_blue_arrowhead_up.png'}}
            style={{width: 0.15,
                    height: 0.15,
                    transform: [{translate: [-2.7, 4.7, -2]},
