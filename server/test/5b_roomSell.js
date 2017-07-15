@@ -200,7 +200,32 @@ describe('RoomSell', () => {
           nroomSell.should.have.status(200);
           nroomSell.body.should.be.a('object');
           nroomSell.body.should.have.property('msg','deleted');
-          done();
+
+          //buat data
+          chai.request(server)
+          .post(`/api/roomSell/${_propertyId}`)
+          .set('token',data.user1.token)
+          .send(room_data1)
+          .end((err,nroomSell) => {
+            if (err) done(err);
+            else if (typeof nroomSell.body.err !== 'undefined') done(err);
+            else {
+              // console.log("((((((((((((((((((((( nroomSell.body )))))))))))))))))))))");
+              // console.log(nroomSell.body);
+              nroomSell.should.have.status(200);
+              nroomSell.body.should.be.a('object');
+              nroomSell.body.should.have.property('image',room_data1.image);
+              nroomSell.body.should.have.property('descr',room_data1.descr);
+              nroomSell.body.should.have.property('name',room_data1.name);
+              nroomSell.body.should.have.property('_propertyId',_propertyId);
+              nroomSell.body.should.have.property('_userId',data.user1.id);
+              // nroomSell.body.should.have.property('_id');
+              data.roomSell.push(nroomSell.body._id);
+              done();
+            }
+          })
+
+          // done();
         }
       })
     })

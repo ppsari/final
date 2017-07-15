@@ -37,9 +37,10 @@ app.use('/api/testimony', testimony);
 
 
 app.use(cors());
-
+// let env = 'local_dev'
 let env = app.settings.env;
 let db_config = {
+  local_dev: 'mongodb://localhost/movie',
   development: 'mongodb://admin:admin@ds159112.mlab.com:59112/room360db',
   test: 'mongodb://admin:admin@ds159112.mlab.com:59112/room360dbtes'
 }

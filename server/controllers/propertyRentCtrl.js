@@ -1,15 +1,12 @@
 const mongoose = require('mongoose');
+
 let Props = require('../models/propertyRent');
 let login = require('../helpers/login');
-
 
 const checkAuth = (req,res, next) => {
   let method = req.method;
   let hasParam = req.path !== '/';
   let decoded = req.headers.hasOwnProperty('token') ? login.getUserDetail(req.headers.token) : false;
-  // console.log(method);
-  // console.log(decoded)
-  // console.log('masuk switch')
   switch(method) {
     case 'GET' : next(); break;
     case 'PUT' : case 'DELETE' : case 'POST' :
@@ -19,9 +16,23 @@ const checkAuth = (req,res, next) => {
     default:
       res.send({err: 'You dont have access'}); break;
   }
-
 }
 
+const getHot = (req,res) => {
+  let limit = 10;//req.params.limit || 10;
+  Props.find()
+  .limit(limit)
+  .sort({ rentercount: 'desc'})
+  .exec((err,prop) => res.send(err? {err:err} : prop) );
+}
+
+const getNewest = (req,res) => {
+  let limit = 10; //req.params.limit || 10;
+  Props.find()
+  .limit(limit)
+  .sort({ createdDate: 'desc' })
+  .exec((err,prop) => res.send(err? {err:err} : prop) );
+}
 
 const getProps = (req,res) => {
   Props.find({}, (err,properties) => {
@@ -29,11 +40,48 @@ const getProps = (req,res) => {
   })
 }
 
+// const getProp = (req,res) => {
+//   let id = req.params.id;
+//   Props.findById(id)
+//   .populate('_price _categoryId _accessId _ownerId _testimonyId')
+//   .populate('renter._renterId')
+//   .exec( (err,property) => {
+//     res.send(err? {err:err.message} : property );
+//   })
+// }
 const getProp = (req,res) => {
   let id = req.params.id;
   Props.findById(id)
-  .populate('_price _categoryId _accessId _ownerId _testimonyId')
+  .populate('_categoryId _accessId _roomId')
+  .populate({
+    path: 'renter._renterId',
+    select : 'username'
+  })
+  .populate({
+    path: '_ownerId',
+    select: 'username _id'
+  })
+  .populate('_testimonyId')
+  // .populate({path: 'renter._renterId', select: 'name'})
+  // .populate({
+  //   path: '_testimonyId',
+  //   populate: {path: '_userId', select: 'username'}
+  // })
   .exec( (err,property) => {
+    let testimonyId = [];
+    // console.log(property._testimonyId)
+    // if (typeof property._testimonyId !== 'undefined')
+    // testimonyId  = property._testimonyId.map((testi) => {
+    //   let username = testi._userId.username;
+    //   username = username.split(' ').map(name => {
+    //     let len = name.length;
+    //     let sensor_len = Math.floor(len/2);
+    //     let sensor_start = Math.ceil( (name.length - sensor_len) /2)
+    //     return name.split('').splice(sensor_start,sensor_len, 'x'.repeat(sensor_len)).join('')
+    //   }).join(' ')
+    //   return {username, testimony: testi.testimony}
+    // })
+    // property._testimonyId = testimonyId;
     res.send(err? {err:err.message} : property );
   })
 }
@@ -50,24 +98,43 @@ const getProp = (req,res) => {
 
 const searchPropsENull = (req,res) => {
   let find = {}
+
+  let pageOptions = {
+    page: 0,
+    limit: 10
+  }
+
   for (let key in req.query)
-    if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
-  Props.find(find)
-  .populate('_price _categoryId _accessId _ownerId _roomId _testimonyId')
-  .exec( (err,property) => {
-    if (err) res.send({err:err})
-    else {
-      //hitung jumlah Room
-      let roomTotal = [];
-      for (let room in property._roomId)
-        roomTotal[room] =  (typeof property._roomId[room] === 'undefined')  ? 1 : (roomTotal[room]+1);
-      property.roomTotal = roomTotal;
-      res.send(property);
-    }
-    // res.send(err? {err:err.message} : property );
-  })
+    if (req.query[key] !== '' && key !='page' && key!= 'limit') find[key] = new RegExp(req.query[key], "i")
+    else if (key === 'page' && req.query[key]!='') pageOptions.page = req.query[key] -1 ;
+    else if (key === 'limit' && req.query[key]!='') pageOptions.limit = parseInt(req.query[key]);
 
+  Props.count(find, function(err, count) {
+    let countQuery = Math.ceil(count / pageOptions.limit);
 
+    Props.find(find)
+    .skip(pageOptions.page * pageOptions.limit)
+    .limit(pageOptions.limit)
+    .populate('_categoryId _accessId _roomId')
+    .populate({
+      path: '_ownerId',
+      select: 'username _id'
+    })
+    .exec( (err,property) => {
+      if (err) res.send({err:err})
+      else {
+        //hitung jumlah Room
+        let roomTotal = [];
+        for (let room in property._roomId)
+          roomTotal[room] =  (typeof property._roomId[room] === 'undefined')  ? 1 : (roomTotal[room]+1);
+        property.roomTotal = roomTotal;
+        // property.pageCount = countQuery;
+
+        // console.log(property)
+        res.send({property,countQuery,totalResult:count});
+      }
+    })
+  });
 }
 const searchPropsNNull = (req,res) => {
   let find = {}
@@ -78,7 +145,11 @@ const searchPropsNNull = (req,res) => {
   if (Object.keys(find).length === 0) res.send({err:'Please insert at least one keyword'})
   else {
     Props.find(find)
-    .populate('_price _categoryId _accessId _ownerId _testimonyId')
+    .populate('_categoryId _accessId')
+    .populate({
+      path: '_ownerId',
+      select: 'username _id'
+    })
     .exec( (err,property) => {
       if (err) res.send({err:err})
       else {
@@ -97,7 +168,6 @@ const searchPropENull = (req,res) => {
 
   for (let key in req.query)
     if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
-  // console.log(find)
   Props.find(find)
   .populate('_categoryId')
   .exec( (err,property) => {
@@ -181,7 +251,7 @@ const editProp = (req,res) => {
 
   Props.findById(id, (err,property) => {
     if (err) res.send({err: 'Invalid Property'})
-    else if (decoded._id !== property._ownerId) res.send({err : 'Invalid Access'})
+    else if (decoded._id != property._ownerId) res.send({err : 'Invalid Access'})
     else {
       if (typeof req.body.name != 'undefined') property.name = req.body.name;
       if (typeof req.body.image != 'undefined') property.image = req.body.image;
@@ -194,13 +264,13 @@ const editProp = (req,res) => {
       if (typeof req.body['detail.perabotan'] != 'undefined') property.detail.perabotan = req.body['detail.perabotan'];
       if (typeof req.body['detail.listrik'] != 'undefined') property.detail.listrik = req.body['detail.listrik'];
       if (typeof req.body['detail.lantai'] != 'undefined') property.detail.lantai = req.body['detail.lantai'];
-      if (typeof req.body.rentUntil != 'undefined') property.rentUntil = req.body.rentUntil;
+      if (typeof req.body.address != 'undefined') property.address = req.body.address;
       // if (typeof req.body._ownerId != 'undefined') property._ownerId = req.body._ownerId;
       if (typeof req.body._categoryId != 'undefined') property._categoryId = req.body._categoryId;
       property.detail.fasilitas = (typeof req.body['detail.fasilitas'] != 'undefined') ? req.body['detail.fasilitas'] : [];
       property._accessId = (typeof req.body._accessId != 'undefined') ? req.body._accessId : [];
-      property._roomId = (typeof req.body._roomId != 'undefined') ? req.body._roomId : [];
-      property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
+      // property._roomId = (typeof req.body._roomId != 'undefined') ? req.body._roomId : [];
+      // property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
 
       property.save((err,edproperty)=> {res.send(err ? {err: err} : edproperty)} );
     }
@@ -214,7 +284,7 @@ const deleteProp = (req,res) => {
 
   Props.findById(id, (err,property) => {
     if (err) res.send({err: 'Invalid Property'})
-    else if (decoded._id !== property._ownerId) res.send({err : 'Invalid Access'})
+    else if (decoded._id != property._ownerId) res.send({err : 'Invalid Access'})
     else property.remove((err,deleted) => {res.send(err? err : deleted)})
   })
 
@@ -230,5 +300,7 @@ module.exports = {
   searchPropsENull,
   searchPropsNNull,
   searchPropENull,
-  searchPropNNull
+  searchPropNNull,
+  getNewest,
+  getHot
 }
