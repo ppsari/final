@@ -10,11 +10,14 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "ovr-audio": "^0.1.6",
     "ovr-video": "^0.1.2",
     "ovrui": "~1.4.0",
     "react": "~15.4.1",
     "react-native": "~0.42.0",
+    "react-native-webkit-localstorage-reader": "^2.0.1",
+    "react-navigation": "^1.0.0-beta.11",
     "react-router-dom": "^4.1.1",
     "react-vr": "~1.4.0",
     "react-vr-web": "~1.4.0",

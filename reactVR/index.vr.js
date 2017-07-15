@@ -1,4 +1,7 @@
 import React from 'react';
+import {StackNavigator} from 'react-navigation'
+import axios from 'axios'
+
 import {
   AppRegistry,
   asset,
@@ -10,110 +13,32 @@ import {
   Mesh,
   VideoPano,
   Sphere,
-  StyleSheet
+  StyleSheet,
+  localStorage,
+  AsyncStorage,
+  NativeModules
 } from 'react-vr';
 
-export default class reactVR extends React.Component {
+const Location = NativeModules.Location
+
+
+class reactVR extends React.Component {
   constructor(props){
     super(props)
     this.state={
-      roomName: 'Chess',
-      room: 'https://c1.staticflickr.com/7/6111/6325190163_31f3ce748a_b.jpg',
+      roomName: '',
+      room: '',
       img: {},
       desc: "",
       isIcons: true,
       limit: 2,
       space: 2,
       start: 0,
-      images:[{
-          _id: 0,
-          name: 'chess',
-          image: 'https://c1.staticflickr.com/7/6111/6325190163_31f3ce748a_b.jpg',
-          type: 'bathRoom',
-          description: 'aku chess'
-        },
-        {
-          _id: 1,
-          name: 'hacktiv',
-          image:'https://i2.wp.com/www.samrohn.com/wp-content/uploads/standard-hotel.jpg?fit=1200%2C600',
-          type: 'bedRoom',
-          description: 'aku hacktiv'
-        },
-        {
-          _id: 2,
-          name: 'Pondok Indah Office Tower',
-          image: 'https://c1.staticflickr.com/1/128/395079578_c4bc3550c8_b.jpg',
-          type: 'livingRoom',
-          description: 'aku pim'
-        },
-        {
-            _id: 3,
-            name: 'chess',
-            image: 'http://i.imgur.com/cNFqhX1.jpg',
-            type: 'bathRoom',
-            description: 'aku chess'
-          },
-          {
-            _id: 4,
-            name: 'hacktiv',
-            image:'https://www.textures.com/system/gallery/photos/HDR%20Spheres/125783/HDRPanoramas0021_1_download600.jpg',
-            type: 'bedRoom',
-            description: 'aku hacktiv'
-          },
-          {
-            _id: 5,
-            name: 'Pondok Indah Office Tower',
-            image: 'https://www.textures.com/system/gallery/photos/HDR%20Spheres/125648/HDRPanoramas0016_3_download600.jpg',
-            type: 'livingRoom',
-            description: 'aku pim'
-          },
-          {
-              _id: 6,
-              name: 'chess',
-              image: 'http://sky.easypano.com/EPSUpload2/Pano/2016/12-21/01/636178803368020490/320_190.jpg',
-              type: 'bathRoom',
-              description: 'aku chess'
-            },
-            {
-              _id: 7,
-              name: 'hacktiv',
-              image:'http://pchuck.net/wp-content/uploads/2016/12/Great_fish_equirectangular.jpg',
-              type: 'bedRoom',
-              description: 'aku hacktiv'
-            },
-            {
-              _id: 8,
-              name: 'Pondok Indah Office Tower',
-              image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeIFdQ7C-y0JDgWjyzALX_Bl-et8V8anuDtbRtv5cuivY5UdQf',
-              type: 'livingRoom',
-              description: 'aku pim'
-            },
-            {
-                _id: 9,
-                name: 'chess',
-                image: 'http://sky.easypano.com/EPSUpload2/Pano/2016/10-23/06/636127994570431286/320_190.jpg',
-                type: 'bathRoom',
-                description: 'aku chess'
-              },
-              {
-                _id: 10,
-                name: 'hacktiv',
-                image:'http://sky.easypano.com/EPSUpload2/Pano/2016/10-23/06/636127994570431286/320_190.jpg',
-                type: 'bedRoom',
-                description: 'aku hacktiv'
-              },
-              {
-                _id: 11,
-                name: 'Pondok Indah Office Tower',
-                image: 'http://sky.easypano.com/EPSUpload2/Pano/2017/01-11/15/636197439309658602/320_190.jpg',
-                type: 'livingRoom',
-                description: 'aku pim'
-              }
-      ],
+      rooms: [],
       icons:
         {
         bathRoom : 'https://c1.staticflickr.com/7/6111/6325190163_31f3ce748a_b.jpg',
-        bedRoom : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa7DiBD56aB4XGgEZFVYQtORUeszCUJIeAFowRXKQ-Su8SMI1H',
+        bedRoom : 'https://encrypted-tbn0.gstatic.com/rooms?q=tbn:ANd9GcSa7DiBD56aB4XGgEZFVYQtORUeszCUJIeAFowRXKQ-Su8SMI1H',
         livingRoom: 'http://img.freepik.com/free-vector/modern-living-room-furniture_23-2147518147.jpg?size=338&ext=jpg'
       }
     }
@@ -125,11 +50,11 @@ export default class reactVR extends React.Component {
         <Pano source={{uri:this.state.room}}/>
         {(this.state.isIcons === true)
          ? <View>
-           {this.state.images.slice(this.state.start,this.state.space).map((img,index)=> {
+           {this.state.rooms.slice(this.state.start,this.state.space).map((img,index)=> {
             // let icon = {uri: this.state.icons[img.type]};
             let icon = {uri:img.image}
             let x = -3
-            let y = 1
+            let y = 0.5
             let z = -2
             return (
               <View
@@ -153,10 +78,17 @@ export default class reactVR extends React.Component {
         : <VrButton></VrButton>
         }
         {(this.state.desc !== "")
-        ?<Text
+        ?<View
+          style={
+            styles.descBox
+          }
+          ><Text
+            style={styles.descTitle}
+            >{this.state.roomName}</Text>
+            <Text
           style={styles.desc}>
           {this.state.desc}
-         </Text>
+         </Text></View>
         :<VrButton></VrButton>
         }
         <VrButton onClick={()=> this.desc(this.state.img)}>
@@ -165,9 +97,9 @@ export default class reactVR extends React.Component {
             style={{width: 0.5,
                     height: 0.5,
                     transform: [{translate: [5.1, 2.5, 0]},
-                                {rotateY: -80}]}} />
+                                {rotateY: -65}]}} />
         </VrButton>
-        {(this.state.images.length > this.state.space && this.state.isIcons === true)
+        {(this.state.rooms.length > this.state.space && this.state.isIcons === true)
         ? <VrButton onClick={()=> this.next()}>
            <Image
             source={{uri:'https://upload.wikimedia.org/wikipedia/commons/1/12/Glossy_3d_blue_arrow_right.png'}}
@@ -196,7 +128,7 @@ export default class reactVR extends React.Component {
            source={{uri:'http://2.bp.blogspot.com/-Xy0IfbMCvU0/UC8fQzYfzkI/AAAAAAAAA08/FciCBs0MAAs/s200-c/minimize.png'}}
            style={{width: 0.15,
                    height: 0.15,
-                   transform: [{translate: [-2.7, 5.3, -2]},
+                   transform: [{translate: [-2.7, 4.7, -2]},
                                {rotateY: 35}]}} />
         </VrButton>
         {(this.state.isIcons === true)
@@ -210,7 +142,7 @@ export default class reactVR extends React.Component {
             paddingRight: 0.2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            transform: [{translate: [-3.7, 6.7, -3]},
+            transform: [{translate: [-3.7, 5.7, -3]},
                         {rotateX: 10},
                         {rotateY: 35}]
           }}>
@@ -226,7 +158,7 @@ export default class reactVR extends React.Component {
             paddingRight: 0.2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            transform: [{translate: [-3.7, 6.7, -3]},
+            transform: [{translate: [-3.7, 5.7, -3]},
                         {rotateX: 20},
                         {rotateY: 30}]
           }}>
@@ -250,6 +182,24 @@ export default class reactVR extends React.Component {
       </View>
     );
   }
+
+  componentDidMount(){
+    const api = `http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com`
+    const params = Location.href.split('?')[1].split('=')[1]
+    const status = params.split('/')[0]
+    const propId = params.split('/')[1]
+    axios.get(api+`/api/${status}/${propId}`)
+    .then(response=>{
+      console.log(response.data._roomId);
+      this.setState({
+        roomName: response.data._roomId[0].name,
+        room: response.data._roomId[0].image,
+        img: response.data._roomId[0],
+        rooms: response.data._roomId
+      })
+    })
+  }
+
   minimize(){
     if(this.state.isIcons === true){
       this.setState({
@@ -284,7 +234,7 @@ export default class reactVR extends React.Component {
   desc(img){
     if(this.state.desc === ""){
       this.setState({
-        desc: img.description
+        desc: img.descr
       })
     } else{
       this.setState({
@@ -294,15 +244,15 @@ export default class reactVR extends React.Component {
   }
   // move(){
   //   this.setState({
-  //     roomName: this.state.images[this.state.index + 1].name,
-  //     room: this.state.images[this.state.index + 1].image,
+  //     roomName: this.state.rooms[this.state.index + 1].name,
+  //     room: this.state.rooms[this.state.index + 1].image,
   //     index: this.state.index + 1
   //   })
   // }
   // back(){
   //   this.setState({
-  //     roomName: this.state.images[this.state.index - 1].name,
-  //     room: this.state.images[this.state.index - 1].image,
+  //     roomName: this.state.rooms[this.state.index - 1].name,
+  //     room: this.state.rooms[this.state.index - 1].image,
   //     index: this.state.index - 1
   //   })
   // }
@@ -312,18 +262,22 @@ desc: {
   color: 'white',
   fontSize: 0.3,
   fontWeight: '100',
-  layoutOrigin: [0.5, 0.5],
-  paddingLeft: 0.2,
-  paddingRight: 0.2,
   textAlign: 'center',
   textAlignVertical: 'center',
-  transform: [{translate: [3, 2,-1]},
-              {rotateY: -45}]
+
 },
 descBox:{
-  borderRadius: 4,
-  borderWidth: 0.5,
-  borderColor: '#d6d7da',
+  backgroundColor: 'black',
+  width: 2.1,
+  transform: [{translate: [3, 2,-2]},
+              {rotateY: -55}]
+},
+descTitle:{
+  color: 'white',
+  fontSize: 0.4,
+  fontWeight: 'bold',
+  textAlign: 'center',
+  textAlignVertical: 'center',
 },
 title: {
   fontSize: 19,
@@ -333,4 +287,10 @@ activeTitle: {
   color: 'red',
 },
 });
+
+const App = StackNavigator({
+  Home: {screen:reactVR,
+         path: 'room/:id'},
+});
+
 AppRegistry.registerComponent('reactVR', () => reactVR);
