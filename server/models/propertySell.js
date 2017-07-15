@@ -23,7 +23,8 @@ let propertySellSchema = new Schema({
   _ownerId: {type:Schema.Types.ObjectId, ref: 'User'},
   _categoryId: {type:Schema.Types.ObjectId, ref: 'Category'},
   _accessId: [{type:Schema.Types.ObjectId, ref: 'Access'}],
-  _roomId: [{type:Schema.Types.ObjectId, ref: 'RoomSell'}]
+  _roomId: [{type:Schema.Types.ObjectId, ref: 'RoomSell'}],
+  createdDate: {type:Date, default: new Date()}
 })
 
 let PropertySell =  mongoose.model('PropertySell',propertySellSchema)

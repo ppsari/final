@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
+
 let Props = require('../models/propertyRent');
 let login = require('../helpers/login');
-
 
 const checkAuth = (req,res, next) => {
   let method = req.method;
@@ -16,9 +16,23 @@ const checkAuth = (req,res, next) => {
     default:
       res.send({err: 'You dont have access'}); break;
   }
-
 }
 
+const getHot = (req,res) => {
+  let limit = 10;//req.params.limit || 10;
+  Props.find()
+  .limit(limit)
+  .sort({ rentercount: 'desc'})
+  .exec((err,prop) => res.send(err? {err:err} : prop) );
+}
+
+const getNewest = (req,res) => {
+  let limit = 10; //req.params.limit || 10;
+  Props.find()
+  .limit(limit)
+  .sort({ createdDate: 'desc' })
+  .exec((err,prop) => res.send(err? {err:err} : prop) );
+}
 
 const getProps = (req,res) => {
   Props.find({}, (err,properties) => {
@@ -26,11 +40,41 @@ const getProps = (req,res) => {
   })
 }
 
+// const getProp = (req,res) => {
+//   let id = req.params.id;
+//   Props.findById(id)
+//   .populate('_price _categoryId _accessId _ownerId _testimonyId')
+//   .populate('renter._renterId')
+//   .exec( (err,property) => {
+//     res.send(err? {err:err.message} : property );
+//   })
+// }
 const getProp = (req,res) => {
   let id = req.params.id;
   Props.findById(id)
-  .populate('_price _categoryId _accessId _ownerId _testimonyId')
+  .populate('_price _categoryId _accessId _roomId')
+  .populate({
+    path: '_ownerId',
+    select: 'username _id'
+  })
+  .populate({
+    path: '_testimonyId',
+    populate: {path: '_userId', select: 'username'}
+  })
   .exec( (err,property) => {
+    let testimonyId = [];
+    if (typeof property._testimonyId !== 'undefined')
+    testimonyId  = property._testimonyId.map((testi) => {
+      let username = testi._userId.username;
+      username = username.split(' ').map(name => {
+        let len = name.length;
+        let sensor_len = Math.floor(len/2);
+        let sensor_start = Math.ceil( (name.length - sensor_len) /2)
+        return name.split('').splice(sensor_start,sensor_len, 'x'.repeat(sensor_len)).join('')
+      }).join(' ')
+      return {username, testimony: testi.testimony}
+    })
+    property._testimonyId = testimonyId;
     res.send(err? {err:err.message} : property );
   })
 }
@@ -50,7 +94,11 @@ const searchPropsENull = (req,res) => {
   for (let key in req.query)
     if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
   Props.find(find)
-  .populate('_price _categoryId _accessId _ownerId _roomId _testimonyId')
+  .populate('_categoryId _accessId _roomId')
+  .populate({
+    path: '_ownerId',
+    select: 'username _id'
+  })
   .exec( (err,property) => {
     if (err) res.send({err:err})
     else {
@@ -75,7 +123,11 @@ const searchPropsNNull = (req,res) => {
   if (Object.keys(find).length === 0) res.send({err:'Please insert at least one keyword'})
   else {
     Props.find(find)
-    .populate('_price _categoryId _accessId _ownerId _testimonyId')
+    .populate('_categoryId _accessId')
+    .populate({
+      path: '_ownerId',
+      select: 'username _id'
+    })
     .exec( (err,property) => {
       if (err) res.send({err:err})
       else {
@@ -94,7 +146,6 @@ const searchPropENull = (req,res) => {
 
   for (let key in req.query)
     if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
-  // console.log(find)
   Props.find(find)
   .populate('_categoryId')
   .exec( (err,property) => {
@@ -191,7 +242,7 @@ const editProp = (req,res) => {
       if (typeof req.body['detail.perabotan'] != 'undefined') property.detail.perabotan = req.body['detail.perabotan'];
       if (typeof req.body['detail.listrik'] != 'undefined') property.detail.listrik = req.body['detail.listrik'];
       if (typeof req.body['detail.lantai'] != 'undefined') property.detail.lantai = req.body['detail.lantai'];
-      if (typeof req.body.rentUntil != 'undefined') property.rentUntil = req.body.rentUntil;
+      // if (typeof req.body.rentUntil != 'undefined') property.rentUntil = req.body.rentUntil;
       // if (typeof req.body._ownerId != 'undefined') property._ownerId = req.body._ownerId;
       if (typeof req.body._categoryId != 'undefined') property._categoryId = req.body._categoryId;
       property.detail.fasilitas = (typeof req.body['detail.fasilitas'] != 'undefined') ? req.body['detail.fasilitas'] : [];
@@ -227,5 +278,7 @@ module.exports = {
   searchPropsENull,
   searchPropsNNull,
   searchPropENull,
-  searchPropNNull
+  searchPropNNull,
+  getNewest,
+  getHot
 }

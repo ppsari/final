@@ -21,9 +21,13 @@ const checkAuth = (req,res, next) => {
 }
 
 const getRequests = (req,res) => {
-  Request.find({}, (err,requests) => {
-    res.send(err ? err : requests);
-  })
+  let decoded = login.getUserDetail(req.headers.token);
+  if (decoded) {
+    Request.find({}, (err,requests) => {
+      res.send(err ? err : requests);
+    })
+  } else res.send({err: 'You dont have access'})
+
 }
 
 const getRequestsByBuyer = (req,res) => {
@@ -53,9 +57,6 @@ const getRequest = (req,res) => {
   .populate('_sellerId _userId')
   .populate('connections._propertyId')
   .exec( (err,request) => {
-    // console.log(request._sellerId)
-    // console.log('-------------------')
-    // console.log(decoded)
     if (err) res.send(err)
     else if (request._sellerId._id == decoded._id || request._userId._id == decoded._id || decoded.role === 'admin') res.send(request)
     else res.send({err:'You dont have access'})
@@ -67,31 +68,35 @@ const addRequest = (req,res) => {
   let decoded = login.getUserDetail(req.headers.token);
   requestDt._userId = decoded._id;
 
+  let Prop = requestDt.connections.kind == 'PropertyRent' ? PropertyRent: PropertySell;
   if (requestDt._sellerId === requestDt._userId) res.send({err:'You cant rent/sell your own product'})
   else {
-    User.findById(requestDt._sellerId, (err,seller)=> {
-      if (err) res.send({err: 'invalid seller'})
-      else {
-        let newrequest = new Request(requestDt);
-        newrequest.save((err,request) => {
-          if (err) res.send({err:err})
-          else {
-            let msg = {
-              subject: 'There is a request for you',
-              body: 'Please check your request page to approve/reject'
-            }
-            contact.contact(seller,msg);
-            res.send(request);
-          }
-          // res.send(err? {err:err} : request );
-        })
 
+    let msg = {
+      subject: 'There is a request for you',
+      body: 'Please check your request page to approve/reject'
+    }
+
+    Prop.findById(requestDt.connections._propertyId, (err,prop)=>{
+      if (err){ res.send({err: 'Invalid Property'}); }
+      else if(requestDt.connections.kind === 'PropertyRent'){
+        let start = new Date(requestDt.connections.start);
+        let end = new Date(requestDt.connections.end);
+        //cek ketersediaan
+        let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
+        if (idx > -1) res.send({err:'Booking Date are not available'})
       }
+
+      let newrequest = new Request(requestDt);
+      newrequest.save((err,request) => {
+        if (err) res.send({err:err})
+        else {
+          contact.contact(request._sellerId,msg);
+          res.send(request);
+        }
+      })
     })
-
-
   }
-
 }
 
 
@@ -100,7 +105,6 @@ const deleteRequest = (req,res) => {
   let decoded = login.getUserDetail(req.headers.token);
   let id = req.params.id;
   Request.findById(id, (err,request) => {
-    // console.log(request._sellerId +'___'+ decoded._id)
     if (err) res.send({err: 'Invalid Request'})
     else if (request._sellerId != decoded._id && decoded.role !== 'admin') res.send({err:'Invalid access'});
     else {
@@ -111,53 +115,109 @@ const deleteRequest = (req,res) => {
         body: body
       }
 
-
-      User.findById(requestDt._sellerId, (err,user)=> {
+      User.findById(request._userId, (err,user)=> {
         if (err) res.send({err:err})
         else if (requestDt.response === 'approved') {
-
-
           let transDt = req.body;
           transDt._userId = request._userId;
           transDt._sellerId = decoded._id;
           let trans = new Trans(transDt);
-          trans.save((err,newtrans) => {
-            if (err) {
-              let err_msg = [];
-              for (let error in err.errors) err_msg.push(err.errors[error].message);
-              res.send({err : err_msg.join(',')});
+          let Prop = request.connections.kind === 'PropertyRent'? PropertyRent : PropertySell;
+
+          Prop.findById( request.connections._propertyId, (err,prop) => {
+            if (err) res.send({err : 'Invalid Property'});
+            else if (request.connections.kind === 'PropertyRent') {
+              let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
+              if (idx > -1) res.send({err:'Booking Date are not available'})
+              else {
+                trans.connections.detail =
+                  {
+                    start: request.connections.detail.start,
+                    end: request.connections.detail.end
+                  }
+
+                trans.save((err,newtrans) => {
+                  if (err) {
+                    let err_msg = [];
+                    for (let error in err.errors) err_msg.push(err.errors[error].message);
+                    res.send({err : err_msg.join(',')});
+                  }
+                  else {
+                    prop.renter.push({
+                      start: request.connections.detail.start,
+                      end: request.connections.detail.end,
+                      _renderId: request._userId
+                    });
+                    prop.rentercount = prop.rentercount + 1;
+                    prop.save((err,nprop) => {
+                      res.send(err? {err:err} : newtrans);
+                      contact.contact(user,msg);
+                    })
+                  }
+                })
+
+
+              }
             } else {
-              // if (request.connections.kind === 'PropertyRent') {
-              //   // PropertyRent.findById(request.connections._propertyId, (err,prop) => {
-              //   //   prop.isActive = false;
-              //   //   prop.save((err,nprop) => {
-              //   //     res.send(err? {err:err} : newtrans);
-              //   //     contact.contact(user,msg);
-              //   //   })
-              //   // })
-              // }
-              if (request.connections.kind === 'PropertySell') {
-                PropertySell.findById(request.connections._propertyId, (err,prop) => {
+              trans.save((err,newtrans) => {
+                if (err) {
+                  let err_msg = [];
+                  for (let error in err.errors) err_msg.push(err.errors[error].message);
+                  res.send({err : err_msg.join(',')});
+                }
+                else {
                   prop.isActive = false;
                   prop.save((err,nprop) => {
                     res.send(err? {err:err} : newtrans);
                     contact.contact(user,msg);
                   })
-                })
-              } else {
-                res.send(err? {err:err} : newtrans);
-                contact.contact(user,msg);
-              }
+                }
+              })
 
 
 
             }
+
           })
-        } else {
+
+
+          //
+          // trans.save((err,newtrans) => {
+          //   if (err) {
+          //     let err_msg = [];
+          //     for (let error in err.errors) err_msg.push(err.errors[error].message);
+          //     res.send({err : err_msg.join(',')});
+          //   }
+            //  else {
+              // if (request.connections.kind === 'PropertyRent') {
+                  // PropertyRent.findById(request.connections._propertyId, (err,prop) => {
+                    // prop.connections.renter.push({
+                    //   start: request.detail.start,
+                    //   end: request.detail.end,
+                    //   _renderId: request._userId
+                    // });
+                    // prop.save((err,nprop) => {
+                    //   res.send(err? {err:err} : newtrans);
+                    //   contact.contact(user,msg);
+                    // })
+                  // })
+              // }
+              // else if (request.connections.kind === 'PropertySell')
+              //   PropertySell.findById(request.connections._propertyId, (err,prop) => {
+              //     prop.isActive = false;
+              //     prop.save((err,nprop) => {
+              //       res.send(err? {err:err} : newtrans);
+              //       contact.contact(user,msg);
+              //     })
+              //   })
+
+            // }
+          // })
+        }
+        else {
           request.remove((err,deleted) => {
-            if (err) {
-              res.send({err : err});
-            } else {
+            if (err) {res.send({err : err});}
+            else {
               res.send(deleted)
               contact.contact(user,msg);
             }
