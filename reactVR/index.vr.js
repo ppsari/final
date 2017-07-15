@@ -1,4 +1,7 @@
 import React from 'react';
+import {StackNavigator} from 'react-navigation'
+import axios from 'axios'
+
 import {
   AppRegistry,
   asset,
@@ -10,110 +13,32 @@ import {
   Mesh,
   VideoPano,
   Sphere,
-  StyleSheet
+  StyleSheet,
+  localStorage,
+  AsyncStorage,
+  NativeModules
 } from 'react-vr';
 
-export default class reactVR extends React.Component {
+const Location = NativeModules.Location
+
+
+class reactVR extends React.Component {
   constructor(props){
     super(props)
     this.state={
-      roomName: 'Chess',
-      room: 'chess-world.jpg',
+      roomName: '',
+      room: '',
       img: {},
       desc: "",
       isIcons: true,
       limit: 2,
       space: 2,
       start: 0,
-      images:[{
-          _id: 0,
-          name: 'chess',
-          image: 'chess-world.jpg',
-          type: 'bathRoom',
-          description: 'aku chess'
-        },
-        {
-          _id: 1,
-          name: 'hacktiv',
-          image:'PANO_20170712_204306_1.jpg.jpeg',
-          type: 'bedRoom',
-          description: 'aku hacktiv'
-        },
-        {
-          _id: 2,
-          name: 'Pondok Indah Office Tower',
-          image: 'PANO_20170713_094911_0.jpg.jpeg',
-          type: 'livingRoom',
-          description: 'aku pim'
-        },
-        {
-            _id: 3,
-            name: 'chess',
-            image: 'chess-world.jpg',
-            type: 'bathRoom',
-            description: 'aku chess'
-          },
-          {
-            _id: 4,
-            name: 'hacktiv',
-            image:'PANO_20170712_204306_1.jpg.jpeg',
-            type: 'bedRoom',
-            description: 'aku hacktiv'
-          },
-          {
-            _id: 5,
-            name: 'Pondok Indah Office Tower',
-            image: 'PANO_20170713_094911_0.jpg.jpeg',
-            type: 'livingRoom',
-            description: 'aku pim'
-          },
-          {
-              _id: 6,
-              name: 'chess',
-              image: 'chess-world.jpg',
-              type: 'bathRoom',
-              description: 'aku chess'
-            },
-            {
-              _id: 7,
-              name: 'hacktiv',
-              image:'PANO_20170712_204306_1.jpg.jpeg',
-              type: 'bedRoom',
-              description: 'aku hacktiv'
-            },
-            {
-              _id: 8,
-              name: 'Pondok Indah Office Tower',
-              image: 'PANO_20170713_094911_0.jpg.jpeg',
-              type: 'livingRoom',
-              description: 'aku pim'
-            },
-            {
-                _id: 9,
-                name: 'chess',
-                image: 'chess-world.jpg',
-                type: 'bathRoom',
-                description: 'aku chess'
-              },
-              {
-                _id: 10,
-                name: 'hacktiv',
-                image:'PANO_20170712_204306_1.jpg.jpeg',
-                type: 'bedRoom',
-                description: 'aku hacktiv'
-              },
-              {
-                _id: 11,
-                name: 'Pondok Indah Office Tower',
-                image: 'PANO_20170713_094911_0.jpg.jpeg',
-                type: 'livingRoom',
-                description: 'aku pim'
-              }
-      ],
+      rooms: [],
       icons:
         {
-        bathRoom : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRmIdSODOyQhIiwvubG7Xe0iaBJlrTFgmoEtMS-P3GjC49GmZ4',
-        bedRoom : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa7DiBD56aB4XGgEZFVYQtORUeszCUJIeAFowRXKQ-Su8SMI1H',
+        bathRoom : 'https://c1.staticflickr.com/7/6111/6325190163_31f3ce748a_b.jpg',
+        bedRoom : 'https://encrypted-tbn0.gstatic.com/rooms?q=tbn:ANd9GcSa7DiBD56aB4XGgEZFVYQtORUeszCUJIeAFowRXKQ-Su8SMI1H',
         livingRoom: 'http://img.freepik.com/free-vector/modern-living-room-furniture_23-2147518147.jpg?size=338&ext=jpg'
       }
     }
@@ -122,28 +47,29 @@ export default class reactVR extends React.Component {
   render() {
     return (
       <View>
-        <Pano source={asset(this.state.room)}/>
+        <Pano source={{uri:this.state.room}}/>
         {(this.state.isIcons === true)
          ? <View>
-           {this.state.images.slice(this.state.start,this.state.space).map((img,index)=> {
-            let icon = {uri: this.state.icons[img.type]};
+           {this.state.rooms.slice(this.state.start,this.state.space).map((img,index)=> {
+            // let icon = {uri: this.state.icons[img.type]};
+            let icon = {uri:img.image}
             let x = -3
-            let y = 0.9
-            let d = -3
+            let y = 0.5
+            let z = -2
             return (
               <View
-                style={{width: 0.5,
-                      height: 0.5,
+                style={{width: 0.8,
+                      height: 0.8,
                       margin: 0.1,
-                      transform: [{translate: [x, y, d]},
+                      transform: [{translate: [x, y, z]},
                                   {rotateX: 0},
                                   {rotateY: 30}]}}
                 key={index}>
               <VrButton onClick={()=>this.go(img)}>
                 <Image
                 source={icon}
-                style={{width: 0.5,
-                        height: 0.5}} />
+                style={{width: 0.7,
+                        height: 0.7}} />
                 <Text>{img.name}</Text>
                </VrButton>
              </View>)
@@ -152,10 +78,17 @@ export default class reactVR extends React.Component {
         : <VrButton></VrButton>
         }
         {(this.state.desc !== "")
-        ?<Text
+        ?<View
+          style={
+            styles.descBox
+          }
+          ><Text
+            style={styles.descTitle}
+            >{this.state.roomName}</Text>
+            <Text
           style={styles.desc}>
           {this.state.desc}
-         </Text>
+         </Text></View>
         :<VrButton></VrButton>
         }
         <VrButton onClick={()=> this.desc(this.state.img)}>
@@ -164,15 +97,15 @@ export default class reactVR extends React.Component {
             style={{width: 0.5,
                     height: 0.5,
                     transform: [{translate: [5.1, 2.5, 0]},
-                                {rotateY: -80}]}} />
+                                {rotateY: -65}]}} />
         </VrButton>
-        {(this.state.images.length > this.state.space && this.state.isIcons === true)
+        {(this.state.rooms.length > this.state.space && this.state.isIcons === true)
         ? <VrButton onClick={()=> this.next()}>
            <Image
             source={{uri:'https://upload.wikimedia.org/wikipedia/commons/1/12/Glossy_3d_blue_arrow_right.png'}}
-            style={{width: 0.3,
-                    height: 0.3,
-                    transform: [{translate: [-2.2, 2.5, -3]},
+            style={{width: 0.7,
+                    height: 0.7,
+                    transform: [{translate: [-3.8, 2.7, -4.2]},
                                 {rotateX: 0},
                                 {rotateY: 30}]}} />
          </VrButton>
@@ -182,54 +115,54 @@ export default class reactVR extends React.Component {
         ?<VrButton onClick={()=> this.back()}>
            <Image
             source={{uri:'https://upload.wikimedia.org/wikipedia/commons/8/86/Glossy_3d_blue_arrow_left.png'}}
-            style={{width: 0.3,
-                    height: 0.3,
-                    transform: [{translate: [-3.45, 2.65, -2.9]},
+            style={{width: 0.7,
+                    height: 0.7,
+                    transform: [{translate: [-7, 2.9, -3.3]},
                                 {rotateX: 0},
-                                {rotateY: 30}]}} />
+                                {rotateY: 35}]}} />
          </VrButton>
         :<VrButton></VrButton>
        }
        <VrButton onClick={()=> this.minimize()}>
           <Image
            source={{uri:'http://2.bp.blogspot.com/-Xy0IfbMCvU0/UC8fQzYfzkI/AAAAAAAAA08/FciCBs0MAAs/s200-c/minimize.png'}}
-           style={{width: 0.1,
-                   height: 0.1,
-                   transform: [{translate: [-2.7, 3.9, -3]},
-                               {rotateY: 30}]}} />
+           style={{width: 0.15,
+                   height: 0.15,
+                   transform: [{translate: [-2.7, 4.7, -2]},
+                               {rotateY: 35}]}} />
         </VrButton>
         {(this.state.isIcons === true)
         ? <Text
           style={{
             color: 'white',
-            fontSize: 0.1,
+            fontSize: 0.2,
             fontWeight: '100',
             layoutOrigin: [0.5, 0.5],
             paddingLeft: 0.2,
             paddingRight: 0.2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            transform: [{translate: [-2.7, 4.1, -3]},
-                        {rotateX: 0},
-                        {rotateY: 30}]
+            transform: [{translate: [-3.7, 5.7, -3]},
+                        {rotateX: 10},
+                        {rotateY: 35}]
           }}>
-          click to clear, i'll wait at top
+          click to clear screen, i'll wait at top
          </Text>
         : <Text
           style={{
             color: 'white',
-            fontSize: 0.1,
+            fontSize: 0.4,
             fontWeight: '100',
             layoutOrigin: [0.5, 0.5],
             paddingLeft: 0.2,
             paddingRight: 0.2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            transform: [{translate: [-2.7, 4.1, -3]},
-                        {rotateX: 0},
+            transform: [{translate: [-3.7, 5.7, -3]},
+                        {rotateX: 20},
                         {rotateY: 30}]
           }}>
-          click to bring back the room icons
+          click to bring back the room menus
          </Text>
       }
         <Text
@@ -242,13 +175,29 @@ export default class reactVR extends React.Component {
             paddingRight: 0.2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            transform: [{translate: [0, 3, -3]}]
+            transform: [{translate: [0, 4.5, -3]}]
           }}>
           {this.state.roomName}
         </Text>
-
       </View>
     );
+  }
+
+  componentDidMount(){
+    const api = `http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com`
+    const params = Location.href.split('?')[1].split('=')[1]
+    const status = params.split('/')[0]
+    const propId = params.split('/')[1]
+    axios.get(api+`/api/${status}/${propId}`)
+    .then(response=>{
+      console.log(response.data._roomId);
+      this.setState({
+        roomName: response.data._roomId[0].name,
+        room: response.data._roomId[0].image,
+        img: response.data._roomId[0],
+        rooms: response.data._roomId
+      })
+    })
   }
 
   minimize(){
@@ -262,21 +211,18 @@ export default class reactVR extends React.Component {
       })
     }
   }
-
   back(){
     this.setState({
       start: this.state.start - this.state.limit,
       space: this.state.start
     })
   }
-
   next(){
     this.setState({
       start: this.state.space,
       space: this.state.space + this.state.limit
     })
   }
-
   go(img){
     this.setState({
       roomName: img.name,
@@ -285,11 +231,10 @@ export default class reactVR extends React.Component {
       desc: ""
     })
   }
-
   desc(img){
     if(this.state.desc === ""){
       this.setState({
-        desc: img.description
+        desc: img.descr
       })
     } else{
       this.setState({
@@ -297,40 +242,42 @@ export default class reactVR extends React.Component {
       })
     }
   }
-
   // move(){
   //   this.setState({
-  //     roomName: this.state.images[this.state.index + 1].name,
-  //     room: this.state.images[this.state.index + 1].image,
+  //     roomName: this.state.rooms[this.state.index + 1].name,
+  //     room: this.state.rooms[this.state.index + 1].image,
   //     index: this.state.index + 1
   //   })
   // }
   // back(){
   //   this.setState({
-  //     roomName: this.state.images[this.state.index - 1].name,
-  //     room: this.state.images[this.state.index - 1].image,
+  //     roomName: this.state.rooms[this.state.index - 1].name,
+  //     room: this.state.rooms[this.state.index - 1].image,
   //     index: this.state.index - 1
   //   })
   // }
 };
-
 var styles = StyleSheet.create({
 desc: {
   color: 'white',
   fontSize: 0.3,
   fontWeight: '100',
-  layoutOrigin: [0.5, 0.5],
-  paddingLeft: 0.2,
-  paddingRight: 0.2,
   textAlign: 'center',
   textAlignVertical: 'center',
-  transform: [{translate: [3, 2,-1]},
-              {rotateY: -45}]
+
 },
 descBox:{
-  borderRadius: 4,
-  borderWidth: 0.5,
-  borderColor: '#d6d7da',
+  backgroundColor: 'black',
+  width: 2.1,
+  transform: [{translate: [3, 2,-2]},
+              {rotateY: -55}]
+},
+descTitle:{
+  color: 'white',
+  fontSize: 0.4,
+  fontWeight: 'bold',
+  textAlign: 'center',
+  textAlignVertical: 'center',
 },
 title: {
   fontSize: 19,
@@ -341,5 +288,9 @@ activeTitle: {
 },
 });
 
+const App = StackNavigator({
+  Home: {screen:reactVR,
+         path: 'room/:id'},
+});
 
 AppRegistry.registerComponent('reactVR', () => reactVR);

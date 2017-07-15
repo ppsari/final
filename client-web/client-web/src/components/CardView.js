@@ -8,10 +8,10 @@ const CardView = (props) => {
     <div className="col-4">
       <div className="thumbnail-view">
         <div className="thumbnail">
-          <Link to={`/property/${data._id}`} >
+          <Link to={`/${data.status}/${data._id}`} >
             <img src={data.image} alt="thumbnail" className="img-responsive" />
             <div className="caption">
-              <h5>Rp {data.price.amount},-</h5>
+              {/* <h5>Rp {data.price.amount},-</h5> */}
               <h4><strong>{data.name}</strong></h4>
               <p className="location"><i className="fa fa-map-marker"></i> {data.city}</p>
             </div>
