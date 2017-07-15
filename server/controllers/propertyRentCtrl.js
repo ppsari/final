@@ -71,46 +71,29 @@ const getProp = (req,res) => {
     path: '_ownerId',
     select: 'username _id'
   })
-  // .populate('_testimonyId')
-  // .populate({path: 'renter._renterId', select: 'name'})
   .populate({
     path: '_testimonyId',
     populate: {path: '_userId', select: 'username'}
   })
   .exec( (err,property) => {
+    property = property.toJSON();
     let testimonyId = []
     // console.log(property._testimonyId)
-    if (typeof property._testimonyId !== 'undefined')
-    testimonyId  = property._testimonyId.map((testi) => {
-      let username = testi._userId.username;
-      username = username.split(' ').map(name => {
-        let len = name.length;
-        let sensor_len = Math.floor(len/2);
-        let sensor_start = Math.ceil( (name.length - sensor_len) /2)
-        // console.log('x'.repeat(sensor_len))
-        let arrName = name.split('');
-        arrName.splice(sensor_start,sensor_len, ('*'.repeat(sensor_len)) )
-        // console.log(arrName.join(''));
-        return arrName.join('');
-      }).join(' ')
-      // console.log(username)
-      return {testimony: testi.testimony, username: username, _id: testi._id}
-    })
-    console.log(testimonyId)
-    // property._testimonyId = [];
-    console.log('-----------------')
-    console.log(property._testimonyId)
-    console.log('-----------------')
-    property._testimonyId = testimonyId;
-    console.log(property._testimonyId)
-
-    // console.log('-----------------')
-    // property._testimonyId = testimonyId;
-    // console.log(property._testimonyId)
-    // console.log(property)
-    // property['_testimonyId'] = testimonyId
+    if (typeof property._testimonyId !== 'undefined') {
+      property._testimonyId  = property._testimonyId.map((testi) => {
+        let username = testi._userId.username;
+        username = username.split(' ').map(name => {
+          let len = name.length;
+          let sensor_len = Math.floor(len/2);
+          let sensor_start = Math.ceil( (name.length - sensor_len) /2)
+          let arrName = name.split('');
+          arrName.splice(sensor_start,sensor_len, ('*'.repeat(sensor_len)) )
+          return arrName.join('');
+        }).join(' ');
+        return {testimony: testi.testimony, username: username, _id: testi._id}
+      })
+    }
     res.send(property)
-    // res.send(err? {err:err.message} : property );
   })
 }
 

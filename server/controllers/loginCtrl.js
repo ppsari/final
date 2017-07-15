@@ -13,7 +13,7 @@ const login = (req,res) => {
       if (err || user === null) res.send({err:'Invalid Email / Password'});
       else if (!helper.checkPassword(password,user.password)) res.send({err: 'Invalid Email / Password'})
       else {
-        token = helper.createToken({_id : user._id, email : user.email, role: user.role})
+        token = helper.createToken({_id : user._id, email : user.email, role: user.role, phone: user.phone, name: user.name })
         res.send({token: token})
       }
     })
