@@ -10,6 +10,7 @@ router.get('/searchPropsNNull',propertySellCtrl.searchPropsNNull)
 router.get('/searchPropENull',propertySellCtrl.searchPropENull)
 router.get('/searchPropNNull',propertySellCtrl.searchPropNNull)
 
+router.get('/newest',propertySellCtrl.getNewest); //
 router.get('/',propertySellCtrl.getProps ); //
 router.get('/:id',propertySellCtrl.getProp); //
 router.post('/',propertySellCtrl.addProp); //

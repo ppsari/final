@@ -7,6 +7,7 @@ let propertySellSchema = new Schema({
   status: { type: String, default: 'sell'},
   city: {type: String, required : [true,'{PATH} must be filled']},
   descr: {type: String, required: [true, `{PATH} must be filled`]},
+  address: {type: String, required: [true, `{PATH} must be filled`]},
   price: {
     amount : Number,
     descr: {type: String, default:'forever'}

@@ -19,6 +19,7 @@ describe('PropertySell', () => {
         city: 'Jakarta Barat',
         descr: 'Apartemen baru bangun sangat indah sekali',
         price: {amount: 1000000000000},
+        address: 'Jakarta barat blok a no 6',
         // _ownerId: data.user1.id,
         _categoryId: data.category[1],
         _accessId: [data.access[0], data.access[1]]
@@ -29,6 +30,7 @@ describe('PropertySell', () => {
         city: 'Jakarta Selatan',
         descr: 'Apartemen lama tempat obama waktu kecil',
         price: {amount: 1250000000000},
+        address: 'Menteng Raya',
         // _ownerId: data.user1.id,
         _categoryId: data.category[1],
         _accessId: [data.access[0], data.access[1]]
@@ -40,6 +42,7 @@ describe('PropertySell', () => {
         descr: 'Villa mewah tempat raja salman menginap di jakarta',
         price: {amount: 99999999999999999},
         // _ownerId: data.user2.id,
+        address: 'Jaktim address',
         _categoryId: data.category[0],
         _accessId: [data.access[0]]
       }
@@ -185,7 +188,7 @@ describe('PropertySell', () => {
         else {
           propertySell.should.have.status(200);
           propertySell.body.should.be.a('array');
-          // console.log(propertySell.body)
+          // propertySell.body.should.have.property('totalResult');
           done();
         }
       });
@@ -201,6 +204,7 @@ describe('PropertySell', () => {
         else {
           propertySell.should.have.status(200);
           propertySell.body.should.be.a('object');
+          // propertySell.body.should.have.property('name');
           // console.log(propertySell.body)
           done();
         }
@@ -217,7 +221,8 @@ describe('PropertySell', () => {
         else if (typeof propertySell.body.err!== 'undefined') done(err);
         else {
           propertySell.should.have.status(200);
-          propertySell.body.should.be.a('array');
+          propertySell.body.should.be.a('object');
+          propertySell.body.should.have.property('totalResult');
           // console.log(propertySell.body)
           done();
         }
@@ -231,7 +236,8 @@ describe('PropertySell', () => {
         else if (typeof propertySell.body.err!== 'undefined') done(err);
         else {
           propertySell.should.have.status(200);
-          propertySell.body.should.be.a('array');
+          propertySell.body.should.be.a('object');
+          propertySell.body.should.have.property('totalResult');
           // console.log(propertySell.body)
           done();
         }

@@ -42,10 +42,11 @@ describe('Testimony', () => {
         if (err) done(err);
         else if (typeof ntestimony.body.err !== 'undefined') done(err);
         else {
-          // console.log("((((((((((((((((((((( ntestimony.body )))))))))))))))))))))");
-          // console.log(ntestimony.body);
+          console.log("((((((((((((((((((((( ntestimony.body )))))))))))))))))))))");
+          console.log(ntestimony.body);
           ntestimony.should.have.status(200);
           ntestimony.body.should.be.a('object');
+
           ntestimony.body.should.have.property('testimony',testimony_data.testimony);
           ntestimony.body.should.have.property('_propertyId',_propertyId);
           ntestimony.body.should.have.property('_userId',data.user1.id);
@@ -151,6 +152,30 @@ describe('Testimony', () => {
           ntestimony.body.should.have.property('_propertyId',_propertyId);
           ntestimony.body.should.have.property('_userId',data.user1.id);
           ntestimony.body.should.have.property('_id')
+
+          //for data
+          chai.request(server)
+          .post(`/api/testimony/${_propertyId}`)
+          .set('token',data.user1.token)
+          .send(testimony_data)
+          .end((err,ntestimony) => {
+            if (err) done(err);
+            else if (typeof ntestimony.body.err !== 'undefined') done(err);
+            else {
+              // console.log("((((((((((((((((((((( ntestimony.body )))))))))))))))))))))");
+              // console.log(ntestimony.body);
+              ntestimony.should.have.status(200);
+              ntestimony.body.should.be.a('object');
+              ntestimony.body.should.have.property('testimony',testimony_data.testimony);
+              ntestimony.body.should.have.property('_propertyId',_propertyId);
+              ntestimony.body.should.have.property('_userId',data.user1.id);
+              ntestimony.body.should.have.property('_id');
+              data.testimony.push(ntestimony.body._id);
+              done();
+            }
+          })
+
+
           done();
         }
       })

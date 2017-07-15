@@ -20,6 +20,8 @@ describe('PropertyRent', () => {
         descr: 'Apartemen baru bangun sangat indah sekali',
         price: { amount: 1000000, descr: 'month'},
         // _ownerId: data.user1.id,
+
+        address: 'Jakarta barat blok a no 6',
         _categoryId: data.category[1],
         _accessId: [data.access[0], data.access[1]]
       }
@@ -29,6 +31,7 @@ describe('PropertyRent', () => {
         city: 'Jakarta Selatan',
         descr: 'Apartemen lama tempat obama waktu kecil',
         price: { amount: 1250000, descr: 'day'},
+        address: 'Menteng',
         // _ownerId: data.user1.id,
         _categoryId: data.category[1],
         _accessId: [data.access[0], data.access[1]]
@@ -37,6 +40,7 @@ describe('PropertyRent', () => {
         name: 'villa mewah jakarta timur',
         image: 'villa.jpg',
         city: 'Jakarta Timur',
+        address: 'Jakarta tim',
         descr: 'Villa mewah tempat raja salman menginap di jakarta',
         price: { amount: 99999999, descr: 'hour'},
         // _ownerId: data.user2.id,
@@ -199,6 +203,8 @@ describe('PropertyRent', () => {
         else {
           propertyRent.should.have.status(200);
           propertyRent.body.should.be.a('object');
+          propertyRent.body.should.have.property('name');
+
           // console.log(propertyRent.body)
           done();
         }
@@ -215,7 +221,9 @@ describe('PropertyRent', () => {
         else if (typeof propertyRent.body.err!== 'undefined') done(err);
         else {
           propertyRent.should.have.status(200);
-          propertyRent.body.should.be.a('array');
+          propertyRent.body.should.be.a('object');
+          propertyRent.body.should.have.property('totalResult');
+
           // console.log(propertyRent.body)
           done();
         }
@@ -229,7 +237,7 @@ describe('PropertyRent', () => {
         else if (typeof propertyRent.body.err!== 'undefined') done(err);
         else {
           propertyRent.should.have.status(200);
-          propertyRent.body.should.be.a('array');
+          propertyRent.body.should.be.a('object');
           // console.log(propertyRent.body)
           done();
         }

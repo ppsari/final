@@ -30,21 +30,6 @@ const getNewest = (req,res) => {
   .sort({ createdDate: 'desc' })
   .exec((err,prop) => res.send(err? {err:err} : prop) );
 
-//
-//   var pageOptions = {
-//     page: req.query.page || 0,
-//     limit: req.query.limit || 10
-// }
-//
-// sexyModel.find()
-//     .skip(pageOptions.page*pageOptions.limit)
-//     .limit(pageOptions.limit)
-//     .exec(function (err, doc) {
-//         if(err) { res.status(500).json(err); return; };
-//         res.status(200).json(doc);
-//     })
-
-
 }
 const getProps = (req,res) => {
   Props.find({}, (err,properties) => {
@@ -97,17 +82,45 @@ const getProp = (req,res) => {
 
 const searchPropsENull = (req,res) => {
   let find = {}
+
+  let pageOptions = {
+    page: 0,
+    limit: 10
+  }
+
   for (let key in req.query)
-    if (req.query[key] !== '') find[key] = new RegExp(req.query[key], "i")
-  Props.find(find)
-  .populate('_price _categoryId _accessId _roomId')
-  .populate({path:'_ownerId', select:'username email contact _id'})
-  .exec( (err,property) => {
-    res.send(err? {err:err.message} : property );
-  })
+    if (req.query[key] !== '' && key !='page' && key!= 'limit') find[key] = new RegExp(req.query[key], "i")
+    else if (key === 'page' && req.query[key]!='') pageOptions.page = req.query[key] -1 ;
+    else if (key === 'limit' && req.query[key]!='') pageOptions.limit = parseInt(req.query[key]);
 
+  Props.count(find, function(err, count) {
+    let countQuery = Math.ceil(count / pageOptions.limit);
 
+    Props.find(find)
+    .skip(pageOptions.page * pageOptions.limit)
+    .limit(pageOptions.limit)
+    .populate('_categoryId _accessId _roomId')
+    .populate({
+      path: '_ownerId',
+      select: 'username _id'
+    })
+    .exec( (err,property) => {
+      if (err) res.send({err:err})
+      else {
+        //hitung jumlah Room
+        let roomTotal = [];
+        for (let room in property._roomId)
+          roomTotal[room] =  (typeof property._roomId[room] === 'undefined')  ? 1 : (roomTotal[room]+1);
+        property.roomTotal = roomTotal;
+        // property.pageCount = countQuery;
+
+        // console.log(property)
+        res.send({property,countQuery,totalResult:count});
+      }
+    })
+  });
 }
+
 const searchPropsNNull = (req,res) => {
   let find = {}
 
@@ -228,7 +241,7 @@ const editProp = (req,res) => {
       if (typeof req.body.isActive != 'undefined') property.isActive = req.body.isActive;
       // if (typeof req.body._ownerId != 'undefined') property._ownerId = req.body._ownerId;
       property._accessId = (typeof req.body._accessId != 'undefined') ? req.body._accessId : [];
-      // property._roomId = (typeof req.body._roomId != 'undefined') ? req.body._roomId : [];
+      if (typeof req.body.address != 'undefined') property.address = req.body.address;
       // property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
 
       property.save((err,edproperty)=> {res.send(err ? {err: err} : edproperty)} );

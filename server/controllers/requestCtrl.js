@@ -77,7 +77,9 @@ const addRequest = (req,res) => {
       body: 'Please check your request page to approve/reject'
     }
 
-    Prop.findById(requestDt.connections._propertyId, (err,prop)=>{
+    Prop.findById(requestDt.connections._propertyId)
+    .populate({path:'_ownerId', select:'phone username email name'})
+    .exec((err,prop)=>{
       if (err){ res.send({err: 'Invalid Property'}); }
       else if(requestDt.connections.kind === 'PropertyRent'){
         let start = new Date(requestDt.connections.start);
@@ -91,11 +93,12 @@ const addRequest = (req,res) => {
       newrequest.save((err,request) => {
         if (err) res.send({err:err})
         else {
-          contact.contact(request._sellerId,msg);
+          if (typeof prop._ownerId !== 'undefined') contact.contact(prop._ownerId,msg);
           res.send(request);
         }
       })
     })
+
   }
 }
 
@@ -146,7 +149,7 @@ const deleteRequest = (req,res) => {
                     prop.renter.push({
                       start: request.connections.detail.start,
                       end: request.connections.detail.end,
-                      _renderId: request._userId
+                      _renterId: request._userId
                     });
                     prop.rentercount = prop.rentercount + 1;
                     prop.save((err,nprop) => {
