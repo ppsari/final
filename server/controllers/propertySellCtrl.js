@@ -37,6 +37,15 @@ const getProps = (req,res) => {
   })
 }
 
+const getPropsByOwner = (req,res) => {
+  let decoded = req.headers.hasOwnProperty('token') ? login.getUserDetail(req.headers.token) : false;
+  if (decoded)
+    Props.find({_ownerId: decoded._id}, (err,properties) => {
+      res.send(err ? {err: err} : properties);
+    })
+  else res.send({err : 'You dont have access'});
+}
+
 const getProp = (req,res) => {
   let id = req.params.id;
   Props.findById(id)
@@ -271,5 +280,6 @@ module.exports = {
   searchPropsNNull,
   searchPropENull,
   searchPropNNull,
-  getNewest
+  getNewest,
+  getPropsByOwner
 }

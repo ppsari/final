@@ -34,7 +34,17 @@ const getNewest = (req,res) => {
   .exec((err,prop) => res.send(err? {err:err} : prop) );
 }
 
+const getPropsByOwner = (req,res) => {
+  let decoded = req.headers.hasOwnProperty('token') ? login.getUserDetail(req.headers.token) : false;
+  if (decoded)
+    Props.find({_ownerId: decoded._id}, (err,properties) => {
+      res.send(err ? {err: err} : properties);
+    })
+  else res.send({err : 'You dont have access'});
+}
+
 const getProps = (req,res) => {
+
   Props.find({}, (err,properties) => {
     res.send(err ? err : properties);
   })
@@ -61,28 +71,46 @@ const getProp = (req,res) => {
     path: '_ownerId',
     select: 'username _id'
   })
-  .populate('_testimonyId')
+  // .populate('_testimonyId')
   // .populate({path: 'renter._renterId', select: 'name'})
-  // .populate({
-  //   path: '_testimonyId',
-  //   populate: {path: '_userId', select: 'username'}
-  // })
+  .populate({
+    path: '_testimonyId',
+    populate: {path: '_userId', select: 'username'}
+  })
   .exec( (err,property) => {
-    let testimonyId = [];
+    let testimonyId = []
     // console.log(property._testimonyId)
-    // if (typeof property._testimonyId !== 'undefined')
-    // testimonyId  = property._testimonyId.map((testi) => {
-    //   let username = testi._userId.username;
-    //   username = username.split(' ').map(name => {
-    //     let len = name.length;
-    //     let sensor_len = Math.floor(len/2);
-    //     let sensor_start = Math.ceil( (name.length - sensor_len) /2)
-    //     return name.split('').splice(sensor_start,sensor_len, 'x'.repeat(sensor_len)).join('')
-    //   }).join(' ')
-    //   return {username, testimony: testi.testimony}
-    // })
+    if (typeof property._testimonyId !== 'undefined')
+    testimonyId  = property._testimonyId.map((testi) => {
+      let username = testi._userId.username;
+      username = username.split(' ').map(name => {
+        let len = name.length;
+        let sensor_len = Math.floor(len/2);
+        let sensor_start = Math.ceil( (name.length - sensor_len) /2)
+        // console.log('x'.repeat(sensor_len))
+        let arrName = name.split('');
+        arrName.splice(sensor_start,sensor_len, ('*'.repeat(sensor_len)) )
+        // console.log(arrName.join(''));
+        return arrName.join('');
+      }).join(' ')
+      // console.log(username)
+      return {testimony: testi.testimony, username: username, _id: testi._id}
+    })
+    console.log(testimonyId)
+    // property._testimonyId = [];
+    console.log('-----------------')
+    console.log(property._testimonyId)
+    console.log('-----------------')
+    property._testimonyId = testimonyId;
+    console.log(property._testimonyId)
+
+    // console.log('-----------------')
     // property._testimonyId = testimonyId;
-    res.send(err? {err:err.message} : property );
+    // console.log(property._testimonyId)
+    // console.log(property)
+    // property['_testimonyId'] = testimonyId
+    res.send(property)
+    // res.send(err? {err:err.message} : property );
   })
 }
 
@@ -302,5 +330,6 @@ module.exports = {
   searchPropENull,
   searchPropNNull,
   getNewest,
-  getHot
+  getHot,
+  getPropsByOwner
 }
