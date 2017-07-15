@@ -13,7 +13,6 @@ class MyProperties extends React.Component {
       <div>
         <Switch>
           <Route exact path='/dashboard/property' component={MyListProperty} />
-          <Route exact path='/dashboard/property' component={MyListProperty} />
           <Route exact path='/dashboard/property/add' component={AddProperty} />
           <Route exact path='/dashboard/property/detail:id' component={MyDetailProperty} />
           <Route exact path='/dashboard/property/detail:id/:idroom' component={MyDetailRoom} />
