@@ -246,7 +246,7 @@ const editProp = (req,res) => {
       if (typeof req.body.image != 'undefined') property.image = req.body.image;
       if (typeof req.body.city != 'undefined') property.city = req.body.city;
       if (typeof req.body.descr != 'undefined') property.descr = req.body.descr;
-      if (typeof req.body.['price.amount'] != 'undefined') property.price.amount = req.body.['price.amount'];
+      if (typeof req.body['price.amount'] != 'undefined') property.price.amount = req.body['price.amount'];
       if (typeof req.body.isActive != 'undefined') property.isActive = req.body.isActive;
       // if (typeof req.body._ownerId != 'undefined') property._ownerId = req.body._ownerId;
       property._accessId = (typeof req.body._accessId != 'undefined') ? req.body._accessId : [];
