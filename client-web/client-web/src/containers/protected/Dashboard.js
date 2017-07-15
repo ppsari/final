@@ -22,7 +22,7 @@ export default class Dashboard extends React.Component {
             </div>
             <div className="col-12">
               <Switch>
-                <Route exact path='/dashboard/profile' component={Profile} />
+                <Route path='/dashboard/profile' component={Profile} />
                 <Route exact path='/dashboard/requests' component={Request} />
                 <Route exact path='/dashboard/transactions' component={Transaction} />
                 <Route exact path='/dashboard/property' component={MyProperties} />
