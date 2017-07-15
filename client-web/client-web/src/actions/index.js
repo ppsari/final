@@ -22,7 +22,9 @@ export const loginAction = (data) => {
 export const editProfile = (data,id) =>{
   return (dispatch) =>{
     axios.get(api+`${id}`,{
-      response
+      name: data.name,
+      phone: data.phone,
+      password: data.password
     })
     .then(response=>{
       dispatch({

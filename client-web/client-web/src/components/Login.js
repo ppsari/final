@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {
   loginAction,
 } from '../actions';
-var jwtDecode = require('jwt-decode');
+import jwtDecode from 'jwt-decode';
 
 const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com'
 function setErrorMsg(error) {
