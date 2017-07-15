@@ -22,6 +22,7 @@ class Login extends React.Component {
     let user = {}
     user.email = this.email.value
     user.password = this.pw.value
+    console.log(user);
     axios.post(`${api}/login`, user)
     .then((data) => {
       if(data.data.hasOwnProperty('err')){
@@ -31,8 +32,8 @@ class Login extends React.Component {
         let user = jwtDecode(data.data.token)
         console.log(user)
         this.props.login(user);
-        localStorage.setItem('user', user);
-        this.context.router.push('/dashboard');
+        localStorage.setItem('user', JSON.stringify(user));
+        window.location = '/dashboard/profile'
       }
     })
     .catch((error) => {

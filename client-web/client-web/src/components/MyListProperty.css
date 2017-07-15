@@ -1,0 +1,8 @@
+.image-container {
+  width: 100px;
+  margin-right: 20px;
+}
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}

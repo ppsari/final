@@ -1,7 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import { Switch, Route } from 'react-router-dom'
 
 import {editProfile} from '../../actions/index.js'
+import ShowProfile from '../../components/ShowProfile';
+import EditProfile from '../../components/EditProfile';
 
 class Profile extends React.Component {
   constructor(props){
@@ -13,14 +16,10 @@ class Profile extends React.Component {
   render () {
     return (
       <div>
-        <h3>Name</h3>
-        <input type="text" ref="name"/>
-        <h3>Phone</h3>
-        <input type="text" ref="phone"/>
-        <h3>Password</h3>
-        <input type="password" ref="password"/>
-        <button type="submit"
-          onClick={()=>this.edit()}>Submit</button>
+        <Switch>
+          <Route exact path='/dashboard/profile' component={ShowProfile} />
+          <Route exact path='/dashboard/profile/edit' component={EditProfile} />
+        </Switch>
       </div>
     )
   }
@@ -43,4 +42,4 @@ const mapDispatchToProps = (dispatch) =>{
   editProfile: (data,id) => dispatch(editProfile(data,id))
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(null, mapDispatchToProps)(Profile);
