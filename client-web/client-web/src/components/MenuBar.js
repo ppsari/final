@@ -18,7 +18,7 @@ class MenuBar extends React.Component {
     });
   }
   render() {
-    console.log(this.props.userFirebase);
+    // console.log(this.props.userFirebase);
     return (
       <div>
         <Navbar color="faded" light toggleable>

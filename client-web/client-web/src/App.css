@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+.container.dashboard-container {
+  padding: 20px;
+  box-shadow: 0 3px 8px 0 rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.08);
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
@@ -36,6 +41,11 @@
 
 .App-intro {
   font-size: large;
+}
+
+a, a:focus, a:hover {
+  color: inherit !important;
+  text-decoration: none !important;
 }
 
 @keyframes App-logo-spin {

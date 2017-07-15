@@ -1,31 +1,33 @@
 import React from 'react'
 import MenuBar from '../../components/MenuBar'
-import { Link } from 'react-router-dom'
-import { ListGroup, ListGroupItem } from 'reactstrap';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 
+import MenuDashboard from '../../components/MenuDashboard';
 import Profile from './Profile';
 import Request from './Request';
+import Transaction from './Transaction';
+import MyProperties from './MyProperties';
+import MyDetailProperty from './MyDetailProperty';
+import MyDetailRoom from './MyDetailRoom';
 
 export default class Dashboard extends React.Component {
   render () {
     return (
       <div>
         <MenuBar />
-        <div className="container">
+        <MenuDashboard />
+        <div className="container dashboard-container">
           <div className="row">
-            <div className="col-3">
-              <ListGroup>
-                <Link to="/dashboard/profile"><ListGroupItem tag="button" action>Profile</ListGroupItem></Link>
-                <Link to="/dashboard/property"><ListGroupItem tag="button" action>Properties</ListGroupItem></Link>
-                <Link to="/dashboard/transactions"><ListGroupItem tag="button" action>Transactions</ListGroupItem></Link>
-                <Link to="/dashboard/requests"><ListGroupItem tag="button" action>Requests</ListGroupItem></Link>
-              </ListGroup>
+            <div className="col-12">
             </div>
-            <div className="col-9">
+            <div className="col-12">
               <Switch>
                 <Route exact path='/dashboard/profile' component={Profile} />
                 <Route exact path='/dashboard/requests' component={Request} />
+                <Route exact path='/dashboard/transactions' component={Transaction} />
+                <Route exact path='/dashboard/property' component={MyProperties} />
+                <Route exact path='/dashboard/property/:id' component={MyDetailProperty} />
+                <Route exact path='/dashboard/property/:id/:idroom' component={MyDetailRoom} />
               </Switch>
             </div>
           </div>
