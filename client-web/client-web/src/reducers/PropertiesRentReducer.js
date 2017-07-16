@@ -5,7 +5,7 @@ const initialState = [
     "image": "http://modeltheme.com/mt_urbanpoint/wp-content/uploads/2017/05/duplex_house_01-800x500.jpg",
     "_ownerId": "5966bacbbc397545e2290f93",
     "_categoryId": "5966c422b3a95452ff5018bc",
-    "name": "rumah pondok indah ed",
+    "name": "rumah pondok indah",
     "city": "Jakarta ed",
     "__v": 0,
     "_accessId": [

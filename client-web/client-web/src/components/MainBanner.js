@@ -1,5 +1,5 @@
 import React from 'react';
-import { Jumbotron, Button } from 'react-bootstrap';
+import { Jumbotron, Button } from 'reactstrap';
 
 const MainBanner = () => {
   return (

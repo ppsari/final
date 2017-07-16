@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { login, resetPassword } from '../helpers/auth'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { connect } from 'react-redux';
 
 import {
@@ -16,27 +17,31 @@ function setErrorMsg(error) {
 }
 
 class Login extends React.Component {
+  constructor(props){
+    super(props)
+  }
   state = { loginMessage: null }
   handleSubmit = (e) => {
     e.preventDefault()
     let user = {}
     user.email = this.email.value
     user.password = this.pw.value
-    console.log(user);
     axios.post(`${api}/login`, user)
     .then((data) => {
-      if(data.data.hasOwnProperty('err')){
+      console.log(data.data);
+      if(data.data.length < 20){
+        console.log(`masuk err`);
         this.setState(setErrorMsg('Invalid username/password'))
       } else {
-        console.log('et');
         let user = jwtDecode(data.data.token)
-        console.log(user)
         this.props.login(user);
         localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('token',JSON.stringify(data.data))
         window.location = '/dashboard/profile'
       }
     })
     .catch((error) => {
+      console.log(error);
       this.setState(setErrorMsg('Invalid username/password'))
     })
     // login(this.email.value, this.pw.value)
