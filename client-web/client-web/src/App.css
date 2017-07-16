@@ -48,6 +48,10 @@ a, a:focus, a:hover {
   text-decoration: none !important;
 }
 
+a:hover, button:hover {
+  cursor: pointer !important;
+}
+
 .btn-round {
   border-radius: 50px;
   border: 3px solid #e7ebef !important;
@@ -71,14 +75,55 @@ a, a:focus, a:hover {
   position: relative;
 }
 
-.button:focus {
-  outline: none;
+.Dashboard {
+  min-height: 100vh;
+  background-color: #e7ebef;
+}
+
+.Dashboard .dashboard-container {
+  background-color: white;
+}
+
+.label-default {
+  color: white;
+  background-color: #b7b7b7;
+}
+.label {
+  font-size: 13px;
+  padding: 5px 15px;
+  border-radius: 25px;
+}
+.rounded-input {
+  border-radius: 20px !important;
+}
+
+.button:focus, button:focus {
+  outline: none !important;
+}
+
+.btn-same {
+  display: block;
+  min-width: 120px;
+  margin-bottom: 5px;
+}
+
+.btn-line {
+  border: 1px solid #0275d8 !important;
+  background-color: white;
+  color: #0275d8;
 }
 
 .shadow {
-  padding: 20px;
   -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.09);
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.09);
+}
+
+.extra-bold {
+  font-weight: 800;
+}
+
+.bold {
+  font-weight: 700;
 }
 
 @keyframes App-logo-spin {

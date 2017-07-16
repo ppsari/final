@@ -69,7 +69,7 @@ enter(){
 }
 
 const mapStateToProps = (state) =>{
-  const st = window.location.href.split('/')[3];
+  const st = window.location.href.split('/')[4];
   if(st === 'rent'){
     return{
       property: state.propertyRent
