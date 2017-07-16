@@ -164,7 +164,7 @@ const searchPropsENull = (req,res) => {
       let regCity  = new RegExp(req.query.city, 'i');
       let regProp = new RegExp(req.query.prop, 'i')
       let filtered = properties.filter(property => {
-        if ( regCity.test(property.city) || regProp.test(property._categoryId.name) || reqProp.test(property.name) ) return property
+        if ( regCity.test(property.city) && (regProp.test(property._categoryId.name) || reqProp.test(property.name)) ) return property
       })
       res.send(filtered)
     }
