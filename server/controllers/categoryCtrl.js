@@ -47,7 +47,14 @@ const editCategory = (req,res) => {
     else {
       if (typeof req.body.name !== 'undefined') category.name = req.body.name;
       if (typeof req.body.icon !== 'undefined') category.icon = req.body.icon;
-      category.save((err,edcategory)=> {res.send(err ? {err: err} : edcategory)} );
+      category.save((err,edcategory)=> {
+        if (err) {
+          let err_msg = [];
+          for (let error in err.errors) err_msg.push(err.errors[error].message);
+          if (err.code == 11000) err_msg.push(`Category name already exist`);
+          res.send({err : err_msg.join(',')});
+        } else res.send(edcategory)
+      } );
     }
   })
 }

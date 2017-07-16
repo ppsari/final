@@ -267,7 +267,13 @@ const editProp = (req,res) => {
       if (typeof req.body.address != 'undefined') property.address = req.body.address;
       // property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
 
-      property.save((err,edproperty)=> {res.send(err ? {err: err} : edproperty)} );
+      property.save((err,edproperty)=> {
+        if (err) {
+          let err_msg = [];
+          for (let error in err.errors) err_msg.push(err.errors[error].message);
+          res.send({err : err_msg.join(',')});
+        } else res.send(edproperty)
+      } );
     }
   })
 }
