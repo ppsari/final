@@ -11,7 +11,7 @@ import MyProperties from './MyProperties';
 export default class Dashboard extends React.Component {
   render () {
     return (
-      <div>
+      <div className="Dashboard">
         <MenuBar />
         <MenuDashboard />
         <div className="container dashboard-container">

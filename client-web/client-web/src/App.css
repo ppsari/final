@@ -75,6 +75,15 @@ a:hover, button:hover {
   position: relative;
 }
 
+.Dashboard {
+  min-height: 100vh;
+  background-color: #e7ebef;
+}
+
+.Dashboard .dashboard-container {
+  background-color: white;
+}
+
 .label-default {
   color: white;
   background-color: #b7b7b7;
@@ -83,6 +92,9 @@ a:hover, button:hover {
   font-size: 13px;
   padding: 5px 15px;
   border-radius: 25px;
+}
+.rounded-input {
+  border-radius: 20px !important;
 }
 
 .button:focus, button:focus {
@@ -102,9 +114,16 @@ a:hover, button:hover {
 }
 
 .shadow {
-  padding: 20px;
   -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.09);
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2), 0 0 0 1px rgba(0,0,0,0.09);
+}
+
+.extra-bold {
+  font-weight: 800;
+}
+
+.bold {
+  font-weight: 700;
 }
 
 @keyframes App-logo-spin {

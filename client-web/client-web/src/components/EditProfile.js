@@ -16,7 +16,7 @@ class EditProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="text" className="form-control" />
+                  <input type="text" className="form-control rounded-input" />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -24,7 +24,7 @@ class EditProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="text" className="form-control" />
+                  <input type="text" className="form-control rounded-input" />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -32,7 +32,7 @@ class EditProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="email" className="form-control" />
+                  <input type="email" className="form-control rounded-input" />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -40,7 +40,7 @@ class EditProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="number" className="form-control" />
+                  <input type="number" className="form-control rounded-input" />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -48,7 +48,7 @@ class EditProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="password" className="form-control" />
+                  <input type="password" className="form-control rounded-input" />
                 </div>
               </div>
             </div>
