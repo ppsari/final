@@ -59,7 +59,7 @@ export default class Example extends React.Component {
                 </TabPane>
               </TabContent>
               <hr />
-              <SocialLogin />
+              {/* <SocialLogin /> */}
             </div>
           </div>
         </div>

@@ -24,11 +24,14 @@ class MenuBar extends React.Component {
         <Navbar color="faded" light toggleable>
           <div className="container">
             <NavbarToggler right onClick={this.toggle} />
-            <NavbarBrand href="/">Rumah360</NavbarBrand>
+            <Link to="/"><NavbarBrand>Rumah360</NavbarBrand></Link>
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>
                 <NavItem>
-                  <NavLink href="/sell">Sell Your Property</NavLink>
+                { localStorage.getItem('user') !== null
+                  ? <Link to="/sell">Sell Your Property</Link>
+                  : <NavLink onClick={()=> this.sellProp()}>Sell Your Property</NavLink>
+                }
                 </NavItem>
                 { localStorage.getItem('user') !== null
                   ? (<NavItem>
@@ -37,7 +40,7 @@ class MenuBar extends React.Component {
                       }}>Logout</NavLink>
                   </NavItem>)
                   : (<NavItem>
-                      <NavLink href="/login">Login / Register</NavLink>
+                      <Link to="/login"><NavLink>Login / Register</NavLink></Link>
                   </NavItem>)
                 }
               </Nav>
@@ -46,6 +49,11 @@ class MenuBar extends React.Component {
         </Navbar>
       </div>
     );
+  }
+  sellProp(){
+    if(!localStorage.getItem('user')){
+      alert('You Must Login First to Sell!')
+    }
   }
 }
 

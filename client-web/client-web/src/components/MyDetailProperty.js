@@ -1,10 +1,13 @@
 import React from 'react'
+import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
 
 import './MyDetailProperty.css';
 
-export default class MyDetailProperty extends React.Component {
+const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+
+class MyDetailProperty extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -123,4 +126,11 @@ export default class MyDetailProperty extends React.Component {
       </div>
     )
   }
+  
+  componentDidMount(){
+    const userId = JSON.parse(localStorage.getItem('user'))._id
+    axios.get(api+`/propertyRent`)
+  }
 }
+
+export default MyDetailProperty
