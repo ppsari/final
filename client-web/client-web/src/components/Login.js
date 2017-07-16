@@ -26,6 +26,7 @@ class Login extends React.Component {
     axios.post(`${api}/login`, user)
     .then((data) => {
       if(data.data.hasOwnProperty('err')){
+        console.log(data.data);
         this.setState(setErrorMsg('Invalid username/password'))
       } else {
         console.log('et');

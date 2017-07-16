@@ -19,6 +19,14 @@
   color: white;
 }
 
+.light {
+  font-weight: 100;
+}
+
+.italic {
+  font-style: italic;
+}
+
 .MainBanner .jumbotron {
   background-image: url('/img/slider-bg.png');
   background-size: cover;
@@ -126,6 +134,118 @@ a:hover, button:hover {
   font-weight: 700;
 }
 
+.title-text {
+  font-size: 2.2em;
+  padding: 2px 15px 7px;
+  color: white;
+  background-color: #71b100;
+}
+
+.left-title {
+  margin-left: -50px;
+}
+
+.price-container {
+  position: absolute;
+  bottom: 0;
+  right: 15px;
+  background-color: rgba(113, 177, 0, 0.6);
+  padding: 20px 30px;
+  color: white;
+}
+
+.theme-btn {
+  margin: 0px 5px 10px;
+  padding: 11px 30px;
+}
+.btn-style-one:hover {
+  color: #71b100 !important;
+  border-color: #71b100 !important;
+  background: none;
+}
+.theme-btn {
+  display: inline-block;
+  transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+}
+.btn-style-one {
+  position: relative;
+  padding: 12px 26px;
+  line-height: 24px;
+  text-transform: capitalize;
+  background: #71b100;
+  color: #ffffff !important;
+  font-size: 14px;
+  font-weight: 500;
+  border: 2px solid #71b100 !important;
+}
+.btn-style-three {
+  position: relative;
+  padding: 12px 26px;
+  line-height: 24px;
+  text-transform: capitalize;
+  background: #253d4a;
+  color: #ffffff !important;
+  font-size: 14px;
+  font-weight: 500;
+  border: 2px solid #253d4a !important;
+}
+.btn-style-three:hover {
+  color: #253d4a !important;
+  border-color: #253d4a !important;
+  background: none;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+.flex-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+.absolute-bottom {
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  left: 0;
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+.flex-justify {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+.desc-icon {
+  position: absolute;
+  bottom: -16px;
+  left: -10px;
+  right: 0;
+  text-align: center;
+  background-color: #f7f7f7;
+  padding: 5px;
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
