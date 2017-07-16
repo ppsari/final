@@ -163,14 +163,9 @@ const searchPropsENull = (req,res) => {
       // res.send(properties)
       let regCity  = new RegExp(req.query.city, 'i');
       let regProp = new RegExp(req.query.prop, 'i')
-      console.log(regProp);
       let filtered = properties.filter(property => {
 
-        if ( regCity.test(property.city) && (regProp.test(property._categoryId.name) || regProp.test(property.name)) ) {
-          console.log(regProp.test(property._categoryId.name));
-          console.log(regProp.test(property.name))
-
-          console.log(property)
+        if ( regCity.test(property.city) || (regProp.test(property._categoryId.name) || regProp.test(property.name)) ) {
           return property
         }
       })
