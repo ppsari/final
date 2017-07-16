@@ -6,14 +6,19 @@ const checkAuth = (req,res, next) => {
   let method = req.method;
   let hasParam = req.path === '/';
 
-  if (req.headers.hasOwnProperty('token')){
+  if (method === 'GET' ) next();
+  else {
     let decoded = login.getUserDetail(req.headers.token);
     if (decoded) {
       if (decoded.role === 'admin') next()
       else res.send({err: 'Invalid Access'})
     }
-    else res.send({err:'You must login'})
-  } else res.send({err:'You must login'})
+  }
+  // if (req.headers.hasOwnProperty('token')){
+
+  //
+  //   else res.send({err:'You must login'})
+  // } else res.send({err:'You must login'})
 }
 
 const getAccesses = (req,res) => {
