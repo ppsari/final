@@ -6,9 +6,12 @@
     "AsyncStorage": "^0.1.5",
     "axios": "^0.16.2",
     "bootstrap": "^4.0.0-alpha.6",
+    "cities": "^1.1.2",
+    "countries-cities": "0.0.11",
     "dotenv": "^4.0.0",
     "firebase": "^4.1.3",
     "firebaseui": "^2.2.1",
+    "indonesia": "0.0.3",
     "jwt-decode": "^2.2.0",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",
@@ -22,7 +25,8 @@
     "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "s3": "^4.4.0"
+    "s3": "^4.4.0",
+    "shipping-indonesia": "^1.1.0"
   },
   "devDependencies": {
     "react-scripts": "1.0.10"
