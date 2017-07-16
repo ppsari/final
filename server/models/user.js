@@ -30,7 +30,7 @@ let userSchema = new Schema({
     type: String,
     validate: {
       validator: function(val){ return /^\+[0-9]{10,32}/gi.test(val) },
-      message: `{PATH}'s length must be between 10 and 32 char`
+      message: `{PATH} must be between 10 and 32 char length and starts with +`
     }
   },
   email: {
