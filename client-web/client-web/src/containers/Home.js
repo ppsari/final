@@ -10,9 +10,14 @@ import Footer from '../components/Footer'
 import {getRentDataAction,getSellDataAction} from '../actions/index.js'
 
 class Home extends React.Component {
+  constructor(props){
+    super(props)
+    this.state={
+      propertyRent : [],
+      propertySell : []
+    }
+  }
   render () {
-    let propertyRent = this.props.dataRent
-    let propertySell = this.props.dataSell
     return (
       <div>
         <MenuBar/>
@@ -21,35 +26,47 @@ class Home extends React.Component {
         <div className="container">
           <h3>For Rent</h3>
           <div className="row">
-            { propertyRent.map((data) => (
-              <CardView key={data._id} data={data} />
-            ))}
+          {(this.state.propertyRent.length === 0) 
+          ? <h5>No Result Found</h5>        
+          : this.state.propertyRent.map((data,index) => {
+            return <CardView key={index} data={data} />
+          })
+        } 
           </div>
           <hr/>
-          <h3>For Sell</h3>
+          <h3>For Sell</h3> 
           <div className="row">
-            { propertySell.map((data) => (
-              <CardView key={data._id} data={data} />
-            ))}
-          </div>
+          {(this.state.propertySell.length === 0) 
+          ? <h5>No Result Found</h5>         
+          : this.state.propertySell.map((data,index) => {
+              return <CardView key={index} data={data} />
+          }) 
+        } 
+          </div> 
         </div>
         <Footer />
       </div>
     )
   }
-  componentDidMount(){
-    this.props.getRent()
+  
+  componentWillMount(){
     this.props.getSell()
+    this.props.getRent()
   }
-}
-
-
-
+  
+  componentWillReceiveProps(){
+    setTimeout(function() {
+      this.setState({
+        propertyRent : this.props.dataRent,
+        propertySell : this.props.dataSell
+      })}.bind(this), 10);
+    }
+  }
 
 const mapStateToProps = (state) => {
   return {
-    dataRent: state.propertiesRent,
     dataSell: state.propertiesSell,
+    dataRent: state.propertiesRent,
   }
 }
 
