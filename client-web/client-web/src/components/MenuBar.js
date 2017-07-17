@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -17,10 +18,22 @@ class MenuBar extends React.Component {
       isOpen: !this.state.isOpen
     });
   }
+  componentWillMount() {
+    $(window).scroll(function() {
+      var scroll = $(window).scrollTop();
+
+      if(scroll >= 200){
+        $(".MenuBar").addClass("active")
+      } else {
+        $(".MenuBar").removeClass("active")
+      }
+    })
+  }
+
   render() {
     // console.log(this.props.userFirebase);
     return (
-      <div>
+      <div className="MenuBar">
         <Navbar color="faded" light toggleable>
           <div className="container">
             <NavbarToggler right onClick={this.toggle} />
