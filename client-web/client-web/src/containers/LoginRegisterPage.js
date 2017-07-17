@@ -2,6 +2,7 @@ import React from 'react'
 import Login from '../components/Login'
 import Register from '../components/Register'
 import MenuBar from '../components/MenuBar'
+import Footer from '../components/Footer'
 import SocialLogin from '../components/SocialLogin'
 
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
@@ -58,10 +59,11 @@ export default class Example extends React.Component {
                 </TabPane>
               </TabContent>
               <hr />
-              <SocialLogin />
+              {/* <SocialLogin /> */}
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

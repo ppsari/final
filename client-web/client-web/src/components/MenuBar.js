@@ -18,28 +18,30 @@ class MenuBar extends React.Component {
     });
   }
   render() {
-    console.log(this.props.userFirebase);
+    // console.log(this.props.userFirebase);
     return (
       <div>
         <Navbar color="faded" light toggleable>
           <div className="container">
             <NavbarToggler right onClick={this.toggle} />
-            <NavbarBrand href="/">Rumah360</NavbarBrand>
+            <Link to="/">Rumah360</Link>
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>
                 <NavItem>
-                  <NavLink href="/sell">Sell Your Property</NavLink>
+                { localStorage.getItem('user') !== null
+                  ? <Link to="/dashboard/property/add" className="nav-link">Sell Your Property</Link>
+                  : <NavLink onClick={()=> this.sellProp()}>Sell Your Property</NavLink>
+                }
                 </NavItem>
-                { this.props.userFirebase.authed
+                { localStorage.getItem('user') !== null
                   ? (<NavItem>
                       <NavLink onClick={() => {
                         logout()
-                        console.log('logout');
                       }}>Logout</NavLink>
                   </NavItem>)
                   : (<NavItem>
-                      <NavLink href="/login">Login / Register</NavLink>
-                  </NavItem>)
+                      <Link to="/login" className="nav-link">Login / Register</Link>
+                    </NavItem>)
                 }
               </Nav>
             </Collapse>
@@ -48,11 +50,16 @@ class MenuBar extends React.Component {
       </div>
     );
   }
+  sellProp(){
+    if(!localStorage.getItem('user')){
+      alert('You Must Login First to Sell!')
+    }
+  }
 }
 
 const mapStateToProps = (state) => {
   return {
-    userFirebase: state.firebaseUserReducer,
+    user: state.user,
   };
 }
 

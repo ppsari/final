@@ -1,0 +1,34 @@
+.flex-menu {
+  display: flex;
+  flex-direction: row !important;
+}
+.flex-menu a {
+  flex-grow: 1;
+}
+.MenuDashboard {
+  background-color: #e7ebef;
+  padding: 30px;
+}
+.icon-dashboard {
+  font-size: 40px;
+  display: block;
+  padding: 5px;
+}
+
+.MenuDashboard a {
+  position: relative;
+}
+
+.MenuDashboard a.active:after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: -30px;
+  left: 45%;
+  z-index: 99;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 12.5px 12px 12.5px;
+  border-color: transparent transparent #ffffff transparent;
+}

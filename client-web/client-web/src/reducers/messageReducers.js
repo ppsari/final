@@ -1,7 +1,7 @@
-const initialState = null
+const initialState = ""
 
 export default (state = initialState, action) => {
-  if(action.type === 'GET_PROPERTY_RENT') {
+  if(action.type === 'Edit Profile') {
     return action.payload
   }
   return state

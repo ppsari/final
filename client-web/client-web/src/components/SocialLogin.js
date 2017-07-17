@@ -21,9 +21,13 @@ export default class Register extends React.Component {
 
   render () {
     return (
-      <div className="col-sm-12">
-        <h6 className="text-center">Sign in With Social Account</h6>
-        <div id="firebaseui-auth-container"></div>
+      <div className="row">
+        <div className="col-sm-12">
+          <div className=" social-container">
+            <h6 className="text-center">Sign in With Social Account</h6>
+            <div id="firebaseui-auth-container"></div>
+          </div>
+        </div>
       </div>
     )
   }

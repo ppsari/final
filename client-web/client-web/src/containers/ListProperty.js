@@ -1,6 +1,7 @@
 import React from 'react'
+import {connect} from 'react-redux'
 
-export default class ListProperty extends React.Component {
+class ListProperty extends React.Component {
   render () {
     return (
       <div>
@@ -9,3 +10,13 @@ export default class ListProperty extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) =>{
+  
+}
+
+const mapDispatchToProps = (dispatch) =>{
+
+}
+
+export default connect (mapStateToProps,mapDispatchToProps)(ListProperty)
