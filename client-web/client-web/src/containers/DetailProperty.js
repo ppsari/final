@@ -43,6 +43,10 @@ class DetailProperty extends React.Component {
                     <img src={this.props.property.image} alt="preview" className="img-responsive" />
                     <div className="price-container">
                       <h5 className="text-right">{prettyMoney(this.props.property.price.amount)}</h5>
+                      {this.props.property.status == "rent"
+                        ? <p className="text-right m-b-0" style={{marginTop: '-10px'}}><small>/ {this.props.property.price.descr}</small></p>
+                        : null
+                      }
                     </div>
                   </div>
                   <div className="col-4">
@@ -57,7 +61,7 @@ class DetailProperty extends React.Component {
                     <h5 className="light m-t-20">Owner</h5>
                     <p className="m-t-0">{this.props.property._ownerId.username}</p>
                     <h5 className="light m-t-20">Post On</h5>
-                    <p className="m-t-0">{this.props.property.createdDate}</p>
+                    <p className="m-t-0">{this.props.property.createdDate.split('T')[0]}</p>
                     <div className="absolute-bottom flex-center">
                       <button type="button" onClick={()=> this.enter()} className="theme-btn btn-style-one btn-same"><span className="extra-bold">VISIT</span></button>
                       <button type="button" className="theme-btn btn-style-three btn-same"><span className="extra-bold">REQUEST</span></button>
