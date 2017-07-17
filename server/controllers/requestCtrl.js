@@ -91,7 +91,7 @@ const addRequest = (req,res) => {
         //cek ketersediaan
         let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
         if (idx > -1) res.send({err:'Booking Date are not available'})
-      }:
+      }
 
       let newrequest = new Request(requestDt);
       newrequest.save((err,request) => {
