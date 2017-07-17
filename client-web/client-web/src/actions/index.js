@@ -104,8 +104,7 @@ export const editProfile = (data,id) =>{
       headers: {token: token}
     })
     .then((response,err)=>{
-      let error = response.data.err.message
-      console.log(error);
+      console.log(err);
     })
   }
 }

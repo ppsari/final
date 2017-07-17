@@ -8,7 +8,7 @@ export default class AddProperty extends React.Component {
   constructor () {
     super()
     this.state = {
-      isAddProperty: false,
+      isAddProperty: true,
       propertyId: null,
     }
     this.saveAndNext = this.saveAndNext.bind(this)

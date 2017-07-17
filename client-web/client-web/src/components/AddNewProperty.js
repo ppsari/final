@@ -59,7 +59,7 @@ class AddNewProperty extends React.Component {
                 </div>
                 <div className="col-lg-8 m-b-20">
                   <div className="input-group">
-                    <input type="file" className="form-control" ref="image" />
+                    <input type="text" className="form-control" ref="image" />
                   </div>
                 </div>
                 <div className="col-lg-3">
