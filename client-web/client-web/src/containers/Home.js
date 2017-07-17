@@ -26,34 +26,34 @@ class Home extends React.Component {
         <div className="container">
           <h3>For Rent</h3>
           <div className="row">
-          {(this.state.propertyRent.length === 0) 
-          ? <h5>No Result Found</h5>        
+          {(this.state.propertyRent.length === 0)
+          ? <h5>No Result Found</h5>
           : this.state.propertyRent.map((data,index) => {
             return <CardView key={index} data={data} />
           })
-        } 
+        }
           </div>
           <hr/>
-          <h3>For Sell</h3> 
+          <h3>For Sell</h3>
           <div className="row">
-          {(this.state.propertySell.length === 0) 
-          ? <h5>No Result Found</h5>         
+          {(this.state.propertySell.length === 0)
+          ? <h5>No Result Found</h5>
           : this.state.propertySell.map((data,index) => {
               return <CardView key={index} data={data} />
-          }) 
-        } 
-          </div> 
+          })
+        }
+          </div>
         </div>
         <Footer />
       </div>
     )
   }
-  
+
   componentWillMount(){
     this.props.getSell()
     this.props.getRent()
   }
-  
+
   componentWillReceiveProps(){
     setTimeout(function() {
       this.setState({

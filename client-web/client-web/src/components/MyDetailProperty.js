@@ -11,7 +11,8 @@ class MyDetailProperty extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      modal: false,
+      property: null
     };
 
     this.toggle = this.toggle.bind(this);
@@ -24,15 +25,18 @@ class MyDetailProperty extends React.Component {
   }
 
   render () {
-    console.log(this.props);
     return (
       <div>
-        <div className="row p-t-20 p-b-20">
+        {(this.state.property === null)
+          ? <img
+            src='http://testmadina.com/Images/loading1.gif'
+            style={{height:200, width: 200,margin:'auto'}}/>
+          :<div className="row p-t-20 p-b-20">
           <div className="col-lg-8 offset-lg-2">
             <div className="flex-space-between m-b-30">
               <div>
-                <h4 className="extra-bold">Rumah Pondok Indah</h4>
-                <small><span className="lnr lnr-map-marker m-r-5"></span><span className="m-r-5">Pondok Indah </span> |  <span className="lnr lnr-home m-l-5 m-r-5"></span>For Rent</small>
+                <h4 className="extra-bold">{this.state.property.name}</h4>
+                <small><span className="lnr lnr-map-marker m-r-5"></span><span className="m-r-5">{this.state.property.city}</span> |  <span className="lnr lnr-home m-l-5 m-r-5"></span>For {this.state.property.status}</small>
               </div>
               <div className="pull-right">
                 <Link to='/dashboard/property/edit/:id'>
@@ -54,29 +58,33 @@ class MyDetailProperty extends React.Component {
                 </div>
                 <div className="col-6">
                   <small>Price</small>
-                  <h5>Rp 300.000.000.-</h5>
+                  {(this.state.property.price.descr)
+                  ? <h5>Rp{this.state.property.price.amount}/{this.state.property.price.descr}</h5>
+                  : <h5>Rp{this.state.property.price}</h5>
+                  }
                   <br />
                   <small>Address</small>
-                  <p>Jl. Sultan Iskandar Muda No.7, RT.5/RW.9, Jakarta 12240, Indonesia</p>
+                  <p>{this.state.property.address}</p>
                   <br />
                   <small>Category</small>
-                  <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>Rumah</span></p>
+                  <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>{this.state.property.category}</span></p>
                 </div>
               </div>
               <hr />
               <h5>Detail Room</h5>
-              <p>Gedung baru bangun sangat indah sekali</p>
+              <p>{this.state.property.descr}</p>
               <hr />
               <h5>List Room</h5>
-              <div className="row">
+              {this.state.property._roomId.map((room,index)=>{
+              <div className="row" key="index">
                 <div className="col-4">
                   <div className="room-grid-view p-b-10">
                     <div className="room-img-container">
-                      <img src="http://i.imgur.com/OkuOTW7.jpg" alt="room" />
+                      <img src={room.image} alt="room" />
                     </div>
                     <div className="padding-20">
-                      <h6 className="m-b-0">Ruang Kelas</h6>
-                      <small>Category: Other</small>
+                      <h6 className="m-b-0">{room.name}</h6>
+                      <small>Category: {room.category}</small>
                     </div>
                     <button
                       type="submit"
@@ -93,7 +101,7 @@ class MyDetailProperty extends React.Component {
                         </div>
                         <FormGroup>
                           <Label for="exampleText">Room's Description</Label>
-                          <Input type="textarea" name="text" id="exampleText" value="ada meja, kursi, papan tulis, proyektor" />
+                          <Input type="textarea" name="text" id="exampleText" value={room.descr} />
                         </FormGroup>
                         <FormGroup>
                           <Label for="exampleSelect">Select</Label>
@@ -116,6 +124,7 @@ class MyDetailProperty extends React.Component {
                   </div>
                 </div>
               </div>
+            })}
               <hr />
               <h5>Testimony</h5>
               <p>asli sama kayak foto</p>
@@ -123,13 +132,33 @@ class MyDetailProperty extends React.Component {
             </div>
           </div>
         </div>
+      }
       </div>
     )
   }
-  
-  componentDidMount(){
-    const userId = JSON.parse(localStorage.getItem('user'))._id
-    axios.get(api+`/propertyRent`)
+
+  componentWillMount(){
+    const propId = this.props.match.params.id
+    const propStatus = this.props.match.params.status
+
+    if(propStatus === `rent`){
+      axios.get(api+`/propertyRent/${propId}`)
+      .then(pr=>{
+        this.setState({
+          property: pr.data
+        })
+      })
+    } else{
+      axios.get(api+`/propertySell/${propId}`)
+      .then(ps=>{
+        this.setState({
+          property: ps.data
+        })
+      })
+    }
+    setTimeout(()=>{
+      console.log(this.state.property);
+    },1000)
   }
 }
 

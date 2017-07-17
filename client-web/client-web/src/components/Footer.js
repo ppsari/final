@@ -22,7 +22,7 @@ const Footer = (props) => {
               ·
               <a>Contact</a>
             </p>
-            <p className="footer-company-name">Company Name &copy; 2017</p>
+            <p className="footer-company-name">Room360 &copy; 2017</p>
             <div className="footer-icons">
               <a><i className="fa fa-facebook"></i></a>
               <a><i className="fa fa-twitter"></i></a>

@@ -28,7 +28,7 @@ class Example extends React.Component {
           </div>
           <div className="col-2">
             <select onChange={()=> this.searchProp()} ref="city" className="form-control">
-              <option disabled>Select City</option>
+              <option selected="selected" disabled>Select City</option>
               {this.state.cities.map((city,index)=>{
                   return <option key ={index} value={city}>{city}</option>
               })}

@@ -92,7 +92,7 @@ export const getProfile = (id) =>{
 export const editProfile = (data,id) =>{
   let token = ""
   if(localStorage.getItem('token')){
-    token = JSON.parse(localStorage.getItem('token')).token  
+    token = JSON.parse(localStorage.getItem('token')).token
   }
   return (dispatch) =>{
     axios.put(api+`/user/${id}`,{
@@ -105,17 +105,13 @@ export const editProfile = (data,id) =>{
     })
     .then((response,err)=>{
       let error = response.data.err.message
-        dispatch({
-          type:`Edit Profile`,
-          payload: error
-        })
+      console.log(error);
     })
   }
 }
 
 export const acceptRequest = (id) =>{
   return(dispatch)=>{
-
     axios.delete(api+`/request${id}`,{
       response: 'approved'
     })
@@ -127,9 +123,9 @@ export const acceptRequest = (id) =>{
   }
 }
 
+
 export const rejectRequest = (id) =>{
   return(dispatch)=>{
-
     axios.delete(api+`/request/${id}`,{
       response: 'rejected'
     })
@@ -141,4 +137,3 @@ export const rejectRequest = (id) =>{
     })
   }
 }
-
