@@ -158,8 +158,8 @@ class DetailProperty extends React.Component {
     )
   }
 enter(){
- let vr = 'https://dqz7rmlbt5xt6.cloudfront.net/'
-   window.location = vr+`?key=${this.state.propStatus}/${this.state.id}`
+ let vr = 'http://aws-website-room-23fnj.s3-website-us-east-1.amazonaws.com/'
+   window.open(vr+`?key=${this.state.propStatus}/${this.state.id}`,'_newtab')
   }
 
   componentDidMount(){
