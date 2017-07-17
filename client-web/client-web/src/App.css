@@ -81,7 +81,6 @@ tr.active td.list-table:after {
 }
 
 .MainBanner .jumbotron {
-  background-image: url('/img/slider-bg.png');
   background-size: cover;
 }
 
