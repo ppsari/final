@@ -19,6 +19,29 @@
   color: white;
 }
 
+.btn-small {
+  padding: 5px 5px !important;
+  line-height: 22px !important;
+}
+
+.list-table {
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 0;
+}
+
+tr.active td.list-table:after {
+  content: '';
+  z-index: 99;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  align-self: center;
+  border-width: 0 12.5px 12px 12.5px;
+  border-color: transparent transparent #ececec transparent;
+}
+
 .panel {
   margin-bottom: 20px;
   background-color: #fff;
