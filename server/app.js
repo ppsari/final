@@ -18,9 +18,13 @@ let admin = require('./routes/admin')
 let roomRent = require('./routes/roomRent')
 let roomSell = require('./routes/roomSell')
 let testimony = require('./routes/testimony')
+let upload = require('./routes/upload')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
+
+
+app.use(cors());
 
 app.use('/', index);
 app.use('/api/transaction', transaction);
@@ -34,9 +38,9 @@ app.use('/api/admin', admin);
 app.use('/api/roomRent', roomRent);
 app.use('/api/roomSell', roomSell);
 app.use('/api/testimony', testimony);
+app.use('/upload', upload);
 
 
-app.use(cors());
 let env = 'test';
 // let env = 'local_dev'
 // let env = app.settings.env;
