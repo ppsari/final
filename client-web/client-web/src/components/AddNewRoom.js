@@ -133,7 +133,6 @@ class AddNewRoom extends React.Component {
   }
 
   deleteRoom(rId){
-    console.log(rId);
     const token = JSON.parse(localStorage.getItem('token')).token
     const status = this.props.match.params.status
     const propId = this.props.match.params.idproperty
