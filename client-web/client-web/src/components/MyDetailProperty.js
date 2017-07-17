@@ -75,6 +75,11 @@ class MyDetailProperty extends React.Component {
               <p>{this.state.property.descr}</p>
               <hr />
               <h5>List Room</h5>
+              <Link to='/dashboard/property/add-room/:status/:idproperty'>
+                <button type="submit" className="btn-round m-t-0 p-l-20 p-r-20 p-t-5 p-b-5 btn-line btn-same">
+                  <small>Add Room</small>
+                </button>
+              </Link>
               {this.state.property._roomId.map((room,index)=>{
               <div className="row" key="index">
                 <div className="col-4">

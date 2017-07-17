@@ -18,7 +18,7 @@ class MyProperties extends React.Component {
           <Route exact path='/dashboard/property/add' component={AddProperty} />
           <Route exact path='/dashboard/property/detail/:status/:id' component={MyDetailProperty} />
           <Route exact path='/dashboard/property/edit/:status/:id' component={MyEditProperty} />
-          <Route exact path='/dashboard/add-room/:status/:idproperty' component={AddNewRoom} />
+          <Route exact path='/dashboard/property/add-room/:status/:idproperty' component={AddNewRoom} />
         </Switch>
       </div>
     )
