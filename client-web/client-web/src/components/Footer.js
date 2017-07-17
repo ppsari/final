@@ -8,7 +8,7 @@ const Footer = (props) => {
         <div className="container">
           <footer className="footer-distributed">
           <div className="footer-left">
-            <h3>Home360</h3>
+            <h3>Room360</h3>
             <div className="row">
               <div className="col-6">
                 <p className="footer-links">
