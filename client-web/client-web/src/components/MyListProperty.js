@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
 
@@ -28,12 +27,5 @@ class MyListProperty extends React.Component {
   }
 }
 
-const mapStateToProps = (state) =>{
 
-}
-
-const mapDispatchToProps = (dispatch)=>{
-
-}
-
-export default connect (mapStateToProps,mapDispatchToProps)(MyListProperty)
+export default MyListProperty
