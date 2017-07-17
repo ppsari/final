@@ -18,9 +18,11 @@ let admin = require('./routes/admin')
 let roomRent = require('./routes/roomRent')
 let roomSell = require('./routes/roomSell')
 let testimony = require('./routes/testimony')
+let upload = require('./routes/upload')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
+app.use(cors());
 
 app.use('/', index);
 app.use('/api/transaction', transaction);
@@ -34,11 +36,10 @@ app.use('/api/admin', admin);
 app.use('/api/roomRent', roomRent);
 app.use('/api/roomSell', roomSell);
 app.use('/api/testimony', testimony);
+app.use('/api/upload', upload);
 
-
-app.use(cors());
-// let env = 'local_dev'
-let env = app.settings.env;
+let env = 'test'
+// let env = app.settings.env;
 let db_config = {
   local_dev: 'mongodb://localhost/movie',
   development: 'mongodb://admin:admin@ds159112.mlab.com:59112/room360db',
