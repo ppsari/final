@@ -18,6 +18,9 @@
 .btn-primary:hover {
     background-color: #0a4039;
 }
+.green {
+  color: #71b100;
+}
 
 .no-wrap {
   white-space: nowrap !important;

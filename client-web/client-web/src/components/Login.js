@@ -28,9 +28,8 @@ class Login extends React.Component {
     user.password = this.pw.value
     axios.post(`${api}/login`, user)
     .then((data) => {
-      console.log(data.data);
-      if(data.data.length < 20){
-        console.log(`masuk err`);
+      if(data.data.hasOwnProperty('err')){
+        console.log(data.data);
         this.setState(setErrorMsg('Invalid username/password'))
       } else {
         let user = jwtDecode(data.data.token)

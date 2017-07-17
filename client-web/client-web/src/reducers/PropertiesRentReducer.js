@@ -12,6 +12,14 @@ const initialState = [
       "5966c443b3a95452ff5018bd",
       "5966c448b3a95452ff5018be"
     ],
+    detail: {
+      luasBangunan: null,
+      luasTanah: null,
+      perabotan: null,
+      listrik: null,
+      lantai: null,
+      fasilitas: [],
+    },
     "price": {
       "descr": "hour",
       "amount": 10

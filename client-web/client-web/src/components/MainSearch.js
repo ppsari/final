@@ -6,7 +6,7 @@ import countries from 'countries-cities'
 import { searchProperty } from '../actions/index.js'
 
 require('dotenv').config()
- 
+
 class Example extends React.Component {
   constructor(props){
     super(props)
@@ -19,15 +19,15 @@ class Example extends React.Component {
       <div className="container MainSearch">
         <Form className="row">
           <div className="col-md-6 offset-md-2">
-            <input 
-              type="text" 
-              className="form-control" 
-              placeholder="Find a Property that you want" 
-              ref="search" 
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Find a Property that you want"
+              ref="search"
               onChange={()=> this.searchProp()}/>
           </div>
           <div className="col-2">
-            <select onChange={()=> this.searchProp()} ref="city">
+            <select onChange={()=> this.searchProp()} ref="city" className="form-control">
               <option disabled>Select City</option>
               {this.state.cities.map((city,index)=>{
                   return <option key ={index} value={city}>{city}</option>
@@ -38,11 +38,11 @@ class Example extends React.Component {
       </div>
     );
   }
-  
+
   searchProp(){
     this.props.searchProperty(this.refs.search.value,this.refs.city.value)
   }
-  
+
   componentDidMount(){
     let cities = countries.getCities('indonesia')
     this.setState({
