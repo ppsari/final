@@ -149,9 +149,10 @@ const getProp = (req,res) => {
 // }
 
 const searchPropsENull = (req,res) => {
-  let find = {}
-
-  Props.find()
+  // res.send(req.query.city)
+  let regCity  = new RegExp(req.query.city, 'i');
+  let find = {city: regCity}
+  Props.find(find)
   .populate('_categoryId _accessId _roomId')
   .populate({
     path: '_ownerId',
@@ -160,16 +161,16 @@ const searchPropsENull = (req,res) => {
   .exec( (err,properties)=> {
     if (err) res.send({err:err})
     else {
-      // res.send(properties)
-      let regCity  = new RegExp(req.query.city, 'i');
-      let regProp = new RegExp(req.query.prop, 'i')
-      let filtered = properties.filter(property => {
+      if (req.query.prop !== '') {
+        let regProp = new RegExp(req.query.prop, 'i')
+        let filtered = properties.filter(property => {
+          if ( (regProp.test(property._categoryId.name) || regProp.test(property.name)) ) {
+            return property
+          }
+        })
+        res.send(filtered)
+      } else res.send(properties)
 
-        if ( regCity.test(property.city)||(regProp.test(property._categoryId.name) || regProp.test(property.name)) ) {
-          return property
-        }
-      })
-      res.send(filtered)
     }
   })
 }

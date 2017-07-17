@@ -88,11 +88,11 @@ const getProp = (req,res) => {
     b. kosong ga error        => searchPropNNull
 */
 
-
 const searchPropsENull = (req,res) => {
-  let find = {}
-
-  Props.find()
+  // res.send(req.query.city)
+  let regCity  = new RegExp(req.query.city, 'i');
+  let find = {city: regCity}
+  Props.find(find)
   .populate('_categoryId _accessId _roomId')
   .populate({
     path: '_ownerId',
@@ -101,48 +101,73 @@ const searchPropsENull = (req,res) => {
   .exec( (err,properties)=> {
     if (err) res.send({err:err})
     else {
-      let regCity  = new RegExp(req.query.city, 'i');
-      let regProp = new RegExp(req.query.prop, 'i')
-      let filtered = properties.filter(property => {
-        if ( regCity.test(property.city)||(regProp.test(property._categoryId.name) || regProp.test(property.name)) )
-        return property
-      })
-      res.send(filtered)
+      if (req.query.prop !== '') {
+        let regProp = new RegExp(req.query.prop, 'i')
+        let filtered = properties.filter(property => {
+          if ( (regProp.test(property._categoryId.name) || regProp.test(property.name)) ) {
+            return property
+          }
+        })
+        res.send(filtered)
+      } else res.send(properties)
+
     }
   })
-
-  // for (let key in req.query)
-  //   if (req.query[key] !== '' && key !='page' && key!= 'limit') find[key] = new RegExp(req.query[key], "i")
-  //   else if (key === 'page' && req.query[key]!='') pageOptions.page = req.query[key] -1 ;
-  //   else if (key === 'limit' && req.query[key]!='') pageOptions.limit = parseInt(req.query[key]);
-  //
-  // Props.count(find, function(err, count) {
-  //   let countQuery = Math.ceil(count / pageOptions.limit);
-  //
-  //   Props.find(find)
-  //   .skip(pageOptions.page * pageOptions.limit)
-  //   .limit(pageOptions.limit)
-  //   .populate('_categoryId _accessId _roomId')
-  //   .populate({
-  //     path: '_ownerId',
-  //     select: 'username _id'
-  //   })
-  //   .exec( (err,property) => {
-  //     if (err) res.send({err:err})
-  //     else {
-  //       //hitung jumlah Room
-  //       let roomTotal = [];
-  //       for (let room in property._roomId)
-  //         roomTotal[room] =  (typeof property._roomId[room] === 'undefined')  ? 1 : (roomTotal[room]+1);
-  //       property.roomTotal = roomTotal;
-  //       // property.pageCount = countQuery;
-  //
-  //       // console.log(property)
-  //       res.send({property,countQuery,totalResult:count});
-  //     }
-  //   })
-  // });
 }
+// const searchPropsENull = (req,res) => {
+//   let find = {}
+//
+//   Props.find()
+//   .populate('_categoryId _accessId _roomId')
+//   .populate({
+//     path: '_ownerId',
+//     select: 'username _id'
+//   })
+//   .exec( (err,properties)=> {
+//     if (err) res.send({err:err})
+//     else {
+//       let regCity  = new RegExp(req.query.city, 'i');
+//       let regProp = new RegExp(req.query.prop, 'i')
+//       let filtered = properties.filter(property => {
+//         if ( regCity.test(property.city)||(regProp.test(property._categoryId.name) || regProp.test(property.name)) )
+//         return property
+//       })
+//       res.send(filtered)
+//     }
+//   })
+//
+//   // for (let key in req.query)
+//   //   if (req.query[key] !== '' && key !='page' && key!= 'limit') find[key] = new RegExp(req.query[key], "i")
+//   //   else if (key === 'page' && req.query[key]!='') pageOptions.page = req.query[key] -1 ;
+//   //   else if (key === 'limit' && req.query[key]!='') pageOptions.limit = parseInt(req.query[key]);
+//   //
+//   // Props.count(find, function(err, count) {
+//   //   let countQuery = Math.ceil(count / pageOptions.limit);
+//   //
+//   //   Props.find(find)
+//   //   .skip(pageOptions.page * pageOptions.limit)
+//   //   .limit(pageOptions.limit)
+//   //   .populate('_categoryId _accessId _roomId')
+//   //   .populate({
+//   //     path: '_ownerId',
+//   //     select: 'username _id'
+//   //   })
+//   //   .exec( (err,property) => {
+//   //     if (err) res.send({err:err})
+//   //     else {
+//   //       //hitung jumlah Room
+//   //       let roomTotal = [];
+//   //       for (let room in property._roomId)
+//   //         roomTotal[room] =  (typeof property._roomId[room] === 'undefined')  ? 1 : (roomTotal[room]+1);
+//   //       property.roomTotal = roomTotal;
+//   //       // property.pageCount = countQuery;
+//   //
+//   //       // console.log(property)
+//   //       res.send({property,countQuery,totalResult:count});
+//   //     }
+//   //   })
+//   // });
+// }
 
 const searchPropsNNull = (req,res) => {
   let find = {}
