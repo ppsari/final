@@ -30,3 +30,8 @@
     font-size: 12px;
     color: #717171;
   }
+
+  .image-container-card {
+    height: 250px;
+    overflow: hidden;
+  }

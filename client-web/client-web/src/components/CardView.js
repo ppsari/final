@@ -13,7 +13,9 @@ const CardView = (props) => {
           {(data === null)
          ? <h5> No Result Found </h5>
          : <Link to={`/detail/${data.status}/${data._id}`} >
-            <img src={data.image} alt="thumbnail" className="img-responsive" />
+            <div className="image-container-card">
+              <img src={data.image} alt="thumbnail" className="img-responsive" />
+            </div>
             <div className="caption">
               <h5>{prettyMoney(data.price.amount)}</h5>
               <h4><strong>{data.name}</strong></h4>
