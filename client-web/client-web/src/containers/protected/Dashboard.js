@@ -7,6 +7,7 @@ import Profile from './Profile';
 import Request from './Request';
 import Transaction from './Transaction';
 import MyProperties from './MyProperties';
+import Page404 from '../../containers/Page404.js'
 
 export default class Dashboard extends React.Component {
   render () {
@@ -21,9 +22,10 @@ export default class Dashboard extends React.Component {
             <div className="col-12">
               <Switch>
                 <Route path='/dashboard/profile' component={Profile} />
-                <Route exact path='/dashboard/requests' component={Request} />
-                <Route exact path='/dashboard/transactions' component={Transaction} />
+                <Route path='/dashboard/requests' component={Request} />
+                <Route path='/dashboard/transactions' component={Transaction} />
                 <Route path='/dashboard/property' component={MyProperties} />
+                <Route component={Page404} />
               </Switch>
             </div>
           </div>

@@ -7,6 +7,7 @@ import MyDetailProperty from '../../components/MyDetailProperty';
 import MyEditProperty from '../../components/MyEditProperty';
 import MyDetailRoom from '../../components/MyDetailRoom';
 import AddProperty from '../../components/AddProperty';
+import AddNewRoom from '../../components/AddNewRoom';
 
 class MyProperties extends React.Component {
   render () {
@@ -16,8 +17,8 @@ class MyProperties extends React.Component {
           <Route exact path='/dashboard/property' component={MyListProperty} />
           <Route exact path='/dashboard/property/add' component={AddProperty} />
           <Route exact path='/dashboard/property/detail/:status/:id' component={MyDetailProperty} />
-          <Route exact path='/dashboard/property/edit/:id' component={MyEditProperty} />
-          <Route exact path='/dashboard/property/detail/:id/:idroom' component={MyDetailRoom} />
+          <Route exact path='/dashboard/property/edit/:status/:id' component={MyEditProperty} />
+          <Route exact path='/dashboard/add-room/:status/:idproperty' component={AddNewRoom} />
         </Switch>
       </div>
     )
