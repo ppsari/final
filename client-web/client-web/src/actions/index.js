@@ -109,6 +109,10 @@ export const editProfile = (data,id) =>{
   }
 }
 
+export const sendRequest = () =>{
+  
+}
+
 export const acceptRequest = (id) =>{
   return(dispatch)=>{
     axios.delete(api+`/request${id}`,{

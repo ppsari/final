@@ -12,7 +12,7 @@ class DetailProperty extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-       id : this.props.match.params.id,
+      id : this.props.match.params.id,
       status : this.props.match.params.status,
       propStatus: "",
       modal: false
@@ -69,7 +69,10 @@ class DetailProperty extends React.Component {
                     <p className="m-t-0">{this.props.property.createdDate.split('T')[0]}</p>
                     <div className="absolute-bottom flex-center">
                       <button type="button" onClick={()=> this.enter()} className="theme-btn btn-style-one btn-same"><span className="extra-bold">VISIT</span></button>
-                      <button type="button" className="theme-btn btn-style-three btn-same" onClick={this.toggle}><span className="extra-bold">REQUEST</span></button>
+                      {(localStorage.getItem('token'))
+                    ? <button type="button" className="theme-btn btn-style-three btn-same" onClick={this.toggle}><span className="extra-bold">REQUEST</span></button>
+                    : <button type="button" className="theme-btn btn-style-three btn-same"><span className="extra-bold">Login first to Request</span></button>
+                    }
                     </div>
                   </div>
                 </div>
@@ -145,11 +148,11 @@ class DetailProperty extends React.Component {
             </div>
             <FormGroup>
               <Label for="exampleText">Message</Label>
-              <Input type="textarea" name="text" id="exampleText" placeholder="Your message here"/>
+              <Input type="textarea" name="text" id="exampleText" placeholder="Your message here" ref='request'/>
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.toggle}>Send</Button>{' '}
+            <Button color="primary" onClick={()=> this.request()}>Send</Button>{' '}
               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
           </Modal>
@@ -157,6 +160,8 @@ class DetailProperty extends React.Component {
       </div>
     )
   }
+
+
 enter(){
  let vr = 'http://aws-website-room-23fnj.s3-website-us-east-1.amazonaws.com/'
    window.open(vr+`?key=${this.state.propStatus}/${this.state.id}`,'_newtab')
@@ -196,7 +201,8 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = (dispatch) =>{
   return {
     getDetailPropertyRent: (id) => dispatch(getDetailPropertyRent(id)),
-    getDetailPropertySell: (id) => dispatch(getDetailPropertySell(id))
+    getDetailPropertySell: (id) => dispatch(getDetailPropertySell(id)),
+
   }
 }
 

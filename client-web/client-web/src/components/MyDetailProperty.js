@@ -31,7 +31,7 @@ class MyDetailProperty extends React.Component {
           ? <img
             src='http://testmadina.com/Images/loading1.gif'
             style={{height:200, width: 200,margin:'auto'}}/>
-          :<div className="row p-t-20 p-b-20">
+          : <div className="row p-t-20 p-b-20">
           <div className="col-lg-8 offset-lg-2">
             <div className="flex-space-between m-b-30">
               <div>
@@ -67,7 +67,7 @@ class MyDetailProperty extends React.Component {
                   <p>{this.state.property.address}</p>
                   <br />
                   <small>Category</small>
-                  <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>{this.state.property.category}</span></p>
+                  <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>{this.state.property._categoryId.name}</span></p>
                 </div>
               </div>
               <hr />
@@ -75,13 +75,13 @@ class MyDetailProperty extends React.Component {
               <p>{this.state.property.descr}</p>
               <hr />
               <h5>List Room</h5>
-              <Link to='/dashboard/property/add-room/:status/:idproperty'>
+              <Link to={`/dashboard/property/add-room/${this.state.property.status}/${this.state.property._id}`}>
                 <button type="submit" className="btn-round m-t-0 p-l-20 p-r-20 p-t-5 p-b-5 btn-line btn-same">
                   <small>Add Room</small>
                 </button>
               </Link>
               {this.state.property._roomId.map((room,index)=>{
-              <div className="row" key="index">
+              return <div className="row" key={index}>
                 <div className="col-4">
                   <div className="room-grid-view p-b-10">
                     <div className="room-img-container">
@@ -161,9 +161,6 @@ class MyDetailProperty extends React.Component {
         })
       })
     }
-    setTimeout(()=>{
-      console.log(this.state.property);
-    },1000)
   }
 }
 
