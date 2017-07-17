@@ -12,9 +12,12 @@ class MyDetailProperty extends React.Component {
     super(props);
     this.state = {
       modal: false,
-      property: null
+      property: null,
+      name: "",
+      image: "",
+      descr: "",
+      index: 0
     };
-
     this.toggle = this.toggle.bind(this);
   }
 
@@ -66,7 +69,7 @@ class MyDetailProperty extends React.Component {
                   <small>Address</small>
                   <p>{this.state.property.address}</p>
                   <br />
-                  <small>Category</small>
+                  <small>Description</small>
                   <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>{this.state.property._categoryId.name}</span></p>
                 </div>
               </div>
@@ -80,37 +83,42 @@ class MyDetailProperty extends React.Component {
                   <small>Add Room</small>
                 </button>
               </Link>
+              <div className="row" >
               {this.state.property._roomId.map((room,index)=>{
-              return <div className="row" key={index}>
-                <div className="col-4">
+              return <div className="col-4" key={index}>
                   <div className="room-grid-view p-b-10">
                     <div className="room-img-container">
                       <img src={room.image} alt="room" />
                     </div>
                     <div className="padding-20">
                       <h6 className="m-b-0">{room.name}</h6>
-                      <small>Category: {room.category}</small>
+                      <small>Category: {room.descr}</small>
                     </div>
                     <button
                       type="submit"
                       className="btn-round p-l-20 p-r-20 p-t-5 p-b-5 btn-line btn-same"
                       style={{margin: 'auto'}}
-                      onClick={this.toggle} >
+                      onClick={()=> this.onEdit(room._id,room.name,room.image,room.descr,index)} >
                       <small>Detail</small>
                     </button>
                     <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                      <ModalHeader toggle={this.toggle}>Ruang Kelas</ModalHeader>
+                      <ModalHeader toggle={this.toggle}>{this.state.name}</ModalHeader>
                       <ModalBody>
                         <div className="m-b-20">
-                          <img src="http://i.imgur.com/OkuOTW7.jpg" alt="room" className="img-responsive"/>
+                          <img src={this.state.image} alt="room" className="img-responsive"/>
                         </div>
                         <FormGroup>
-                          <Label for="exampleText">Room's Description</Label>
-                          <Input type="textarea" name="text" id="exampleText" value={room.descr} />
+                          <Label for="exampleText">Room Name</Label>
+                          <Input type="textarea" name="text" id="exampleText" defaultValue={this.state.name} onChange={(e)=>this.setState({name: e.target.value})}/>
                         </FormGroup>
                         <FormGroup>
-                          <Label for="exampleSelect">Select</Label>
-                          <Input type="select" name="select" id="exampleSelect">
+                          <Label for="exampleText">Room's Description</Label>
+                          <Input type="textarea" name="text" id="exampleText" defaultValue={this.state.descr} onChange={(e)=>this.setState({descr: e.target.value})}/>
+                        </FormGroup>
+                        <FormGroup>
+                          <Label for="exampleSelect">Room's Image</Label>
+                          <Input type="text" name="text" id="exampleText" defaultValue={this.state.image} onChange={(e)=>this.setState({image: e.target.value})}/>
+                          {/* <Input type="select" name="select" id="exampleSelect">
                             <option>Ruang Keluarga</option>
                             <option>Kamar Tidur</option>
                             <option>Dapur</option>
@@ -118,18 +126,18 @@ class MyDetailProperty extends React.Component {
                             <option>Kamar Mandi</option>
                             <option>Kamar Kost</option>
                             <option>Ruang Serba Guna</option>
-                          </Input>
+                          </Input> */}
                         </FormGroup>
                       </ModalBody>
                       <ModalFooter>
-                        <Button color="primary" onClick={this.toggle}>Save</Button>{' '}
-                          <Button color="secondary" onClick={this.toggle}>Remove</Button>
+                        <Button color="primary" onClick={()=> this.edit(this.state.rId,this.state.index)}>Save</Button>{' '}
+                          <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                         </ModalFooter>
                       </Modal>
                   </div>
                 </div>
+              })}
               </div>
-            })}
               <hr />
               <h5>Testimony</h5>
               <p>asli sama kayak foto</p>
@@ -140,6 +148,46 @@ class MyDetailProperty extends React.Component {
       }
       </div>
     )
+  }
+
+  edit(rId,index){
+    const propStatus = this.props.match.params.status
+    const token = JSON.parse(localStorage.getItem('token')).token
+    const editedRoom = this.state.property
+    let updatedRoom = {
+      name: this.state.name,
+      descr: this.state.descr,
+      image: this.state.image
+    }
+    editedRoom._roomId[index] = updatedRoom
+    if(propStatus === 'rent'){
+      axios.put(api+`/roomRent/${rId}`,updatedRoom,{headers:{token:token}})
+      .then(rr=>{
+        this.setState({
+          modal: !this.state.modal,
+          property: editedRoom
+        })
+      })
+    } else{
+      axios.put(api+`/roomSell/${rId}`,updatedRoom,{headers:{token:token}})
+      .then(rs=>{
+        this.setState({
+          modal: !this.state.modal,
+          property: editedRoom
+        })
+      })
+    }
+  }
+
+  onEdit(rId,name,image,descr,index){
+    this.setState({
+      modal: !this.state.modal,
+      rId: rId,
+      name: name,
+      image: image,
+      descr: descr,
+      index: index
+    })
   }
 
   componentWillMount(){
