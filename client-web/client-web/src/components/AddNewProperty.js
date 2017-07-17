@@ -13,7 +13,7 @@ class AddNewProperty extends React.Component {
       cities: []
     }
   }
-  
+
   tes(){
     console.log(this.state.cities);
   }
@@ -42,8 +42,8 @@ class AddNewProperty extends React.Component {
     return (
       <div>
         <form>
-          <div className="b-a b-grey" style={{borderRadius:15}}>
-            <h5 className="text-center bg-gray padding-15" style={{borderRadius: '15px 15px 0 0'}}>Property Detail</h5>
+          <div className="b-a b-grey" style={{borderRadius:4}}>
+            <h5 className="text-center bg-gray padding-15" style={{borderRadius: '4px 4px 0 0'}}>Property Detail</h5>
             <div className="padding-15">
               <div className="row m-t-20">
                 <div className="col-lg-3">
@@ -203,7 +203,7 @@ class AddNewProperty extends React.Component {
     )
   }
   submitData(e){
-    e.preventDefault()  
+    e.preventDefault()
     let property = {
       price:{},
       detail:{}

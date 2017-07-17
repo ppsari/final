@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import MenuBar from '../components/MenuBar'
 import Footer from '../components/Footer'
 import prettyMoney from '../helpers/prettyMoney'
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
 
 import {getDetailPropertyRent,getDetailPropertySell} from '../actions/index.js'
 
@@ -13,12 +14,16 @@ class DetailProperty extends React.Component {
     this.state = {
        id : this.props.match.params.id,
       status : this.props.match.params.status,
-      propStatus: ""
+      propStatus: "",
+      modal: false
     }
+    this.toggle = this.toggle.bind(this);
   }
 
-  componentDidMount () {
-    console.log('this.props.property');
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
   }
 
   render () {
@@ -43,6 +48,10 @@ class DetailProperty extends React.Component {
                     <img src={this.props.property.image} alt="preview" className="img-responsive" />
                     <div className="price-container">
                       <h5 className="text-right">{prettyMoney(this.props.property.price.amount)}</h5>
+                      {this.props.property.status == "rent"
+                        ? <p className="text-right m-b-0" style={{marginTop: '-10px'}}><small>/ {this.props.property.price.descr}</small></p>
+                        : null
+                      }
                     </div>
                   </div>
                   <div className="col-4">
@@ -57,10 +66,10 @@ class DetailProperty extends React.Component {
                     <h5 className="light m-t-20">Owner</h5>
                     <p className="m-t-0">{this.props.property._ownerId.username}</p>
                     <h5 className="light m-t-20">Post On</h5>
-                    <p className="m-t-0">{this.props.property.createdDate}</p>
+                    <p className="m-t-0">{this.props.property.createdDate.split('T')[0]}</p>
                     <div className="absolute-bottom flex-center">
                       <button type="button" onClick={()=> this.enter()} className="theme-btn btn-style-one btn-same"><span className="extra-bold">VISIT</span></button>
-                      <button type="button" className="theme-btn btn-style-three btn-same"><span className="extra-bold">REQUEST</span></button>
+                      <button type="button" className="theme-btn btn-style-three btn-same" onClick={this.toggle}><span className="extra-bold">REQUEST</span></button>
                     </div>
                   </div>
                 </div>
@@ -125,6 +134,25 @@ class DetailProperty extends React.Component {
 
           </div>)
         }
+        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+          <ModalHeader toggle={this.toggle}>
+            <span className="light">Send Request</span>
+          </ModalHeader>
+          <ModalBody>
+            <div className="text-center">
+              <img src="/img/send-request.png" alt="request" />
+              <p className="text-center" style={{fontSize: 13, color:'gray'}}>Notify the owner of this property, that you interest in.</p>
+            </div>
+            <FormGroup>
+              <Label for="exampleText">Message</Label>
+              <Input type="textarea" name="text" id="exampleText" placeholder="Your message here"/>
+            </FormGroup>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.toggle}>Send</Button>{' '}
+              <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+            </ModalFooter>
+          </Modal>
         <Footer />
       </div>
     )
