@@ -71,14 +71,14 @@ const addRequest = (req,res) => {
   let requestDt = req.body;
   let decoded = login.getUserDetail(req.headers.token);
   requestDt._userId = decoded._id;
-  // if (typeof req.body['price.amount'] != 'undefined')
   let Prop = requestDt['connections.kind'] == 'PropertyRent' ? PropertyRent: PropertySell;
   if (requestDt._sellerId === requestDt._userId) res.send({err:'You cant rent/sell your own product'})
   else {
 
+    let body =  (typeof requestDt.note !== 'undefined' && requestDt.note !== '' ? requestDt.note: 'You got a request!')
     let msg = {
       subject: 'There is a request for you',
-      body: 'Please check your request page to approve/reject'
+      body: body
     }
 
     Prop.findById(requestDt['connections._propertyId'])
@@ -91,7 +91,7 @@ const addRequest = (req,res) => {
         //cek ketersediaan
         let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
         if (idx > -1) res.send({err:'Booking Date are not available'})
-      }
+      }:
 
       let newrequest = new Request(requestDt);
       newrequest.save((err,request) => {
@@ -115,16 +115,22 @@ const deleteRequest = (req,res) => {
     if (err) res.send({err: 'Invalid Request'})
     else if (request._sellerId != decoded._id && decoded.role !== 'admin') res.send({err:'Invalid access'});
     else {
-      let subject = 'Your request is ' +requestDt.response;
-      let body = 'Your request is ' +requestDt.response;
-      let msg = {
-        subject: subject,
-        body: body
-      }
 
+      let subject = 'Your request is ' +requestDt.response;
+      // let body = 'Your request is ' +requestDt.response;
+
+      let msg = {
+        subject: subject
+        // body: body
+      }
+      // res.send(decoded)
+      // console.log(request)
       User.findById(request._userId, (err,user)=> {
+
         if (err) res.send({err:err})
         else if (requestDt.response === 'approved') {
+
+          msg.body = `Your request has been approved. For further information please contact ${decoded.name} - ${decoded.phone} / ${decoded.email}`
           let transDt = req.body;
           transDt._userId = request._userId;
           transDt._sellerId = decoded._id;
@@ -166,6 +172,9 @@ const deleteRequest = (req,res) => {
 
               }
             } else {
+
+              msg.body = `Your request has been rejected `;
+              msg.body += (typeof requestDt.note === 'undefined' || requestDt.note === '') ? '': `because ${requestDt.note}`;
               trans.save((err,newtrans) => {
                 if (err) {
                   let err_msg = [];
@@ -229,6 +238,7 @@ const deleteRequest = (req,res) => {
               contact.contact(user,msg);
             }
           })
+
         }
       })
     }
