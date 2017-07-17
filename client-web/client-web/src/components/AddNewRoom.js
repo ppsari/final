@@ -11,12 +11,6 @@ class AddNewRoom extends React.Component {
     }
   }
 
-  addRoom () {
-    this.setState({
-      isAddRoom: true,
-    })
-  }
-
   render () {
     return (
       <div>
@@ -94,10 +88,22 @@ class AddNewRoom extends React.Component {
 
   addRoom(){
     const token = JSON.parse(localStorage.getItem('token'))
-    axios.post(api+``,{},{headers:{token:token}})
-    .then(res=>{
-      console.log(res.data);
+    const status = this.props.match.params.status
+    this.setState({
+      isAddRoom: true,
     })
+    if(status === 'rent'){
+      axios.post(api+`/propertyRent`,{},{headers:{token:token}})
+      .then(res=>{
+        console.log(res.data);
+      })
+    } else{
+      axios.post(api+`/propertySell`,{},{headers:{token:token}})
+      .then(res=>{
+        console.log(res.data);
+      })
+    }
+
 
   }
 

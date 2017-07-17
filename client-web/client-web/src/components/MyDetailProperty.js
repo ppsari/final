@@ -36,7 +36,7 @@ class MyDetailProperty extends React.Component {
             <div className="flex-space-between m-b-30">
               <div>
                 <h4 className="extra-bold">{this.state.property.name}</h4>
-                <small><span className="lnr lnr-map-marker m-r-5"></span><span className="m-r-5">{this.state.property.city}</span> |  <span className="lnr lnr-home m-l-5 m-r-5"></span>For {this.state.property.status}</small>
+                <small><span className="lnr lnr-map-marker m-r-5"></span><span className="m-r-5">{this.state.property.city}</span> |  <span className="lnr lnr-home m-l-5 m-r-5"></span>For <b>{this.state.property.status}</b></small>
               </div>
               <div className="pull-right">
                 <Link to='/dashboard/property/edit/:id'>
@@ -54,7 +54,7 @@ class MyDetailProperty extends React.Component {
             <div className="ListViewProperty">
               <div className="row">
                 <div className="col-6">
-                  <img className="img-responsive" src="https://s-media-cache-ak0.pinimg.com/736x/7f/be/50/7fbe50ec634c65709d7fe6ac267c4e6f--large-garage-plans-house-plans-large-family.jpg" alt="64x64" />
+                  <img className="img-responsive" src={this.state.property.image} alt="64x64" />
                 </div>
                 <div className="col-6">
                   <small>Price</small>
