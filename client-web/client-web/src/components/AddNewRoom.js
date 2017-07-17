@@ -8,6 +8,7 @@ class AddNewRoom extends React.Component {
     super()
     this.state = {
       isAddRoom: false,
+      rooms: []
     }
   }
 
@@ -16,6 +17,17 @@ class AddNewRoom extends React.Component {
       <div>
         <div className="b-a b-grey" style={{borderRadius:4}}>
           <h5 className="text-center bg-gray padding-15" style={{borderRadius: '4px 4px 0 0'}}>Room Detail</h5>
+          <div className='row'>
+          {(this.state.rooms.length === 0)
+            ? (<h1>babi</h1>)
+            : (this.state.rooms.map((room,index)=>{
+              return <div className='col-3' key={index}>
+                      <h6>{room.name}</h6>
+                      <img src={room.image} key={index} className='img-responsive'/>
+                      <a className="btn btn-danger" onClick={()=>this.deleteRoom(room._id)}><span className="glyphicon glyphicon-trash">Delete</span></a>
+                     </div>
+            }))}
+          </div>
           <div className="padding-15">
             <div className="panel panel-default">
               <div className="panel-heading">
@@ -33,7 +45,7 @@ class AddNewRoom extends React.Component {
                       <div className="pull-center-flex">
                         <h2 className="text-center">+</h2>
                       </div>
-                      <button type="button" onClick={() => {this.addRoom()}}><small>New Room</small></button>
+                      <button type="button" onClick={() => {this.isAdd()}}><small>New Room</small></button>
                     </div>
                   </div>
                 </div>
@@ -70,7 +82,7 @@ class AddNewRoom extends React.Component {
                       <textarea type="textarea" className="form-control" ref="descr" required />
                     </div>
                     <div className="col-12 text-center m-t-20">
-                      <button type="submit" className="button btn-round">
+                      <button type="submit" className="button btn-round" onClick={(e)=>this.addRoom(e)}>
                         Save Room
                       </button>
                     </div>
@@ -86,29 +98,89 @@ class AddNewRoom extends React.Component {
     )
   }
 
-  addRoom(){
-    const token = JSON.parse(localStorage.getItem('token'))
-    const status = this.props.match.params.status
+  isAdd(){
     this.setState({
       isAddRoom: true,
     })
+  }
+
+  addRoom(e){
+    e.preventDefault()
+    const token = JSON.parse(localStorage.getItem('token')).token
+    const status = this.props.match.params.status
+    const propId = this.props.match.params.idproperty
+    let newRoom = {
+      name: this.refs.name.value,
+      image: this.refs.image.value,
+      descr: this.refs.descr.value,
+    }
     if(status === 'rent'){
-      axios.post(api+`/propertyRent`,{},{headers:{token:token}})
-      .then(res=>{
-        console.log(res.data);
+      axios.post(api+`/roomRent/${propId}`,newRoom,{headers:{token:token}})
+      .then(pr=>{
+        console.log(pr.data);
+        this.setState({
+          rooms: this.state.rooms.concat(pr.data)
+        })
       })
     } else{
-      axios.post(api+`/propertySell`,{},{headers:{token:token}})
-      .then(res=>{
-        console.log(res.data);
+      axios.post(api+`/roomSell/${propId}`,newRoom,{headers:{token:token}})
+      .then(ps=>{
+        this.setState({
+          rooms: this.state.rooms.concat(ps.data)
+        })
+      })
+    }
+  }
+
+  deleteRoom(rId){
+    console.log(rId);
+    const token = JSON.parse(localStorage.getItem('token')).token
+    const status = this.props.match.params.status
+    const propId = this.props.match.params.idproperty
+    if(window.confirm(`Are You Sure You Want to Delete This Room?`)){
+      if(status === 'rent'){
+        axios.delete(api+`/roomRent/${rId}`,{headers:{token:token}})
+        .then(pr=>{
+          console.log(pr.data);
+          this.setState({
+            rooms: this.state.rooms.concat(pr.data)
+          })
+        })
+      } else{
+        axios.delete(api+`/roomSell/${rId}`,{headers:{token:token}})
+        .then(ps=>{
+          this.setState({
+            rooms: this.state.rooms.concat(ps.data)
+          })
+        })
+      }
+    } else{
+      return false
+    }
+  }
+
+
+  componentWillMount(){
+    const status = this.props.match.params.status
+    const token = JSON.parse(localStorage.getItem('token')).token
+    const propId = this.props.match.params.idproperty
+    if(status === 'rent'){
+      axios.get(api+`/roomRent/all/${propId}`,{headers:{token:token}})
+      .then(pr=>{
+        console.log(pr.data);
+        this.setState({
+          rooms: pr.data
+        })
+      })
+    } else{
+      axios.get(api+`/roomRent/all/${propId}`,{headers:{token:token}})
+      .then(ps=>{
+        this.setState({
+          rooms: ps.data
+        })
       })
     }
 
-
-  }
-
-  componentDidMount(){
-    axios.get()
   }
 
 }
