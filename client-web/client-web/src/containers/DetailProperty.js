@@ -139,7 +139,10 @@ class DetailProperty extends React.Component {
             <span className="light">Send Request</span>
           </ModalHeader>
           <ModalBody>
-            <p style={{fontSize: 12}}>Notify the owner of this property, that you interest in.</p>
+            <div className="text-center">
+              <img src="/img/send-request.png" alt="request" />
+              <p className="text-center" style={{fontSize: 13, color:'gray'}}>Notify the owner of this property, that you interest in.</p>
+            </div>
             <FormGroup>
               <Label for="exampleText">Message</Label>
               <Input type="textarea" name="text" id="exampleText" placeholder="Your message here"/>
