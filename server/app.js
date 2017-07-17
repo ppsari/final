@@ -41,7 +41,7 @@ app.use('/api/testimony', testimony);
 app.use('/upload', upload);
 
 
-let env = 'test';
+let envi = 'test';
 // let env = 'local_dev'
 // let env = app.settings.env;
 let db_config = {
@@ -50,9 +50,9 @@ let db_config = {
   test: 'mongodb://admin:admin@ds159112.mlab.com:59112/room360dbtes'
 }
 
-mongoose.connect(db_config[env],(err,res)=>{
-  console.log(db_config[env])
-  console.log(err?err:'Berhasil connect ke db '+db_config[env]);
+mongoose.connect(db_config[envi],(err,res)=>{
+  console.log(db_config[envi])
+  console.log(err?err:'Berhasil connect ke db '+db_config[envi]);
 })
 
 
