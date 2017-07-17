@@ -37,9 +37,7 @@ const getNewest = (req,res) => {
 const getPropsByOwner = (req,res) => {
   let decoded = req.headers.hasOwnProperty('token') ? login.getUserDetail(req.headers.token) : false;
   if (decoded)
-    Props.find({_ownerId: decoded._id})
-    .populate('_categoryId _accessId _roomId')
-    .exec((err,properties) => {
+    Props.find({_ownerId: decoded._id}, (err,properties) => {
       res.send(err ? {err: err} : properties);
     })
   else res.send({err : 'You dont have access'});
