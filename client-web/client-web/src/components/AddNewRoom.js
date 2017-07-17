@@ -24,7 +24,7 @@ class AddNewRoom extends React.Component {
               return <div className='col-3' key={index}>
                       <h6>{room.name}</h6>
                       <img src={room.image} key={index} className='img-responsive'/>
-                      <a className="btn btn-danger" onClick={()=>this.deleteRoom(room._id)}><span className="glyphicon glyphicon-trash">Delete</span></a>
+                      <a className="btn btn-danger" onClick={()=>this.deleteRoom(room._id,index)}><span className="glyphicon glyphicon-trash">Delete</span></a>
                      </div>
             }))}
           </div>
@@ -132,7 +132,7 @@ class AddNewRoom extends React.Component {
     }
   }
 
-  deleteRoom(rId){
+  deleteRoom(rId,index){
     const token = JSON.parse(localStorage.getItem('token')).token
     const status = this.props.match.params.status
     const propId = this.props.match.params.idproperty
@@ -140,16 +140,15 @@ class AddNewRoom extends React.Component {
       if(status === 'rent'){
         axios.delete(api+`/roomRent/${rId}`,{headers:{token:token}})
         .then(pr=>{
-          console.log(pr.data);
           this.setState({
-            rooms: this.state.rooms.concat(pr.data)
+            rooms: this.state.rooms.splice(index,1)
           })
         })
       } else{
         axios.delete(api+`/roomSell/${rId}`,{headers:{token:token}})
         .then(ps=>{
           this.setState({
-            rooms: this.state.rooms.concat(ps.data)
+            rooms: this.state.rooms.splice(index,1)
           })
         })
       }
