@@ -17,6 +17,11 @@
 
   .footer-distributed .footer-left{
   	float: left;
+    min-width: 20%;
+  }
+  .footer-links a {
+    display: block !important;
+    margin-top: 10px;
   }
 
   /* The company logo */
@@ -57,6 +62,9 @@
   .footer-distributed .footer-icons{
   	margin-top: 40px;
   }
+  .footer-icons i {
+    color: white;
+  }
 
   .footer-distributed .footer-icons a{
   	display: inline-block;
@@ -89,11 +97,6 @@
   }
 
   /* The contact form */
-
-  .footer-distributed form{
-  	display: inline-block;
-  }
-
   .footer-distributed form input,
   .footer-distributed form textarea{
   	display: block;
