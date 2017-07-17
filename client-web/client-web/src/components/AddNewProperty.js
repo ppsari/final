@@ -59,7 +59,7 @@ class AddNewProperty extends React.Component {
                 </div>
                 <div className="col-lg-8 m-b-20">
                   <div className="input-group">
-                    <input type="text" className="form-control" ref="image" />
+                    <input type="text" className="form-control" ref="image" placeholder="add image url here" />
                   </div>
                 </div>
                 <div className="col-lg-3">
@@ -193,7 +193,7 @@ class AddNewProperty extends React.Component {
                     (e)=>{
                       this.submitData(e)
                     }
-                  }>Save and Next
+                  }>Save
                 </button>
               </div>
             </div>
@@ -236,7 +236,11 @@ class AddNewProperty extends React.Component {
         headers: {'token': token}
       })
       .then(response=>{
-        this.props.save()
+        if(response.data.hasOwnProperty('err')){
+          console.log(response.data.err);
+        } else {
+          alert('Success Add New Property')
+        }
         console.log(`${JSON.stringify(response.data)}`);
       })
     } else{
