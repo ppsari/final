@@ -20,12 +20,9 @@ export default class Register extends React.Component {
     axios.post(`${api}/register`, user)
     .then((data) => {
       console.log(data.data);
+      window.location = '/login'
     })
     .catch(err => console.log(err))
-
-    console.log(user);
-    register(this.email.value, this.pw.value)
-    .catch(e => this.setState(setErrorMsg(e)))
   }
 
   render () {

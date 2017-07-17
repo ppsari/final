@@ -1,28 +1,40 @@
 import React from 'react'
 import axios from 'axios'
+import Countries from 'countries-cities'
 
-export default class AddNewProperty extends React.Component {
-  constructor () {
-    super()
+const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+
+class AddNewProperty extends React.Component {
+  constructor (props) {
+    super(props)
     this.state = {
       access: null,
       category: null,
+      cities: []
     }
+  }
+  
+  tes(){
+    console.log(this.state.cities);
   }
 
 
-  componentDidMount () {
-    axios.get('http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api/access')
+  componentWillMount () {
+    axios.get(api+'/access')
     .then(response => {
       this.setState({
         access: response.data
       })
     })
-    axios.get('http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api/category')
+    axios.get(api+'/category')
     .then(response => {
       this.setState({
         category: response.data
       })
+    })
+    let cities = Countries.getCities('indonesia')
+    this.setState({
+      cities:cities
     })
   }
 
@@ -55,7 +67,18 @@ export default class AddNewProperty extends React.Component {
                 </div>
                 <div className="col-lg-8 m-b-20">
                   <select type="select" className="form-control" ref="city">
-                    <option value="Jakarta">Jakarta</option>
+                    {this.state.cities.map((city,index)=>{
+                      return <option key={index} value={city}>{city}</option>
+                    })}
+                  </select>
+                </div>
+                <div className="col-lg-3">
+                  <p>Property Status</p>
+                </div>
+                <div className="col-lg-8 m-b-20">
+                  <select type="select" className="form-control" ref="status">
+                    <option value='Rent'>Rent</option>
+                    <option value='Sell'>Sell</option>
                   </select>
                 </div>
                 <div className="col-lg-3">
@@ -167,8 +190,8 @@ export default class AddNewProperty extends React.Component {
               <div className="col-12 text-center m-t-20">
                 <button type="submit" className="button btn-round"
                   onClick={
-                    ()=>{
-                      this.submitData()
+                    (e)=>{
+                      this.submitData(e)
                     }
                   }>Save and Next
                 </button>
@@ -179,7 +202,8 @@ export default class AddNewProperty extends React.Component {
       </div>
     )
   }
-  submitData(){
+  submitData(e){
+    e.preventDefault()  
     let property = {
       price:{},
       detail:{}
@@ -206,6 +230,25 @@ export default class AddNewProperty extends React.Component {
         property._accessId.push(inputElements[i].value)
       }
     }
-    console.log(property);
+    let token = JSON.parse(localStorage.getItem('token')).token
+    if(this.refs.status.value === 'Rent'){
+      axios.post(api+`/propertyRent`,property,{
+        headers: {'token': token}
+      })
+      .then(response=>{
+        this.props.save()
+        console.log(`${JSON.stringify(response.data)}`);
+      })
+    } else{
+      axios.post(api+`/propertySell`,property,{
+        headers: {token: token}
+      })
+      .then(response=>{
+        this.props.save()
+        console.log(`${JSON.stringify(response.data)}`);
+      })
+    }
   }
 }
+
+export default AddNewProperty

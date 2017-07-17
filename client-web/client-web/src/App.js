@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
+
 import store from './store/configureStore';
 import './App.css';
 // import { firebaseAuth } from './config/constants';
@@ -29,7 +30,7 @@ function PublicRoute ({component: Component, authed, ...rest}) {
     <Route
       {...rest}
       render={(props) => authed === false
-        ? <Component {...props} />
+      ? <Component {...props} />
       : <Redirect to='/dashboard/profile' />
       }
     />

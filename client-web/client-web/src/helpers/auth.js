@@ -1,4 +1,5 @@
 import { ref, firebaseAuth, uiConfig, ui } from '../config/constants'
+import { withRouter } from 'react-router-dom'
 
 export function register (email, pw) {
   return firebaseAuth().createUserWithEmailAndPassword(email, pw)
@@ -6,8 +7,8 @@ export function register (email, pw) {
 }
 
 export function logout () {
-  return console.log('hello');
-  // return localStorage.removeItem('user')
+  localStorage.clear()
+  window.location = '/login'
 }
 
 export function logoutFirebase () {

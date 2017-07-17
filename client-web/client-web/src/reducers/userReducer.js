@@ -9,12 +9,8 @@ const initialState = {
   }
 
 export default (state = initialState, action) => {
-  if(action.type === 'Edit Profile') {
-    return {...state,
-      phone: action.phone,
-      name: action.name,
-      password: action.password
-    };
+  if(action.type === 'Get User') {
+    return action.payload
   }
   else if (action.type === 'LOGIN') {
     return state = action.payload

@@ -77,21 +77,38 @@ export const loginAction = (data) => {
   }
 }
 
-export const editProfile = (data,id) =>{
+export const getProfile = (id) =>{
   return (dispatch) =>{
-    axios.get(api+`/user/${id}`,{
-      name: data.name,
-      phone: data.phone,
-      password: data.password
-    })
-    .then(response=>{
+    axios.get(api+`/user/${id}`)
+    .then((response,err)=>{
       dispatch({
-        type: 'Edit Profile',
+        type:'Get User',
         payload: response.data
       })
     })
-    .catch(err=>{
-      console.log(err);
+  }
+}
+
+export const editProfile = (data,id) =>{
+  let token = ""
+  if(localStorage.getItem('token')){
+    token = JSON.parse(localStorage.getItem('token')).token  
+  }
+  return (dispatch) =>{
+    axios.put(api+`/user/${id}`,{
+      username: data.username,
+      name: data.name,
+      phone: data.phone,
+      password: data.password
+    },{
+      headers: {token: token}
+    })
+    .then((response,err)=>{
+      let error = response.data.err.message
+        dispatch({
+          type:`Edit Profile`,
+          payload: error
+        })
     })
   }
 }
@@ -125,8 +142,3 @@ export const rejectRequest = (id) =>{
   }
 }
 
-export const getUserProperties = (id) =>{
-  return (dispatch)=>{
-    axios.get(api+`/api`)
-  }
-}
