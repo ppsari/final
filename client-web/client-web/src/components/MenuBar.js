@@ -24,7 +24,7 @@ class MenuBar extends React.Component {
         <Navbar color="faded" light toggleable>
           <div className="container">
             <NavbarToggler right onClick={this.toggle} />
-            <Link to="/">Rumah360</Link>
+            <Link to="/">Room360</Link>
             <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>
                 <NavItem>
@@ -33,6 +33,14 @@ class MenuBar extends React.Component {
                   : <NavLink onClick={()=> this.sellProp()}>Sell Your Property</NavLink>
                 }
                 </NavItem>
+                { localStorage.getItem('user') !== null
+                  ? (<NavItem>
+                      <Link to="Dashboard/Profile">
+                        <NavLink>Dashboard</NavLink>
+                      </Link>
+                  </NavItem>)
+                  : null
+                }
                 { localStorage.getItem('user') !== null
                   ? (<NavItem>
                       <NavLink onClick={() => {
