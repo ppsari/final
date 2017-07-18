@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { editProfile , getProfile } from '../actions/index.js'
-
+import Loader from './Loader.js'
 
 class ShowProfile extends React.Component {
   constructor(props){
@@ -18,10 +18,7 @@ class ShowProfile extends React.Component {
           <div className="col-lg-8 offset-lg-2">
             <h4>Your Profile</h4>
           {(this.state.user === null)
-          ? <img
-            src='http://testmadina.com/Images/loading1.gif'
-            style={{height:200, width: 200,margin:'auto'}}
-            alt="profile" />
+          ? <Loader />
           : <div className="row m-t-20">
              <div className="col-lg-3">
                 <p>Username</p>
@@ -60,7 +57,7 @@ class ShowProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="password" className="form-control rounded-input"  defaultValue={this.state.user.password} ref="password" />
+                  <input type="password" className="form-control rounded-input" placeholder="password" ref="password" />
                 </div>
               </div>
           </div>
