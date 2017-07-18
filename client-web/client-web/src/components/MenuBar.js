@@ -49,9 +49,7 @@ class MenuBar extends React.Component {
                 </NavItem>
                 { localStorage.getItem('user') !== null
                   ? (<NavItem>
-                      <Link to="Dashboard/Profile">
-                        <NavLink>Dashboard</NavLink>
-                      </Link>
+                      <Link to="/dashboard/profile" className="nav-link">Dashboard</Link>
                     </NavItem>)
                   : <h1></h1>
                 }

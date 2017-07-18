@@ -57,7 +57,7 @@ class ShowProfile extends React.Component {
               </div>
               <div className="col-lg-8 m-b-20">
                 <div className="input-group">
-                  <input type="password" className="form-control rounded-input" placeholder="password" ref="password" />
+                  <input type="password" className="form-control rounded-input" placeholder="********" ref="password" />
                 </div>
               </div>
           </div>

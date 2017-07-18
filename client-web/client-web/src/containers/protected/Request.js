@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
 
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
 import {acceptRequest,rejectRequest,getRequest} from '../../actions/index.js'
 
 const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
@@ -10,12 +11,17 @@ class Request extends React.Component {
   constructor(props) {
     super(props)
     this.toggleClass = this.toggleClass.bind(this)
+    this.toggle = this.toggle.bind(this)
     this.state = {
       active: false,
       request: null,
       reason: "",
       isReason: false,
-      id:""
+      id:"",
+      index: "",
+      propertyId: "",
+      kind: "",
+      modal: false,
     }
   }
   toggleClass() {
@@ -24,6 +30,11 @@ class Request extends React.Component {
       active: !currentState
     })
   }
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
 
   render () {
     return (
@@ -31,7 +42,6 @@ class Request extends React.Component {
         <div className="col-lg-10 offset-lg-1">
           <h4>Request List</h4>
             <div className="table-responsive m-t-30">
-              <button onClick={()=> this.tes()}>tes</button>
               {(this.state.request === null)
               ? (
                 <img
@@ -60,24 +70,32 @@ class Request extends React.Component {
                       </h6>
                     </td>
                     <td className="list-table p-b-0 p-t-25">
-                      <button type="submit" className="theme-btn btn-style-one btn-small" onClick={()=> this.accept(r._id)} >
+                      <button type="submit" className="theme-btn btn-style-one btn-small" onClick={()=> this.accept(r._id,index,r.connections._propertyId._id,r.connections._propertyId.status)} >
                         Accept
                       </button>
-                      <button type="submit" className="theme-btn btn-style-three btn-small"  onClick={()=> this.reason(r._id)}>
+                      <button type="submit" className="theme-btn btn-style-three btn-small"  onClick={()=> this.reason(r._id,index,r._propertyId,r.status)}>
                         Reject
                       </button>
                     </td>
                   </tr>
                   })}
-                  {(this.state.isReason === true)
-                  ?(<tr style={this.state.active ? null : {display: 'none'}} >
-                    <td colSpan="4" className="bg-gray">
-                      <input type="text" placeholder="please input your reason if necessary (optional)" onChange={(e)=> this.setState({reason : e.target.value})}/>
-                      <button type="submit" className="theme-btn btn-style-three btn-small"  onClick={()=> this.reject(this.state.id)}>
-                        Reject
-                      </button>
-                    </td>
-                   </tr>)
+                  {(this.state.modal === true)
+                  ?(<Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                    <ModalHeader toggle={this.toggle}>Reason</ModalHeader>
+                    <ModalBody>
+                      <FormGroup>
+                        <Label for="reason">Reason why you reject</Label>
+                        <Input type="textarea" name="text" id="reason" onChange={(e)=>{this.setState({reason: e.target.value})}}/>
+                      </FormGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="primary" onClick={() => {
+                          this.reject(this.state.index)
+                          this.toggle()
+                        }}>Reject</Button>{' '}
+                      <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                      </ModalFooter>
+                    </Modal>)
                   :(<h1></h1>)
                   }
                   <tr style={this.state.active ? null : {display: 'none'}} >
@@ -97,23 +115,32 @@ class Request extends React.Component {
     )
   }
 
-  reason(id){
+  reason(id,index){
+    console.log('masuk');
     this.setState({
-      isReason: true,
-      id: id
+      modal: true,
+      id: id,
+      index: index
     })
   }
 
-  accept(id){
+  accept(id,index,propId,kind){
     const token = JSON.parse(localStorage.getItem('token')).token
-    this.props.acceptRequest(id,token)
+    this.props.acceptRequest(id,token,propId,kind)
+    this.state.request.splice(index,1)
+    this.setState({
+      request: this.state.request
+    })
+    console.log(token);
   }
 
-  reject(id){
+  reject(index){
     const token = JSON.parse(localStorage.getItem('token')).token
-    this.props.rejectRequest(id,token,this.state.reason)
+    this.props.rejectRequest(this.state.id,token,this.state.reason)
+    this.state.request.splice(index,1)
     this.setState({
-      isReason: false
+      isReason: false,
+      request: this.state.request
     })
   }
 
@@ -145,8 +172,8 @@ const mapStateToProps = (s) =>{
 
 const mapDispatchToProps = (dispatch)=>{
   return{
-    acceptRequest: (id,token) => dispatch(acceptRequest(id,token)),
-    rejectRequest: (id,token,reason) => dispatch(rejectRequest(id,token,reason)),
+    acceptRequest: (id,token,propId,kind) => dispatch(acceptRequest(id,token,propId,kind)),
+    rejectRequest: (id,token,reason,propId,kind) => dispatch(rejectRequest(id,token,reason)),
     getRequest: (token) => dispatch(getRequest(token))
   }
 }
