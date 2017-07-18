@@ -6,7 +6,7 @@ import Footer from '../components/Footer'
 import prettyMoney from '../helpers/prettyMoney'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
 
-import {getDetailPropertyRent,getDetailPropertySell} from '../actions/index.js'
+import {getDetailPropertyRent,getDetailPropertySell,sendRequest} from '../actions/index.js'
 
 class DetailProperty extends React.Component {
   constructor (props) {
@@ -15,7 +15,8 @@ class DetailProperty extends React.Component {
       id : this.props.match.params.id,
       status : this.props.match.params.status,
       propStatus: "",
-      modal: false
+      modal: false,
+      request: ""
     }
     this.toggle = this.toggle.bind(this);
   }
@@ -69,9 +70,9 @@ class DetailProperty extends React.Component {
                     <p className="m-t-0">{this.props.property.createdDate.split('T')[0]}</p>
                     <div className="absolute-bottom flex-center">
                       <button type="button" onClick={()=> this.enter()} className="theme-btn btn-style-one btn-same"><span className="extra-bold">VISIT</span></button>
-                      {(localStorage.getItem('token'))
+                      {(localStorage.getItem('token') && this.props.property._ownerId._id !== JSON.parse(localStorage.getItem('user'))._id)
                     ? <button type="button" className="theme-btn btn-style-three btn-same" onClick={this.toggle}><span className="extra-bold">REQUEST</span></button>
-                    : <button type="button" className="theme-btn btn-style-three btn-same"><span className="extra-bold">Login first to Request</span></button>
+                    : <h6></h6>
                     }
                     </div>
                   </div>
@@ -82,7 +83,6 @@ class DetailProperty extends React.Component {
               <h5 className="light m-t-20">Description</h5>
               <p>{this.props.property.descr}</p>
             </div>
-
             <div className="container">
               <div className="row p-t-20">
                 <div className="col-4">
@@ -148,7 +148,7 @@ class DetailProperty extends React.Component {
             </div>
             <FormGroup>
               <Label for="exampleText">Message</Label>
-              <Input type="textarea" name="text" id="exampleText" placeholder="Your message here" ref='request'/>
+              <Input type="textarea" name="text" id="exampleText" placeholder="Your message here" onChange={(e)=>this.setState({request:e.target.value})}/>
             </FormGroup>
           </ModalBody>
           <ModalFooter>
@@ -161,6 +161,14 @@ class DetailProperty extends React.Component {
     )
   }
 
+request(){
+  const token = JSON.parse(localStorage.getItem('token')).token
+  const message = this.state.request
+  const propId = this.props.property._id
+  const sellerId = this.props.property._ownerId
+  const status = this.props.property.status
+  this.props.sendRequest(token,message,propId,sellerId,status)
+}
 
 enter(){
  let vr = 'http://aws-website-room-23fnj.s3-website-us-east-1.amazonaws.com/'
@@ -202,7 +210,7 @@ const mapDispatchToProps = (dispatch) =>{
   return {
     getDetailPropertyRent: (id) => dispatch(getDetailPropertyRent(id)),
     getDetailPropertySell: (id) => dispatch(getDetailPropertySell(id)),
-
+    sendRequest: (token,message,propId,sellerId,status) => dispatch(sendRequest(token,message,propId,sellerId,status))
   }
 }
 

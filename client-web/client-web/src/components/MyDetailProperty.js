@@ -100,7 +100,7 @@ class MyDetailProperty extends React.Component {
                       className="btn-round p-l-20 p-r-20 p-t-5 p-b-5 btn-line btn-same"
                       style={{margin: 'auto'}}
                       onClick={()=> this.onEdit(room._id,room.name,room.image,room.descr,index)} >
-                      <small>Detail</small>
+                      <small onClick={()=>this.visit(this.state.status,room._id)}>Detail</small>
                     </button>
                     <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                       <ModalHeader toggle={this.toggle}>{this.state.name}</ModalHeader>
@@ -151,6 +151,11 @@ class MyDetailProperty extends React.Component {
     )
   }
 
+  visit(status,roomId){
+    let vr = 'http://aws-website-room-23fnj.s3-website-us-east-1.amazonaws.com/'
+      window.open(vr+`?key=${status}/${roomId}`,'_newtab')
+  }
+
   edit(rId,index){
     const propStatus = this.props.match.params.status
     const token = JSON.parse(localStorage.getItem('token')).token
@@ -194,6 +199,9 @@ class MyDetailProperty extends React.Component {
   componentWillMount(){
     const propId = this.props.match.params.id
     const propStatus = this.props.match.params.status
+    this.setState({
+      status: propStatus
+    })
 
     if(propStatus === `rent`){
       axios.get(api+`/propertyRent/${propId}`)

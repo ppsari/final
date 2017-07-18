@@ -125,34 +125,73 @@ export const editProfile = (data,id) =>{
   }
 }
 
-export const sendRequest = () =>{
 
+export const sendRequest = (token,message,propId,sellerId,status) =>{
+  return(dispatch)=>{
+    if(status === 'rent'){
+      axios.post(api+`/request`,{
+        _sellerId: sellerId,
+        kind: 'PropertyRent',
+        _propertyId: propId,
+        note: message
+      },{headers:{token:token}})
+      .then(response=>{
+        console.log(response.data);
+      })
+    } else{
+      axios.post(api+`/request`,{
+        _sellerId: sellerId,
+        kind: 'PropertySell',
+        _propertyId: propId,
+        note: message
+      },{headers:{token:token}})
+      .then(response=>{
+        console.log(response.data);
+      })
+    }
+  }
 }
 
-export const acceptRequest = (id) =>{
+export const getRequest = (token) =>{
+  return(dispatch) =>{
+    axios.get(api+`/request`,{headers:{token:token}})
+    .then(response=>{
+      dispatch({
+        type: 'Get Request',
+        payload: response.data
+      })
+    })
+  }
+}
+
+export const acceptRequest = (id,token,sellerId,userId) =>{
   return(dispatch)=>{
-    axios.delete(api+`/request${id}`,{
+    axios.delete(api+`/request/${id}`,{
+      _sellerId: sellerId,
+      _userId: userId,
       response: 'approved'
+    },{
+      headers: {token: token}
     })
     .then(response=>{
-      dispatch(
         console.log(response.data)
-      )
     })
   }
 }
 
 
-export const rejectRequest = (id) =>{
+export const rejectRequest = (id,token,sellerId,userId) =>{
   return(dispatch)=>{
     axios.delete(api+`/request/${id}`,{
+      _sellerId: sellerId,
+      _userId: userId,
       response: 'rejected'
+    },{
+      headers: {token: token}
     })
     .then(response=>{
-      dispatch(
-        console.log(response.data)
-
-      )
+      console.log(token);
+      console.log(response.data)
     })
   }
 }
