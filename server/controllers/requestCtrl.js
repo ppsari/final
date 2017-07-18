@@ -196,7 +196,7 @@ const deleteRequest = (req,res) => {
                     res.send(err? {err:err} : 'Success');
                     contact.contact(user,msg);
                   })
-                }
+                // }
               // })
 
 
