@@ -156,7 +156,7 @@ class MainSearch extends React.Component {
 const mapStateToProps = (state) => {
   return {
     dataSell: state.propertiesSell,
-    dataRent: state.propertiesRent,
+    dataRent: state.searchPropertiesRent,
   }
 }
 
