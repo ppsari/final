@@ -1,0 +1,26 @@
+.MainSearch input.form-control {
+  flex: 2 !important;
+}
+.MainSearch .input-group-addon {
+  background-color: #71b100;
+  border-color: #253d4a;
+  margin-right: -1px;
+}
+.MainSearch select.form-control {
+  margin-left: -2px;
+  background-color: #f1f4f9;
+}
+.MainSearch .select-caret {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 9;
+  pointer-events: none;
+}
+select.form-control:focus {
+  border-color: transparent;
+}
+select.form-control option:hover {
+  background-color: green !important;
+}

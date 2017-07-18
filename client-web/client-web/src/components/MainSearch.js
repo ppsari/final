@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Button, Form, Input } from 'reactstrap';
 import countries from 'countries-cities'
 
+import './MainSearch.css'
 import { searchProperty } from '../actions/index.js'
 
 require('dotenv').config()
@@ -17,22 +18,24 @@ class Example extends React.Component {
   render() {
     return (
       <div className="container MainSearch">
-        <Form className="row">
-          <div className="col-md-6 offset-md-2">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Find a Property that you want"
-              ref="search"
-              onChange={()=> this.searchProp()}/>
-          </div>
-          <div className="col-2">
-            <select onChange={()=> this.searchProp()} ref="city" className="form-control">
-              <option selected="selected" disabled>Select City</option>
-              {this.state.cities.map((city,index)=>{
-                  return <option key ={index} defaultValue={city}>{city}</option>
-              })}
-            </select>
+        <Form className="row style-three search-form">
+          <div className="col-md-8 offset-md-2">
+            <div className="input-group">
+              <div className="input-group-addon"><span className="text-white lnr lnr-magnifier"></span></div>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Find a Property that you want"
+                ref="search"
+                onChange={()=> this.searchProp()}/>
+              <select onChange={()=> this.searchProp()} ref="city" className="form-control">
+                <option selected="selected" disabled>Select City</option>
+                {this.state.cities.map((city,index)=>{
+                    return <option key ={index} defaultValue={city}>{city}</option>
+                })}
+              </select>
+              <div className="input-group-addon select-caret"><span className="text-white lnr lnr-chevron-down"></span></div>
+            </div>
           </div>
         </Form>
       </div>

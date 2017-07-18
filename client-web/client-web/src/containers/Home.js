@@ -20,7 +20,7 @@ class Home extends React.Component {
   render () {
     return (
       <div>
-        <MenuBar/>
+        <MenuBar home />
         <MainBanner />
         <MainSearch />
         <div className="container">

@@ -4,6 +4,7 @@ import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } f
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../helpers/auth';
+import './MenuBar.css'
 
 class MenuBar extends React.Component {
   constructor(props) {
@@ -22,7 +23,7 @@ class MenuBar extends React.Component {
     $(window).scroll(function() {
       var scroll = $(window).scrollTop();
 
-      if(scroll >= 200){
+      if(scroll >= 550){
         $(".MenuBar").addClass("active")
       } else {
         $(".MenuBar").removeClass("active")
@@ -33,8 +34,8 @@ class MenuBar extends React.Component {
   render() {
     // console.log(this.props.userFirebase);
     return (
-      <div className="MenuBar">
-        <Navbar color="faded" light toggleable>
+      <div className={`MenuBar ${this.props.home ? 'home' : ''}`}>
+        <Navbar className="style-three" light toggleable>
           <div className="container">
             <NavbarToggler right onClick={this.toggle} />
             <Link to="/">Room360</Link>
