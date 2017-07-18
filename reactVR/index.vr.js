@@ -58,19 +58,26 @@ class reactVR extends React.Component {
             let z = -2
             return (
               <View
-                style={{width: 0.8,
+                style={{
+                      width: 0.8,
                       height: 0.8,
                       margin: 0.1,
                       transform: [{translate: [x, y, z]},
                                   {rotateX: 0},
-                                  {rotateY: 30}]}}
+                                  {rotateY: 40}]}}
                 key={index}>
               <VrButton onClick={()=>this.go(img)}>
                 <Image
                 source={icon}
                 style={{width: 0.7,
                         height: 0.7}} />
-                <Text>{img.name}</Text>
+                <Text style={{
+                  fontWeight: '300',
+                  color: 'black',
+                  shadowColor: 'black',
+                  shadowOffset:{width: 0.5, height: 0.5},
+                  transform: [{rotateY: 15}]
+                }}>{img.name}</Text>
                </VrButton>
              </View>)
           })}
@@ -93,7 +100,7 @@ class reactVR extends React.Component {
         }
         <VrButton onClick={()=> this.desc(this.state.img)}>
           <Image
-            source={{uri:'https://upload.wikimedia.org/wikipedia/commons/1/13/Glossy_3d_blue_questionmark.png'}}
+            source={{uri:'http://i.imgur.com/pUcQRbV.png'}}
             style={{width: 0.5,
                     height: 0.5,
                     transform: [{translate: [5.1, 2.5, 0]},
@@ -102,19 +109,19 @@ class reactVR extends React.Component {
         {(this.state.rooms.length > this.state.space && this.state.isIcons === true)
         ? <VrButton onClick={()=> this.next()}>
            <Image
-            source={{uri:'https://upload.wikimedia.org/wikipedia/commons/1/12/Glossy_3d_blue_arrow_right.png'}}
-            style={{width: 0.7,
+            source={{uri:'http://i.imgur.com/BypPNZ9.png'}}
+            style={{width : 0.7,
                     height: 0.7,
                     transform: [{translate: [-3.8, 2.7, -4.2]},
                                 {rotateX: 0},
-                                {rotateY: 30}]}} />
+                                {rotateY: 215}]}} />
          </VrButton>
         :<VrButton></VrButton>
        }
         {(this.state.start > 0 && this.state.isIcons === true)
         ?<VrButton onClick={()=> this.back()}>
            <Image
-            source={{uri:'https://upload.wikimedia.org/wikipedia/commons/8/86/Glossy_3d_blue_arrow_left.png'}}
+            source={{uri:'http://i.imgur.com/BypPNZ9.png'}}
             style={{width: 0.7,
                     height: 0.7,
                     transform: [{translate: [-7, 2.9, -3.3]},
@@ -125,7 +132,7 @@ class reactVR extends React.Component {
        }
        <VrButton onClick={()=> this.minimize()}>
           <Image
-           source={{uri:'https://upload.wikimedia.org/wikipedia/commons/2/2b/Glossy_3d_blue_arrowhead_up.png'}}
+           source={{uri:'http://i.imgur.com/SefE9C8.png'}}
            style={{width: 0.15,
                    height: 0.15,
                    transform: [{translate: [-2.7, 4.7, -2]},
@@ -134,9 +141,9 @@ class reactVR extends React.Component {
         {(this.state.isIcons === true)
         ? <Text
           style={{
-            color: 'white',
+            fontWeight: '300',
+            color: 'black',
             fontSize: 0.2,
-            fontWeight: '100',
             layoutOrigin: [0.5, 0.5],
             paddingLeft: 0.2,
             paddingRight: 0.2,
@@ -150,9 +157,9 @@ class reactVR extends React.Component {
          </Text>
         : <Text
           style={{
-            color: 'white',
+            fontWeight: '300',
+            color: 'black',
             fontSize: 0.4,
-            fontWeight: '100',
             layoutOrigin: [0.5, 0.5],
             paddingLeft: 0.2,
             paddingRight: 0.2,
@@ -167,9 +174,10 @@ class reactVR extends React.Component {
       }
         <Text
           style={{
+            backgroundColor: 'black',
             color: 'white',
             fontSize: 0.3,
-            fontWeight: '100',
+            fontWeight: '200',
             layoutOrigin: [0.5, 0.5],
             paddingLeft: 0.2,
             paddingRight: 0.2,
@@ -189,8 +197,7 @@ class reactVR extends React.Component {
     const status = params.split('/')[0]
     const propId = params.split('/')[1]
     axios.get(api+`/api/${status}/${propId}`)
-    .then(response=>{
-      console.log(response.data._roomId);
+    .then((response,err)=>{
       this.setState({
         roomName: response.data._roomId[0].name,
         room: response.data._roomId[0].image,
