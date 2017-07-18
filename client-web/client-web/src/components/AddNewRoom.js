@@ -117,7 +117,6 @@ class AddNewRoom extends React.Component {
     if(status === 'rent'){
       axios.post(api+`/roomRent/${propId}`,newRoom,{headers:{token:token}})
       .then(pr=>{
-        console.log(pr.data);
         this.setState({
           rooms: this.state.rooms.concat(pr.data)
         })
