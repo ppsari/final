@@ -1,5 +1,5 @@
 import { ref, firebaseAuth, uiConfig, ui } from '../config/constants'
-import { withRouter } from 'react-router-dom'
+// import { withRouter } from 'react-router-dom'
 
 export function register (email, pw) {
   return firebaseAuth().createUserWithEmailAndPassword(email, pw)

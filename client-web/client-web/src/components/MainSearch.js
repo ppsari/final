@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Button, Form, Input } from 'reactstrap';
+import { Form } from 'reactstrap';
 import countries from 'countries-cities'
 import { Link } from 'react-router-dom';
+import $ from 'jquery';
 
 import './MainSearch.css'
 import { searchProperty } from '../actions/index.js'
@@ -32,11 +33,18 @@ class MainSearch extends React.Component {
                 className="form-control"
                 placeholder="Find a Property that you want"
                 ref="search"
-                onChange={()=> this.searchProp()}/>
+                onChange={(e)=> {
+                  if(e.target.value === ""){
+                    $(".search-result-panel").removeClass("active")
+                  } else {
+                    $(".search-result-panel").addClass("active")
+                  }
+                  this.searchProp()
+                }}/>
               <select onChange={()=> this.searchProp()} ref="city" className="form-control">
                 <option selected="selected" disabled >Select City</option>
                 {this.state.cities.map((city,index)=>{
-                    return <option key ={index} defaultValue={city}>{city}</option>
+                    return <option key ={index} value={city}>{city}</option>
                 })}
               </select>
               <div className="input-group-addon select-caret"><span className="text-white lnr lnr-chevron-down"></span></div>
@@ -49,6 +57,11 @@ class MainSearch extends React.Component {
                       </div>
                   </div>)
               : (<div className="shadow bg-white">
+                  <div className="row">
+                      <div className="col-12">
+                        <h5>Property For Rent</h5>
+                      </div>
+                  </div>
                 { (this.state.propertyRent.length === 0)
                   ? (<div className="row">
                         <div className="col-12">
@@ -58,14 +71,45 @@ class MainSearch extends React.Component {
                   : this.state.propertyRent.map((data, index) => {
                     return (
                       <Link to={`/detail/${data.status}/${data._id}`} key={index} >
-                        <div className="row">
-                            <div className="col-2">
+                        <div className="list-search">
+                          <div className="row">
+                            <div className="col-2 image-container-list">
                               <img src={data.image} alt="" className="img-responsive"/>
                             </div>
                             <div className="col-10">
-                              <h5>{data.name}</h5>
-                              <h6>{data.city}</h6>
+                              <h5 className="bold">{data.name}</h5>
+                              <h6><span className="lnr lnr-map-marker m-r-5 green"></span>{data.city} | for {data.status} </h6>
                             </div>
+                          </div>
+                        </div>
+                      </Link>
+                    )
+                  })
+                }
+                <div className="row">
+                    <div className="col-12">
+                      <h5>Property For Sell</h5>
+                    </div>
+                </div>
+                { (this.state.propertySell.length === 0)
+                  ? (<div className="row">
+                        <div className="col-12">
+                          <h5>No Result Found</h5>
+                        </div>
+                    </div>)
+                  : this.state.propertySell.map((data, index) => {
+                    return (
+                      <Link to={`/detail/${data.status}/${data._id}`} key={index} >
+                        <div className="list-search">
+                          <div className="row">
+                            <div className="col-2 image-container-list">
+                              <img src={data.image} alt="" className="img-responsive"/>
+                            </div>
+                            <div className="col-10">
+                              <h5 className="bold">{data.name}</h5>
+                              <h6><span className="lnr lnr-map-marker m-r-5 green"></span> {data.city} | for {data.status}</h6>
+                            </div>
+                          </div>
                         </div>
                       </Link>
                     )

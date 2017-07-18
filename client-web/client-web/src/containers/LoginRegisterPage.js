@@ -3,7 +3,7 @@ import Login from '../components/Login'
 import Register from '../components/Register'
 import MenuBar from '../components/MenuBar'
 import Footer from '../components/Footer'
-import SocialLogin from '../components/SocialLogin'
+// import SocialLogin from '../components/SocialLogin'
 
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';

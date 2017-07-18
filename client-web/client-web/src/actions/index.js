@@ -3,7 +3,7 @@ const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
 
 export const searchProperty = (prop,city) => {
   return (dispatch) =>{
-    if(city=="Select City") {
+    if(city === "Select City") {
       axios.get(api+`/propertyRent/searchENull?prop=${prop}`)
       .then((response,err)=>{
         dispatch({
