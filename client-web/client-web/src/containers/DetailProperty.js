@@ -83,8 +83,8 @@ class DetailProperty extends React.Component {
               <h5 className="light m-t-20">Description</h5>
               <p>{this.props.property.descr}</p>
             </div>
-            {(this.props.property.location.lat !== "" && this.props.property.location.lng !== "")
-            ?<GoogleMapReact
+            {/* {(this.props.property.location.lat !== "" && this.props.property.location.lng !== "")
+            ?(<div className="col-md-8"><GoogleMapReact
               style={{width:50, height:250,margin:10}}
                defaultCenter={{lat:this.props.property.location.lat, lng:this.props.property.location.lng}}
                defaultZoom= '15'
@@ -95,9 +95,9 @@ class DetailProperty extends React.Component {
                  lng={this.props.property.location.lng}
                  src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
                />
-             </GoogleMapReact>
-            :<h4>No location available</h4> 
-          }
+             </GoogleMapReact></div>)
+            :(<h4>No location available</h4>)
+          } */}
             <div className="container">
               <div className="row p-t-20">
                 <div className="col-4">

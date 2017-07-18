@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
+import GoogleMapReact from 'google-map-react'
 
 import './MyDetailProperty.css';
 
@@ -72,6 +73,21 @@ class MyDetailProperty extends React.Component {
                   <small>Description</small>
                   <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>{this.state.property._categoryId.name}</span></p>
                 </div>
+                {(this.props.property.location.lat !== "" && this.props.property.location.lng !== "")
+                ?(<div className="col-md-10 offset-lg-1"><GoogleMapReact
+                  style={{width:50, height:250,margin:10}}
+                   defaultCenter={{lat:this.props.property.location.lat, lng:this.props.property.location.lng}}
+                   defaultZoom= '15'
+                 >
+                   <img
+                     style={{width:20,height:20}}
+                     lat={this.props.property.location.lat}
+                     lng={this.props.property.location.lng}
+                     src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
+                   />
+                 </GoogleMapReact></div>)
+                :(<h4>No location available</h4>)
+              }
               </div>
               <hr />
               <h5>Detail Room</h5>
