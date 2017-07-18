@@ -260,9 +260,49 @@ const searchProps = (req,res) => {
 const addProp = (req,res) => {
   let propertyDt = req.body;
   let decoded = login.getUserDetail(req.headers.token);
-  propertyDt._ownerId = decoded._id;
+  // propertyDt._ownerId = decoded._id;
 
-  let property = new Props(propertyDt);
+  // let property = new Props(propertyDt);
+  //
+  // property.save((err,newproperty) => {
+  //   if (err) {
+  //     let err_msg = [];
+  //     for (let error in err.errors) err_msg.push(err.errors[error].message);
+  //     res.send({err : err_msg.join(',')});
+  //   } else res.send(newproperty)
+  // })
+
+  let newProp = {
+    name: propertyDt.name,
+    image: propertyDt.image,
+    city: propertyDt.city,
+    descr: propertyDt.descr,
+    price: {
+      amount: propertyDt.price_amount || null,
+      descr: propertyDt.price_descr || null
+    },
+    address: propertyDt.address,
+    _ownerId: decoded._id,
+    _categoryId: propertyDt._categoryId || null,
+    _accessId: propertyDt._accessId || [],
+    _roomId: propertyDt._roomId || [],
+  }
+  newProp.detail = {}
+  if (typeof propertyDt.detail_luasBangunan !== 'undefined') newProp.detail.luasBangunan = propertyDt.detail_luasBangunan;
+  if (typeof propertyDt.detail_luasTanah !== 'undefined') newProp.detail.detail_luasTanah = propertyDt.detail_detail_luasTanah;
+  if (typeof propertyDt.detail_perabotan !== 'undefined') newProp.detail.perabotan = propertyDt.detail_perabotan;
+  if (typeof propertyDt.detail_listrik !== 'undefined') newProp.detail.listrik = propertyDt.detail_listrik;
+  if (typeof propertyDt.detail_lantai !== 'undefined') newProp.detail.lantai = propertyDt.detail_lantai;
+  if (typeof propertyDt.detail_fasilitas !== 'undefined') newProp.detail.fasilitas = propertyDt.detail_fasilitas;
+
+  if (typeof propertyDt.longitude !== 'undefined' && typeof propertyDt.latitude !== 'undefined' ) {
+    newProp.location= {
+      longitude: propertyDt.longitude,
+      latitude: propertyDt.latitude
+    }
+  }
+
+  let property = new Props(newProp);
 
   property.save((err,newproperty) => {
     if (err) {
@@ -271,26 +311,46 @@ const addProp = (req,res) => {
       res.send({err : err_msg.join(',')});
     } else res.send(newproperty)
   })
+
 }
 
 const editProp = (req,res) => {
   let id = req.params.id;
   let decoded = login.getUserDetail(req.headers.token);
 
+  let propertyDt = req.body;
+
   Props.findById(id, (err,property) => {
     if (err) res.send({err: 'Invalid Property'})
     else if (decoded._id != property._ownerId) res.send({err : 'Invalid Access'})
     else {
-      if (typeof req.body.name != 'undefined') property.name = req.body.name;
-      if (typeof req.body.image != 'undefined') property.image = req.body.image;
-      if (typeof req.body.city != 'undefined') property.city = req.body.city;
-      if (typeof req.body.descr != 'undefined') property.descr = req.body.descr;
-      if (typeof req.body['price.amount'] != 'undefined') property.price.amount = req.body['price.amount'];
-      if (typeof req.body.isActive != 'undefined') property.isActive = req.body.isActive;
-      // if (typeof req.body._ownerId != 'undefined') property._ownerId = req.body._ownerId;
-      property._accessId = (typeof req.body._accessId != 'undefined') ? req.body._accessId : [];
-      if (typeof req.body.address != 'undefined') property.address = req.body.address;
-      // property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
+
+      property.detail = {}
+      if (typeof req.body.name != 'undefined') property.name = propertyDt.name;
+      if (typeof propertyDt.image != 'undefined') property.image = propertyDt.image;
+      if (typeof propertyDt.city != 'undefined') property.city = propertyDt.city;
+      if (typeof propertyDt.descr != 'undefined') property.descr = propertyDt.descr;
+      if (typeof propertyDt.price_amount != 'undefined') property.price.amount = propertyDt.price_amount;
+      if (typeof propertyDt.price_descr != 'undefined') property.price.descr = propertyDt.price_descr;
+
+      if (typeof propertyDt.detail_luasBangunan !== 'undefined') property.detail.luasBangunan = propertyDt.detail_luasBangunan;
+      if (typeof propertyDt.detail_luasTanah !== 'undefined') property.detail.detail_luasTanah = propertyDt.detail_detail_luasTanah;
+      if (typeof propertyDt.detail_perabotan !== 'undefined') property.detail.perabotan = propertyDt.detail_perabotan;
+      if (typeof propertyDt.detail_listrik !== 'undefined') property.detail.listrik = propertyDt.detail_listrik;
+      if (typeof propertyDt.detail_lantai !== 'undefined') property.detail.lantai = propertyDt.detail_lantai;
+      if (typeof propertyDt.detail_fasilitas !== 'undefined') property.detail.fasilitas = propertyDt.detail_fasilitas;
+      if (typeof propertyDt.address != 'undefined') property.address = propertyDt.address;
+
+      if (typeof propertyDt._categoryId !== 'undefined') property._categoryId = propertyDt._categoryId;
+      if (typeof propertyDt._accessId !== 'undefined') property._accessId = propertyDt._accessId;
+      if (typeof propertyDt._roomId !== 'undefined') property._roomId = propertyDt._roomId;
+
+      if (typeof propertyDt.longitude !== 'undefined' && typeof propertyDt.latitude !== 'undefined' ) {
+        property.location= {
+          longitude: propertyDt.longitude,
+          latitude: propertyDt.latitude
+        }
+      }
 
       property.save((err,edproperty)=> {
         if (err) {
@@ -301,6 +361,31 @@ const editProp = (req,res) => {
       } );
     }
   })
+  
+  // Props.findById(id, (err,property) => {
+  //   if (err) res.send({err: 'Invalid Property'})
+  //   else if (decoded._id != property._ownerId) res.send({err : 'Invalid Access'})
+  //   else {
+  //     if (typeof req.body.name != 'undefined') property.name = req.body.name;
+  //     if (typeof req.body.image != 'undefined') property.image = req.body.image;
+  //     if (typeof req.body.city != 'undefined') property.city = req.body.city;
+  //     if (typeof req.body.descr != 'undefined') property.descr = req.body.descr;
+  //     if (typeof req.body['price.amount'] != 'undefined') property.price.amount = req.body['price.amount'];
+  //     if (typeof req.body.isActive != 'undefined') property.isActive = req.body.isActive;
+  //     // if (typeof req.body._ownerId != 'undefined') property._ownerId = req.body._ownerId;
+  //     property._accessId = (typeof req.body._accessId != 'undefined') ? req.body._accessId : [];
+  //     if (typeof req.body.address != 'undefined') property.address = req.body.address;
+  //     // property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
+  //
+  //     property.save((err,edproperty)=> {
+  //       if (err) {
+  //         let err_msg = [];
+  //         for (let error in err.errors) err_msg.push(err.errors[error].message);
+  //         res.send({err : err_msg.join(',')});
+  //       } else res.send(edproperty)
+  //     } );
+  //   }
+  // })
 }
 const deleteProp = (req,res) => {
   let id = req.params.id;
