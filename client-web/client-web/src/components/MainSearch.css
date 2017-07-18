@@ -24,3 +24,24 @@ select.form-control:focus {
 select.form-control option:hover {
   background-color: green !important;
 }
+.MainSearch .input-group,
+.MainSearch .form-control {
+  min-height: 60px;
+}
+.MainSearch select.form-control {
+  padding-top: 20px;
+}
+.MainSearch .input-group-addon {
+  padding: 20px;
+}
+.search-result-panel {
+  position: absolute;
+  top: 198%;
+  left: 20px;
+  right: 20px;
+  z-index: 10;
+}
+.search-result-panel .row {
+  background-color: white;
+  color: #253d4a;
+}
