@@ -76,7 +76,7 @@ class reactVR extends React.Component {
                   color: 'black',
                   shadowColor: 'black',
                   shadowOffset:{width: 0.5, height: 0.5},
-                  transform: [{rotateY: 15}]
+                  transform: [{rotateY: 5}]
                 }}>{img.name}</Text>
                </VrButton>
              </View>)
@@ -150,7 +150,7 @@ class reactVR extends React.Component {
             textAlign: 'center',
             textAlignVertical: 'center',
             transform: [{translate: [-3.7, 5.7, -3]},
-                        {rotateX: 10},
+                        {rotateX: 15},
                         {rotateY: 35}]
           }}>
           click to clear screen, i'll wait at top
@@ -186,6 +186,21 @@ class reactVR extends React.Component {
             transform: [{translate: [0, 4.5, -3]}]
           }}>
           {this.state.roomName}
+        </Text>
+        <Text
+          style={{
+            backgroundColor: 'black',
+            color: 'black',
+            fontSize: 0.3,
+            fontWeight: 'bold',
+            layoutOrigin: [0.5, 0.5],
+            paddingLeft: 0.2,
+            paddingRight: 0.2,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            transform: [{translate: [0, 0, -3]}]
+          }}>
+          .
         </Text>
       </View>
     );

@@ -4,11 +4,11 @@ var http = require('http'),
 
 httpProxy.createProxyServer(
   {
-    target:'http://localhost:8081',
+    target:'http://aws-website-room-23fnj.s3-website-us-east-1.amazonaws.com',
     ssl: {
       key: fs.readFileSync('key.pem', 'utf8'),
       cert: fs.readFileSync('cert.pem', 'utf8'),
-      passphrase: '<ADD YOUR PASSPHRASE HERE>'
+      passphrase: 'room360'
     },
   }).listen(8000);
 console.log('Running!');

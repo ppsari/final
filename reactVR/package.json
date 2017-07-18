@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "http-proxy": "^1.16.2",
     "ovr-audio": "^0.1.6",
     "ovr-video": "^0.1.2",
     "ovrui": "~1.4.0",
