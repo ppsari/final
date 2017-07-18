@@ -1,0 +1,9 @@
+.style-three {
+  background-color: #253d4a !important;
+  color: white !important;
+}
+.MenuBar.home.active {
+  position: fixed;
+  z-index: 99;
+  width: 100%;
+}
