@@ -123,48 +123,38 @@ const deleteRequest = (req,res) => {
     if (err) res.send({err: 'Invalid Request'})
     else if (request._sellerId != decoded._id && decoded.role !== 'admin') res.send({err:'Invalid access'});
     else {
-
       let subject = 'Your request is ' +requestDt.response;
-      // let body = 'Your request is ' +requestDt.response;
-
-      let msg = {
-        subject: subject
-        // body: body
-      }
-      // res.send(decoded)
-      // console.log(request)
+      let msg = { subject: subject  }
       User.findById(request._userId, (err,user)=> {
-
         if (err) res.send({err:err})
         else if (requestDt.response === 'approved') {
-
           msg.body = `Your request has been approved. For further information please contact ${decoded.name} - ${decoded.phone} / ${decoded.email}`
+
           let transDt = req.body;
           transDt._userId = request._userId;
           transDt._sellerId = decoded._id;
           let trans = new Trans(transDt);
+
           let Prop = request.connections.kind === 'PropertyRent'? PropertyRent : PropertySell;
 
           Prop.findById( request.connections._propertyId, (err,prop) => {
             if (err) res.send({err : 'Invalid Property'});
-            else if (request.connections.kind === 'PropertyRent') {
-              let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
-              if (idx > -1) res.send({err:'Booking Date are not available'})
-              else {
-                trans.connections.detail =
-                  {
-                    start: request.connections.detail.start,
-                    end: request.connections.detail.end
-                  }
-
+            else {
+            // else if (request.connections.kind === 'PropertyRent') {
+              // let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
+              // if (idx > -1) res.send({err:'Booking Date are not available'})
+              // else {
+                // trans.connections.detail = {
+                //     start: request.connections.detail.start,
+                //     end: request.connections.detail.end
+                //   }
                 trans.save((err,newtrans) => {
                   if (err) {
                     let err_msg = [];
                     for (let error in err.errors) err_msg.push(err.errors[error].message);
                     res.send({err : err_msg.join(',')});
-                  }
-                  else {
-                    contact.contact(user,msg);
+                  } 
+                  // else {
                     // prop.renter.push({
                     //   start: request.connections.detail.start,
                     //   end: request.connections.detail.end,
@@ -175,81 +165,32 @@ const deleteRequest = (req,res) => {
                     //   res.send(err? {err:err} : newtrans);
                     //   contact.contact(user,msg);
                     // })
-                  }
+                  // }
                 })
-
-
-              }
-            } else {
-
-              msg.body = `Your request has been rejected `;
-              msg.body += (typeof requestDt.note === 'undefined' || requestDt.note === '') ? '': `because ${requestDt.note}`;
-              // trans.save((err,newtrans) => {
-                // if (err) {
-                //   let err_msg = [];
-                //   for (let error in err.errors) err_msg.push(err.errors[error].message);
-                //   res.send({err : err_msg.join(',')});
-                // }
-                // else {
-                  prop.isActive = false;
-                  prop.save((err,nprop) => {
-                    res.send(err? {err:err} : 'Success');
-                    contact.contact(user,msg);
-                  })
-                // }
-              // })
-
-
-
-            }
-
-          })
-
-
-          //
-          // trans.save((err,newtrans) => {
-          //   if (err) {
-          //     let err_msg = [];
-          //     for (let error in err.errors) err_msg.push(err.errors[error].message);
-          //     res.send({err : err_msg.join(',')});
-          //   }
-            //  else {
-              // if (request.connections.kind === 'PropertyRent') {
-                  // PropertyRent.findById(request.connections._propertyId, (err,prop) => {
-                    // prop.connections.renter.push({
-                    //   start: request.detail.start,
-                    //   end: request.detail.end,
-                    //   _renderId: request._userId
-                    // });
-                    // prop.save((err,nprop) => {
-                    //   res.send(err? {err:err} : newtrans);
-                    //   contact.contact(user,msg);
-                    // })
-                  // })
               // }
-              // else if (request.connections.kind === 'PropertySell')
-              //   PropertySell.findById(request.connections._propertyId, (err,prop) => {
-              //     prop.isActive = false;
-              //     prop.save((err,nprop) => {
-              //       res.send(err? {err:err} : newtrans);
-              //       contact.contact(user,msg);
-              //     })
-              //   })
-
-            // }
-          // })
+            }
+            //else valid
+          })
+          //end propertyFindById
         }
         else {
-          request.remove((err,deleted) => {
-            if (err) {res.send({err : err});}
-            else {
-              res.send(deleted)
-              contact.contact(user,msg);
-            }
-          })
+          msg.body = `Your request has been rejected `;
+          msg.body += (typeof requestDt.note === 'undefined' || requestDt.note === '') ? '': `because ${requestDt.note}`;
 
         }
+        // contact.contact(user,msg);
+
+        // if (requestDt.response === 'rejected')
+        request.remove((err,deleted) => {
+          if (err) {res.send({err : err});}
+          else {
+            contact.contact(user,msg);
+            res.send(deleted)
+          }
+        })
+
       })
+      //end UserfindById
     }
   })
 }
