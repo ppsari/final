@@ -6,6 +6,7 @@ import MainBanner from '../components/MainBanner'
 import MainSearch from '../components/MainSearch'
 import CardView from '../components/CardView'
 import Footer from '../components/Footer'
+import TitleSection from '../components/TitleSection'
 
 import {getRentDataAction,getSellDataAction} from '../actions/index.js'
 
@@ -24,20 +25,24 @@ class Home extends React.Component {
         <MainBanner />
         <MainSearch />
         <div className="container">
-          <h3>For Rent</h3>
+          <TitleSection lightTitle="PROPERTY" boldTitle="FOR RENT" />
           <div className="row">
           {(this.state.propertyRent.length === 0)
-          ? <h5>No Result Found</h5>
+          ? (<div className="no-data">
+            <h5>No Data</h5>
+          </div>)
           : this.state.propertyRent.map((data,index) => {
             return <CardView key={index} data={data} />
           })
         }
           </div>
           <hr/>
-          <h3>For Sell</h3>
+          <TitleSection lightTitle="PROPERTY" boldTitle="FOR SELL" />
           <div className="row">
           {(this.state.propertySell.length === 0)
-          ? <h5>No Result Found</h5>
+          ? (<div className="no-data">
+            <h5>No Data</h5>
+          </div>)
           : this.state.propertySell.map((data,index) => {
               return <CardView key={index} data={data} />
           })
