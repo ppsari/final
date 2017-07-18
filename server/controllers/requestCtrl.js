@@ -71,7 +71,7 @@ const addRequest = (req,res) => {
   let requestDt = req.body;
   let decoded = login.getUserDetail(req.headers.token);
   requestDt._userId = decoded._id;
-  let Prop = requestDt['connections.kind'] == 'PropertyRent' ? PropertyRent: PropertySell;
+  let Prop = requestDt.kind == 'PropertyRent' ? PropertyRent: PropertySell;
   if (requestDt._sellerId === requestDt._userId) res.send({err:'You cant rent/sell your own product'})
   else {
 
@@ -81,19 +81,27 @@ const addRequest = (req,res) => {
       body: body
     }
 
-    Prop.findById(requestDt['connections._propertyId'])
+    Prop.findById(requestDt._propertyId)
     .populate({path:'_ownerId', select:'phone username email name'})
     .exec((err,prop)=>{
       if (err){ res.send({err: 'Invalid Property'}); }
-      else if(requestDt['connections.kind'] === 'PropertyRent'){
-        let start = new Date(requestDt['connections.start']);
-        let end = new Date(requestDt['connections.end']);
+      // else if(requestDt.kind === 'PropertyRent'){
+        // let start = new Date(requestDt['connections.start']);
+        // let end = new Date(requestDt['connections.end']);
         //cek ketersediaan
-        let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
-        if (idx > -1) res.send({err:'Booking Date are not available'})
-      }
+        // let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
+        // if (idx > -1) res.send({err:'Booking Date are not available'})
+      // }
 
-      let newrequest = new Request(requestDt);
+      let newrequest = new Request({
+        note: requestDt.note,
+        connections: {
+          kind: requestDt.kind,
+          _propertyId: requestDt._propertyId
+        },
+        _sellerId : requestDt._sellerId,
+        _userId: requestDt._userId
+      });
       newrequest.save((err,request) => {
         if (err) res.send({err:err})
         else {
