@@ -38,16 +38,16 @@ app.use('/api/admin', admin);
 app.use('/api/roomRent', roomRent);
 app.use('/api/roomSell', roomSell);
 app.use('/api/testimony', testimony);
-app.use('/upload', upload);
+app.use('/api/upload', upload);
 
 
 let envi = 'test';
 // let env = 'local_dev'
 // let env = app.settings.env;
 let db_config = {
-  local_dev: 'mongodb://localhost/movie',
-  development: 'mongodb://admin:admin@ds159112.mlab.com:59112/room360db',
-  test: 'mongodb://admin:admin@ds159112.mlab.com:59112/room360dbtes'
+  // local_dev: 'mongodb://localhost/movie',
+  development: 'mongodb://room360:R4A3RKBkXDW4QMmH@cluster0-shard-00-00-6ubhn.mongodb.net:27017,cluster0-shard-00-01-6ubhn.mongodb.net:27017,cluster0-shard-00-02-6ubhn.mongodb.net:27017/room360?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
+  test: 'mongodb://room360:R4A3RKBkXDW4QMmH@cluster0-shard-00-00-6ubhn.mongodb.net:27017,cluster0-shard-00-01-6ubhn.mongodb.net:27017,cluster0-shard-00-02-6ubhn.mongodb.net:27017/room360?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'
 }
 
 mongoose.connect(db_config[envi],(err,res)=>{
