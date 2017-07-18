@@ -21,22 +21,6 @@ const CardView = (props) => {
               <h4><strong>{data.name}</strong></h4>
               <p className="location"><i className="fa fa-map-marker"></i> {data.city}</p>
             </div>
-            <div className="thumbnail-footer">
-              <div className="flex">
-                <div className="detail-icon" data-toggle="tooltip" title="Luas Tanah">
-                  1200
-                </div>
-                <div className="detail-icon" data-toggle="tooltip" title="Luas Bangunan">
-                  1000
-                </div>
-                <div className="detail-icon" data-toggle="tooltip" title="Jumlah Kamar Mandi">
-                  <i className="fa fa-bath" aria-hidden="true"></i> 5
-                </div>
-                <div className="detail-icon" data-toggle="tooltip" title="Jumlah Kamar Tidur">
-                  <i className="fa fa-bed" aria-hidden="true"></i> 2
-                </div>
-              </div>
-            </div>
           </Link>
         }
         </div>

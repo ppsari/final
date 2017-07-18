@@ -57,9 +57,9 @@ class MainSearch extends React.Component {
                       </div>
                   </div>)
               : (<div className="shadow bg-white">
-                  <div className="row">
+                  <div className="row category-search">
                       <div className="col-12">
-                        <h5>Property For Rent</h5>
+                        <h6><span className="bold">Property For Sell</span></h6>
                       </div>
                   </div>
                 { (this.state.propertyRent.length === 0)
@@ -86,9 +86,9 @@ class MainSearch extends React.Component {
                     )
                   })
                 }
-                <div className="row">
+                <div className="row category-search">
                     <div className="col-12">
-                      <h5>Property For Sell</h5>
+                      <h6><span className="bold">Property For Sell</span></h6>
                     </div>
                 </div>
                 { (this.state.propertySell.length === 0)

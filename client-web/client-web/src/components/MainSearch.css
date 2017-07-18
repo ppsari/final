@@ -58,3 +58,6 @@ select.form-control option:hover {
   height: 60px;
   overflow: hidden;
 }
+.category-search {
+  background-color: #f1f4f9;
+}
