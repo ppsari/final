@@ -164,16 +164,17 @@ const deleteRequest = (req,res) => {
                     res.send({err : err_msg.join(',')});
                   }
                   else {
-                    prop.renter.push({
-                      start: request.connections.detail.start,
-                      end: request.connections.detail.end,
-                      _renterId: request._userId
-                    });
-                    prop.rentercount = prop.rentercount + 1;
-                    prop.save((err,nprop) => {
-                      res.send(err? {err:err} : newtrans);
-                      contact.contact(user,msg);
-                    })
+                    contact.contact(user,msg);
+                    // prop.renter.push({
+                    //   start: request.connections.detail.start,
+                    //   end: request.connections.detail.end,
+                    //   _renterId: request._userId
+                    // });
+                    // prop.rentercount = prop.rentercount + 1;
+                    // prop.save((err,nprop) => {
+                    //   res.send(err? {err:err} : newtrans);
+                    //   contact.contact(user,msg);
+                    // })
                   }
                 })
 
@@ -183,20 +184,20 @@ const deleteRequest = (req,res) => {
 
               msg.body = `Your request has been rejected `;
               msg.body += (typeof requestDt.note === 'undefined' || requestDt.note === '') ? '': `because ${requestDt.note}`;
-              trans.save((err,newtrans) => {
-                if (err) {
-                  let err_msg = [];
-                  for (let error in err.errors) err_msg.push(err.errors[error].message);
-                  res.send({err : err_msg.join(',')});
-                }
-                else {
+              // trans.save((err,newtrans) => {
+                // if (err) {
+                //   let err_msg = [];
+                //   for (let error in err.errors) err_msg.push(err.errors[error].message);
+                //   res.send({err : err_msg.join(',')});
+                // }
+                // else {
                   prop.isActive = false;
                   prop.save((err,nprop) => {
-                    res.send(err? {err:err} : newtrans);
+                    res.send(err? {err:err} : 'Success');
                     contact.contact(user,msg);
                   })
                 }
-              })
+              // })
 
 
 
