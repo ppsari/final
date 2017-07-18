@@ -7,6 +7,7 @@ import PropertiesSellReducer from './PropertiesSellReducer'
 import PropertyRent from './singlePropertyRentReducer'
 import PropertySell from './singlePropertySellReducer'
 import Message from './messageReducers.js'
+import Request from './requestReducer.js'
 
 export default combineReducers({
   user: userReducer,
@@ -15,5 +16,6 @@ export default combineReducers({
   propertiesSell: PropertiesSellReducer,
   firebaseUserReducer: firebaseUserReducer,
   propertyRent: PropertyRent,
-  propertySell: PropertySell
+  propertySell: PropertySell,
+  requests: Request
 })

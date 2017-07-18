@@ -38,15 +38,15 @@ class MenuBar extends React.Component {
                       <Link to="Dashboard/Profile">
                         <NavLink>Dashboard</NavLink>
                       </Link>
-                  </NavItem>)
-                  : null
+                    </NavItem>)
+                  : <h1></h1>
                 }
                 { localStorage.getItem('user') !== null
                   ? (<NavItem>
                       <NavLink onClick={() => {
                         logout()
                       }}>Logout</NavLink>
-                  </NavItem>)
+                    </NavItem>)
                   : (<NavItem>
                       <Link to="/login" className="nav-link">Login / Register</Link>
                     </NavItem>)

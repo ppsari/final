@@ -70,7 +70,7 @@ class DetailProperty extends React.Component {
                     <p className="m-t-0">{this.props.property.createdDate.split('T')[0]}</p>
                     <div className="absolute-bottom flex-center">
                       <button type="button" onClick={()=> this.enter()} className="theme-btn btn-style-one btn-same"><span className="extra-bold">VISIT</span></button>
-                      {(localStorage.getItem('token') && this.props.property._ownerId !== localStorage.getItem('user')._id)
+                      {(localStorage.getItem('token') && this.props.property._ownerId._id !== JSON.parse(localStorage.getItem('user'))._id)
                     ? <button type="button" className="theme-btn btn-style-three btn-same" onClick={this.toggle}><span className="extra-bold">REQUEST</span></button>
                     : <h6></h6>
                     }
