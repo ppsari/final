@@ -30,7 +30,7 @@ export default class Example extends React.Component {
       <div>
         <MenuBar />
         <div className="container m-t-30">
-          <div className="row">
+          <div className="row p-t-65 p-b-65">
             <div className="col-4 offset-md-4">
               <Nav tabs>
                 <NavItem>

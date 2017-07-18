@@ -2,11 +2,13 @@ import React from 'react'
 import axios from 'axios'
 import Countries from 'countries-cities'
 import GoogleMapReact from 'google-map-react'
+import { upload } from '../helpers/upload'
 import geocoder from 'geocoder'
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+let property = {}
 
 class AddNewProperty extends React.Component {
   constructor (props) {
@@ -40,6 +42,12 @@ class AddNewProperty extends React.Component {
     })
   }
 
+  componentDidMount() {
+    upload('uploader', 'fileButton',(url)=>{
+      property.image = url
+    })
+  }
+
   render () {
     return (
       <div>
@@ -61,7 +69,8 @@ class AddNewProperty extends React.Component {
                 </div>
                 <div className="col-lg-8 m-b-20">
                   <div className="input-group">
-                    <input type="text" className="form-control" ref="image" placeholder="add image url here" />
+                    <progress value="0" max="100" id="uploader">0%</progress>
+                    <input type="file" value="upload" id="fileButton" className="form-control" ref="image" placeholder="add image url here" />
                   </div>
                 </div>
                 <div className="col-lg-3">
@@ -268,27 +277,21 @@ class AddNewProperty extends React.Component {
 
   submitData(e){
     e.preventDefault()
-    let property = {
-      price:{},
-      detail:{},
-      location:{}
-    }
     property.name = this.refs.name.value
-    property.image = this.refs.image.value
     property.city = this.refs.city.value
     property.descr = this.refs.descr.value
-    property.price.amount = this.refs.price_amount.value
-    property.price['descr'] = this.refs.price_descr.value
-    property.detail['luasBangunan'] = this.refs.detail_luasBangunan.value
-    property.detail['luasTanah'] = this.refs.detail_luasTanah.value
-    property.detail['perabotan'] = this.refs.detail_perabotan.value
-    property.detail['listrik'] = this.refs.detail_listrik.value
-    property.detail['lantai'] = this.refs.detail_lantai.value
-    property.detail['fasilitas'] = this.refs.detail_fasilitas.value
+    property.price_amount = this.refs.price_amount.value
+    property.price_descr = this.refs.price_descr.value
+    property.detail_luasBangunan = this.refs.detail_luasBangunan.value
+    property.detail_luasTanah = this.refs.detail_luasTanah.value
+    property.detail_perabotan = this.refs.detail_perabotan.value
+    property.detail_listrik = this.refs.detail_listrik.value
+    property.detail_lantai = this.refs.detail_lantai.value
+    property.detail_fasilitas = this.refs.detail_fasilitas.value
     property.address = this.refs.address.value
     property._categoryId = this.refs._categoryId.value
-    property.location['lat'] = this.state.lat
-    property.location['lng'] = this.state.lng
+    property.lat = this.state.lat
+    property.lng = this.state.lng
 
     property._accessId = []
     console.log(property);

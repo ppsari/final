@@ -2,12 +2,10 @@ import firebase from 'firebase'
 import firebaseui from 'firebaseui'
 
 var config = {
-   apiKey: "AIzaSyDrCG8ARJgx5NCMpOPIBykXIEiclYmyhxg",
-   authDomain: "vr-project-41e13.firebaseapp.com",
-   databaseURL: "https://vr-project-41e13.firebaseio.com",
-   projectId: "vr-project-41e13",
-   storageBucket: "vr-project-41e13.appspot.com",
-   messagingSenderId: "620707099193"
+  apiKey: "AIzaSyAmWsU7ZZ6yStXKCiutNHaxCJX7a2xY-fM",
+  authDomain: "grayfox-dfa44.firebaseapp.com",
+  databaseURL: "https://grayfox-dfa44.firebaseio.com",
+  storageBucket: "grayfox-dfa44.appspot.com",
  };
  firebase.initializeApp(config);
 
@@ -24,3 +22,4 @@ export const uiConfig = {
 export const ui = new firebaseui.auth.AuthUI(firebase.auth());
 export const ref = firebase.database().ref()
 export const firebaseAuth = firebase.auth
+export const storageRef = firebase.storage();
