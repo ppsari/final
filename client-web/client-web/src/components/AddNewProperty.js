@@ -16,8 +16,8 @@ class AddNewProperty extends React.Component {
       category: null,
       cities: [],
       lat: -6.260750,
-      lng: 106.781616,
-      zoom: 18
+      lng: 106.781920,
+      zoom: 19
     }
   }
 
@@ -202,6 +202,7 @@ class AddNewProperty extends React.Component {
                   style={{width:50, height:250,margin:10}}
                    center={{lat: this.state.lat, lng: this.state.lng}}
                    zoom={this.state.zoom}
+                   onClick={(e)=> this.getDot(e)}
                  >
                   <input
                     type='text'
@@ -242,6 +243,13 @@ class AddNewProperty extends React.Component {
         </form>
       </div>
     )
+  }
+
+  getDot(e){
+    this.setState({
+      lat: e.lat,
+      lng: e.lng
+    })
   }
 
   getLocation(loc){
