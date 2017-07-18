@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import Countries from 'countries-cities'
 import GoogleMapReact from 'google-map-react'
+import geocoder from 'geocoder'
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -155,7 +156,7 @@ class AddNewProperty extends React.Component {
                 </div>
                 <div className="col-lg-8 m-b-20">
                   <div className="input-group">
-                    <input type="text" className="form-control" ref="address" required />
+                    <input type="text" className="form-control" ref="address" onChange={(e)=> this.getLocation(e.target.value)} required />
                   </div>
                 </div>
                 <div className="col-lg-3">
@@ -199,16 +200,19 @@ class AddNewProperty extends React.Component {
                 <div className ="col-md-10 offset-lg-1">
                 <GoogleMapReact
                   style={{width:50, height:250,margin:10}}
-                   defaultCenter={{lat: this.state.lat, lng: this.state.lng}}
-                   defaultZoom={this.state.zoom}
-                   onClick={(e)=> this.getLocation(e)}
+                   center={{lat: this.state.lat, lng: this.state.lng}}
+                   zoom={this.state.zoom}
                  >
-                   <img
-                     style={{width:20,height:20}}
-                     lat={this.state.lat}
-                     lng={this.state.lng}
-                     src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
-                   />
+                  <input
+                    type='text'
+                    onChange={(e)=> this.getLocation(e.target.value)}
+                    />
+                  <img
+                    style={{width:20,height:20}}
+                    lat={this.state.lat}
+                    lng={this.state.lng}
+                    src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
+                  />
                 </GoogleMapReact>
                 </div>
                 {/* <iframe
@@ -240,14 +244,18 @@ class AddNewProperty extends React.Component {
     )
   }
 
-  getLocation(e){
-    const ruler = 0/100
-    const justifiedLat = e.lat * ruler
-    const justifiedLng = e.lng * ruler
-    this.setState({
-      lat: e.lat - justifiedLat,
-      lng: e.lng
-    })
+  getLocation(loc){
+  geocoder.geocode(loc,(err,data)=>{
+    console.log(data);
+    if(typeof data !== "undefined" && data.status === 'OK'){
+      this.setState({
+        lat: data.results[0].geometry.location.lat,
+        lng: data.results[0].geometry.location.lng
+      })
+    } else {
+      return (<h6>no result found</h6>)
+    }
+  })
   }
 
   submitData(e){
