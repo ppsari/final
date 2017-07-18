@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 
 import { editProfile , getProfile } from '../actions/index.js'
 
@@ -21,7 +20,8 @@ class ShowProfile extends React.Component {
           {(this.state.user === null)
           ? <img
             src='http://testmadina.com/Images/loading1.gif'
-            style={{height:200, width: 200,margin:'auto'}}/>
+            style={{height:200, width: 200,margin:'auto'}}
+            alt="profile" />
           : <div className="row m-t-20">
              <div className="col-lg-3">
                 <p>Username</p>

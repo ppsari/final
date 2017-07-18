@@ -36,12 +36,25 @@ select.form-control option:hover {
 }
 .search-result-panel {
   position: absolute;
-  top: 198%;
+  top: 100%;
   left: 20px;
   right: 20px;
   z-index: 10;
+  display: none;
+}
+.search-result-panel.active {
+  display: block;
 }
 .search-result-panel .row {
   background-color: white;
   color: #253d4a;
+  padding: 15px;
+  margin: 0;
+}
+.search-result-panel .row:hover {
+  background-color: #f1f4f9;
+}
+.search-result-panel .image-container-list {
+  height: 60px;
+  overflow: hidden;
 }

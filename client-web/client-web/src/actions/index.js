@@ -3,18 +3,18 @@ const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
 
 export const searchProperty = (prop,city) => {
   return (dispatch) =>{
-    if(city=="Select City") {
+    if(city === "Select City") {
       axios.get(api+`/propertyRent/searchENull?prop=${prop}`)
       .then((response,err)=>{
         dispatch({
-          type: 'GET_DATA_RENT',
+          type: 'SEARCH_DATA_RENT',
           payload: response.data
         })
       })
       axios.get(api+`/propertySell/searchENull?prop=${prop}`)
       .then((response,err)=>{
         dispatch({
-          type: 'GET_DATA_SELL',
+          type: 'SEARCH_DATA_SELL',
           payload: response.data
         })
       })
@@ -22,14 +22,14 @@ export const searchProperty = (prop,city) => {
     axios.get(api+`/propertyRent/searchENull?city=${city}&prop=${prop}`)
     .then((response,err)=>{
       dispatch({
-        type: 'GET_DATA_RENT',
+        type: 'SEARCH_DATA_RENT',
         payload: response.data
       })
     })
     axios.get(api+`/propertySell/searchENull?city=${city}&prop=${prop}`)
     .then((response,err)=>{
       dispatch({
-        type: 'GET_DATA_SELL',
+        type: 'SEARCH_DATA_SELL',
         payload: response.data
       })
     })

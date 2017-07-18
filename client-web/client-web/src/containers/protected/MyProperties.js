@@ -1,11 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
 
 import MyListProperty from '../../components/MyListProperty'
 import MyDetailProperty from '../../components/MyDetailProperty';
 import MyEditProperty from '../../components/MyEditProperty';
-import MyDetailRoom from '../../components/MyDetailRoom';
 import AddProperty from '../../components/AddProperty';
 import AddNewRoom from '../../components/AddNewRoom';
 
