@@ -40,8 +40,8 @@ let propertyRentSchema = new Schema({
   _testimonyId: [{type:Schema.Types.ObjectId, ref: 'Testimony'}],
   address: {type: String, required: [true, `{PATH} must be filled`]},
   location: {
-    longitude: String,
-    latitude: String
+    lng: String,
+    lat: String
   },
   createdDate: {type:Date, default: new Date()}
 })

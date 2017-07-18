@@ -26,8 +26,8 @@ let propertySellSchema = new Schema({
   _accessId: [{type:Schema.Types.ObjectId, ref: 'Access'}],
   _roomId: [{type:Schema.Types.ObjectId, ref: 'RoomSell'}],
   location: {
-    longitude: String,
-    latitude: String
+    lng: String,
+    lat: String
   },
   createdDate: {type:Date, default: new Date()}
 })

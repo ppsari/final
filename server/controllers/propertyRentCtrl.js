@@ -298,10 +298,10 @@ const addProp = (req,res) => {
   if (typeof propertyDt.detail_lantai !== 'undefined') newProp.detail.lantai = propertyDt.detail_lantai;
   if (typeof propertyDt.detail_fasilitas !== 'undefined') newProp.detail.fasilitas = propertyDt.detail_fasilitas;
 
-  if (typeof propertyDt.longitude !== 'undefined' && typeof propertyDt.latitude !== 'undefined' ) {
+  if (typeof propertyDt.lng !== 'undefined' && typeof propertyDt.lat !== 'undefined' ) {
     newProp.location= {
-      longitude: propertyDt.longitude,
-      latitude: propertyDt.latitude
+      lng: propertyDt.lng,
+      lat: propertyDt.lat
     }
   }
 
@@ -345,10 +345,10 @@ const editProp = (req,res) => {
       if (typeof propertyDt._accessId !== 'undefined') property._accessId = propertyDt._accessId;
       if (typeof propertyDt._roomId !== 'undefined') property._roomId = propertyDt._roomId;
 
-      if (typeof propertyDt.longitude !== 'undefined' && typeof propertyDt.latitude !== 'undefined' ) {
+      if (typeof propertyDt.lng !== 'undefined' && typeof propertyDt.lat !== 'undefined' ) {
         property.location= {
-          longitude: propertyDt.longitude,
-          latitude: propertyDt.latitude
+          lng: propertyDt.lng,
+          lat: propertyDt.lat
         }
       }
 
