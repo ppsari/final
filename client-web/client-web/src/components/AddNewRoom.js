@@ -19,7 +19,7 @@ class AddNewRoom extends React.Component {
           <h5 className="text-center bg-gray padding-15" style={{borderRadius: '4px 4px 0 0'}}>Room Detail</h5>
           <div className='row'>
           {(this.state.rooms.length === 0)
-            ? (<h1>babi</h1>)
+            ? (<h1></h1>)
             : (this.state.rooms.map((room,index)=>{
               return <div className='col-3' key={index}>
                       <h6>{room.name}</h6>

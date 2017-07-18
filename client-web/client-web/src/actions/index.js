@@ -109,8 +109,30 @@ export const editProfile = (data,id) =>{
   }
 }
 
-export const sendRequest = () =>{
-  
+export const sendRequest = (token,message,propId,sellerId,status) =>{
+  return(dispatch)=>{
+    if(status === 'rent'){
+      axios.post(api+`/request`,{
+        _sellerId: sellerId,
+        kind: 'PropertyRent',
+        _propertyId: propId,
+        note: message
+      },{headers:{token:token}})
+      .then(response=>{
+        console.log(response.data);
+      })
+    } else{
+      axios.post(api+`/request`,{
+        _sellerId: sellerId,
+        kind: 'PropertySell',
+        _propertyId: propId,
+        note: message
+      },{headers:{token:token}})
+      .then(response=>{
+        console.log(response.data);
+      })
+    }
+  }
 }
 
 export const acceptRequest = (id) =>{
@@ -135,7 +157,6 @@ export const rejectRequest = (id) =>{
     .then(response=>{
       dispatch(
         console.log(response.data)
-
       )
     })
   }
