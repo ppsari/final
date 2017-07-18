@@ -167,7 +167,10 @@ class DetailProperty extends React.Component {
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={()=> this.request()}>Send</Button>{' '}
+            <Button color="primary" onClick={()=> {
+                this.request()
+                this.toggle()
+              }}>Send</Button>{' '}
               <Button color="secondary" onClick={this.toggle}>Cancel</Button>
             </ModalFooter>
           </Modal>

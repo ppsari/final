@@ -44,16 +44,9 @@ class MyDetailProperty extends React.Component {
                 <small><span className="lnr lnr-map-marker m-r-5"></span><span className="m-r-5">{this.state.property.city}</span> |  <span className="lnr lnr-home m-l-5 m-r-5"></span>For <b>{this.state.property.status}</b></small>
               </div>
               <div className="pull-right">
-                <Link to='/dashboard/property/edit/:id'>
-                  <button type="submit" className="btn-round m-t-0 p-l-20 p-r-20 p-t-5 p-b-5 btn-line btn-same">
-                    <small>Edit</small>
-                  </button>
-                </Link>
-                <Link to='/dashboard/property/detail/:id'>
-                  <button type="submit" className="btn-round m-t-0 p-l-20 p-r-20 p-t-5 p-b-5 btn-line btn-same">
-                    <small>Visit VR</small>
-                  </button>
-                </Link>
+                <button onClick={()=>this.visit()} type="submit" className="btn-round m-t-0 p-l-20 p-r-20 p-t-5 p-b-5 btn-line btn-same">
+                  <small>Visit VR</small>
+                </button>
               </div>
             </div>
             <div className="ListViewProperty">
@@ -74,16 +67,16 @@ class MyDetailProperty extends React.Component {
                   <small>Description</small>
                   <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>{this.state.property._categoryId.name}</span></p>
                 </div>
-                {(this.props.property.location.lat !== "" && this.props.property.location.lng !== "")
+                {(typeof this.state.property.location !== 'undefined' && typeof this.state.property.location.lat !== 'undefined' && typeof this.props.property.location.lng !== 'undefined')
                 ?(<div className="col-md-10 offset-lg-1"><GoogleMapReact
                   style={{width:50, height:250,margin:10}}
-                   defaultCenter={{lat:this.props.property.location.lat, lng:this.props.property.location.lng}}
+                   defaultCenter={{lat:this.state.property.location.lat, lng:this.state.property.location.lng}}
                    defaultZoom= '15'
                  >
                    <img
                      style={{width:20,height:20}}
-                     lat={this.props.property.location.lat}
-                     lng={this.props.property.location.lng}
+                     lat={this.state.property.location.lat}
+                     lng={this.state.property.location.lng}
                      src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
                    />
                  </GoogleMapReact></div>)
@@ -116,7 +109,7 @@ class MyDetailProperty extends React.Component {
                       className="btn-round p-l-20 p-r-20 p-t-5 p-b-5 btn-line btn-same"
                       style={{margin: 'auto'}}
                       onClick={()=> this.onEdit(room._id,room.name,room.image,room.descr,index)} >
-                      <small onClick={()=>this.visit(this.state.status,room._id)}>Detail</small>
+                      <small>Detail</small>
                     </button>
                     <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                       <ModalHeader toggle={this.toggle}>{this.state.name}</ModalHeader>
@@ -167,9 +160,11 @@ class MyDetailProperty extends React.Component {
     )
   }
 
-  visit(status,roomId){
+  visit(){
+    const propId = this.props.match.params.id
+    const propStatus = this.props.match.params.status[0].toUpperCase()+this.props.match.params.status.substr(1)
     let vr = 'http://aws-website-room-23fnj.s3-website-us-east-1.amazonaws.com/'
-      window.open(vr+`?key=${status}/${roomId}`,'_newtab')
+      window.open(vr+`?key=property${propStatus}/${propId}`,'_newtab')
   }
 
   edit(rId,index){

@@ -164,12 +164,12 @@ export const getRequest = (token) =>{
   }
 }
 
-export const acceptRequest = (id,token,sellerId,userId) =>{
+export const acceptRequest = (id,token,propId,kind) =>{
   return(dispatch)=>{
-    axios.delete(api+`/request/${id}`,{
-      _sellerId: sellerId,
-      _userId: userId,
-      response: 'approved'
+    axios.post(api+`/request/delete/${id}`,{
+      response: 'approved',
+      kind: kind,
+      _propertyId: propId
     },{
       headers: {token: token}
     })
@@ -180,12 +180,11 @@ export const acceptRequest = (id,token,sellerId,userId) =>{
 }
 
 
-export const rejectRequest = (id,token,sellerId,userId) =>{
+export const rejectRequest = (id,token,reason) =>{
   return(dispatch)=>{
-    axios.delete(api+`/request/${id}`,{
-      _sellerId: sellerId,
-      _userId: userId,
-      response: 'rejected'
+    axios.post(api+`/request/delete/${id}`,{
+      response: 'rejected',
+      note: reason
     },{
       headers: {token: token}
     })
