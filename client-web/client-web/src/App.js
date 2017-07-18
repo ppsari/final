@@ -13,6 +13,7 @@ import Home from './containers/Home';
 import ListProperty from './containers/ListProperty';
 import DetailProperty from './containers/DetailProperty';
 import Dashboard from './containers/protected/Dashboard';
+import Documentation from './components/Documentation';
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -85,6 +86,7 @@ class App extends Component {
               <Route exact path="/" component={Home} />
               <Route exact path='/detail/:status/:id' component={DetailProperty} />
               <Route exact path='/property' component={ListProperty} />
+              <Route exact path='/documentation' component={Documentation}/>
               <PublicRoute authed={this.state.authed} path='/login' component={LoginRegisterPage} />
               <PublicRoute authed={this.state.authed} path='/register' component={Register} />
               <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} />
