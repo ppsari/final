@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
-import { login, resetPassword } from '../helpers/auth'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { resetPassword } from '../helpers/auth'
+// import { BrowserRouter as Router } from 'react-router-dom'
 import { connect } from 'react-redux';
 
 import {
@@ -19,8 +19,8 @@ function setErrorMsg(error) {
 class Login extends React.Component {
   constructor(props){
     super(props)
+    this.state = { loginMessage: null }
   }
-  state = { loginMessage: null }
   handleSubmit = (e) => {
     e.preventDefault()
     let user = {}

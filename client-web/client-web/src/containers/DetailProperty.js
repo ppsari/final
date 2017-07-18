@@ -49,7 +49,7 @@ class DetailProperty extends React.Component {
                     <img src={this.props.property.image} alt="preview" className="img-responsive" />
                     <div className="price-container">
                       <h5 className="text-right">{prettyMoney(this.props.property.price.amount)}</h5>
-                      {this.props.property.status == "rent"
+                      {this.props.property.status === "rent"
                         ? <p className="text-right m-b-0" style={{marginTop: '-10px'}}><small>/ {this.props.property.price.descr}</small></p>
                         : null
                       }

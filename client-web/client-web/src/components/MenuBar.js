@@ -1,8 +1,10 @@
 import React from 'react';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink } from 'reactstrap';
+import $ from 'jquery';
+import { Collapse, Navbar, NavbarToggler, Nav, NavItem, NavLink } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../helpers/auth';
+import './MenuBar.css'
 
 class MenuBar extends React.Component {
   constructor(props) {
@@ -17,11 +19,23 @@ class MenuBar extends React.Component {
       isOpen: !this.state.isOpen
     });
   }
+  componentWillMount() {
+    $(window).scroll(function() {
+      var scroll = $(window).scrollTop();
+
+      if(scroll >= 550){
+        $(".MenuBar").addClass("active")
+      } else {
+        $(".MenuBar").removeClass("active")
+      }
+    })
+  }
+
   render() {
     // console.log(this.props.userFirebase);
     return (
-      <div>
-        <Navbar color="faded" light toggleable>
+      <div className={`MenuBar ${this.props.home ? 'home' : ''}`}>
+        <Navbar className="style-three" light toggleable>
           <div className="container">
             <NavbarToggler right onClick={this.toggle} />
             <Link to="/">Room360</Link>

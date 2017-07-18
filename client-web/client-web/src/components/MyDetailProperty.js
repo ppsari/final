@@ -33,7 +33,8 @@ class MyDetailProperty extends React.Component {
         {(this.state.property === null)
           ? <img
             src='http://testmadina.com/Images/loading1.gif'
-            style={{height:200, width: 200,margin:'auto'}}/>
+            style={{height:200, width: 200,margin:'auto'}}
+            alt="load" />
           : <div className="row p-t-20 p-b-20">
           <div className="col-lg-8 offset-lg-2">
             <div className="flex-space-between m-b-30">

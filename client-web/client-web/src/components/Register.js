@@ -1,13 +1,13 @@
 import React from 'react'
-import { register } from '../helpers/auth'
+// import { register } from '../helpers/auth'
 import axios from 'axios'
 const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com'
 
-function setErrorMsg(error) {
-  return {
-    registerError: error.message
-  }
-}
+// function setErrorMsg(error) {
+//   return {
+//     registerError: error.message
+//   }
+// }
 
 export default class Register extends React.Component {
   state = { registerError: null }
@@ -36,7 +36,7 @@ export default class Register extends React.Component {
           </div>
           <div className="form-group">
             <label>Username</label>
-            <input className="form-control" ref={(username) => this.username = username} placeholder="Email"/>
+            <input className="form-control" ref={(username) => this.username = username} placeholder="Username"/>
           </div>
           <div className="form-group">
             <label>Password</label>
