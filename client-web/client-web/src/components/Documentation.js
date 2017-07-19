@@ -1,12 +1,6 @@
 import React from 'react'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
 
 import MenuBar from '../components/MenuBar'
-import MainBanner from '../components/MainBanner'
-import MainSearch from '../components/MainSearch'
-import CardView from '../components/CardView'
 import Footer from '../components/Footer'
 
 

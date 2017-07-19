@@ -5,7 +5,6 @@ import './HowTo.css'
 
 export default class Transaction extends React.Component {
   render () {
-    let box = {backgroundColor:'#71b100', color: 'white', minHeight: 460}
     return (
       <div>
         <TitleSection lightTitle="HOW" boldTitle="TO" />

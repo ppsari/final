@@ -5,7 +5,6 @@ import GoogleMapReact from 'google-map-react'
 import { upload } from '../helpers/upload'
 import geocoder from 'geocoder'
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
 let property = {}
@@ -62,7 +61,7 @@ class AddNewProperty extends React.Component {
                 </div>
                 <div className="col-lg-8 m-b-20">
                   <div className="input-group">
-                    <input type="text" className="form-control" ref="name" required />
+                    <input type="text" className="form-control" ref="name" required placeholder="Your Property Name" />
                   </div>
                 </div>
                 <div className="col-lg-3">
@@ -70,7 +69,6 @@ class AddNewProperty extends React.Component {
                 </div>
                 <div className="col-lg-8 m-b-20">
                   <div className="input-group">
-                    <progress value="0" max="100" id="uploader">0%</progress>
                     <input type="file" defaultValue="upload" id="fileButton" className="form-control" ref="image" placeholder="add image url here" />
                   </div>
                 </div>
@@ -226,6 +224,7 @@ class AddNewProperty extends React.Component {
                     lat={this.state.lat}
                     lng={this.state.lng}
                     src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
+                    alt="icon-home"
                   />
                 </GoogleMapReact>
                 </div>

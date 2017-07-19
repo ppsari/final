@@ -95,7 +95,7 @@ class Request extends React.Component {
                       <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                       </ModalFooter>
                     </Modal>)
-                  :(<h1></h1>)
+                  :null
                   }
                   <tr style={this.state.active ? null : {display: 'none'}} >
                     <td colSpan="4" className="bg-gray">
