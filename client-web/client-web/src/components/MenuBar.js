@@ -34,7 +34,6 @@ class MenuBar extends React.Component {
   }
 
   render() {
-    // console.log(this.props.userFirebase);
     return (
       <div className={`MenuBar ${this.props.home ? 'home' : ''}`}>
         <Navbar className="style-three" light toggleable>
@@ -52,24 +51,10 @@ class MenuBar extends React.Component {
                 }
                 </NavItem>
                 { localStorage.getItem('user') !== null
-                  ? (<NavItem>
-                      <Link to="/dashboard/profile" className="nav-link">Dashboard</Link>
-                    </NavItem>)
-                  : null
-                }
-                { localStorage.getItem('user') !== null
-                  ? (<NavItem>
-                      <NavLink onClick={() => {
-                        logout()
-                      }}>Logout</NavLink>
-                    </NavItem>)
+                  ? (<AccountNavbar name={this.props.user.username} />)
                   : (<NavItem>
                       <Link to="/login" className="nav-link">Login / Register</Link>
                     </NavItem>)
-                }
-                { localStorage.getItem('user') !== null
-                  ? (<AccountNavbar />)
-                  : null
                 }
               </Nav>
             </Collapse>

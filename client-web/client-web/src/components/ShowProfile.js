@@ -52,14 +52,6 @@ class ShowProfile extends React.Component {
                   <input type="text" placeholder="please input your phone number here" className="form-control rounded-input"  defaultValue={this.state.user.phone} ref="phone"/>
                 </div>
               </div>
-              <div className="col-lg-3">
-                <p>Password</p>
-              </div>
-              <div className="col-lg-8 m-b-20">
-                <div className="input-group">
-                  <input type="password" className="form-control rounded-input" placeholder="********" ref="password" />
-                </div>
-              </div>
           </div>
         }
             <div className="col-12 text-center m-t-20">

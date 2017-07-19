@@ -4,6 +4,7 @@ import axios from 'axios'
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
 import {acceptRequest,rejectRequest,getRequest} from '../../actions/index.js'
+import Loader from '../../components/Loader.js'
 
 const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
 
@@ -43,10 +44,7 @@ class Request extends React.Component {
           <h4>Request List</h4>
             <div className="table-responsive m-t-30">
               {(this.state.request === null)
-              ? (
-                <img
-                src='http://testmadina.com/Images/loading1.gif'
-                style={{height:200, width: 200,margin:'auto'}}/>)
+              ? <Loader />
               : (<table className="table">
                 <tbody>
                   {this.state.request.map((r,index)=>{
