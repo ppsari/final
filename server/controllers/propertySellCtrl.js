@@ -32,8 +32,14 @@ const getNewest = (req,res) => {
 
 }
 const getProps = (req,res) => {
-  Props.find({}, (err,properties) => {
-    res.send(err ? err : properties);
+  Props.find()
+  .populate({
+    path: '_ownerId',
+    select: 'username _id',
+    match: { _id: { $ne: null }}
+  })
+  .exec((err,properties) => {
+    res.send(err? {err:err} : properties)
   })
 }
 
