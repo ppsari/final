@@ -38,6 +38,9 @@ class ListViewProperty extends React.Component {
                     <small>Add Room</small>
                   </button>
                 </Link>
+                <button type="submit" className="btn-round m-t-0 p-l-20 p-r-20 p-t-5 p-b-5 btn-danger btn-same" onClick={()=>this.deleteProp(prp.status,prp._id,index)}>
+                  <small>Delete Room</small>
+                </button>
               </div>
             </div>
           </div>
@@ -45,6 +48,29 @@ class ListViewProperty extends React.Component {
       </div>
     )
   }
+
+  deleteProp(status,id,index){
+    const token = JSON.parse(localStorage.getItem('token')).token
+    if(status === 'rent'){
+      axios.delete(api+`/propertyRent/${id}`,{headers:{token: token}})
+      .then(response=>{
+        this.state.properties.splice(index,1)
+        this.setState({
+          properties: this.state.properties
+        })
+      })
+    } else{
+      axios.delete(api+`/propertySell/${id}`,{headers:{token: token}})
+      .then(response=>{
+        this.state.properties.splice(index,1)
+        this.setState({
+          properties: this.state.properties
+      })
+    })
+  }
+}
+
+
   componentDidMount(){
     let token = JSON.parse(localStorage.getItem(`token`)).token
     axios.get(api+`/propertyRent/owner`,{headers:{token:token}})
