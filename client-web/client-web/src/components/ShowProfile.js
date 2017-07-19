@@ -95,12 +95,17 @@ class ShowProfile extends React.Component {
   }
 
   componentWillMount(){
-    const userId = JSON.parse(localStorage.getItem('user'))._id
-    this.props.getProfile(userId)
+    const userId = JSON.parse(localStorage.getItem('user'))
+    if(userId){
+      this.props.getProfile(userId._id)
+    } else{
+      window.location = '/login'
+    }
   }
 
   componentWillReceiveProps(){
     setTimeout(()=>{
+          console.log(this.props.user);
       this.setState({
         user: this.props.user
       })

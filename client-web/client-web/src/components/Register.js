@@ -17,10 +17,10 @@ export default class Register extends React.Component {
     user.username = this.username.value
     user.email = this.email.value
     user.password = this.pw.value
+    // user.phone = this.phone.value
     axios.post(`${api}/register`, user)
     .then((data) => {
-      console.log(data.data);
-      window.location = '/login'
+       window.location = '/login'
     })
     .catch(err => console.log(err))
   }
@@ -38,6 +38,10 @@ export default class Register extends React.Component {
             <label>Username</label>
             <input className="form-control" ref={(username) => this.username = username} placeholder="Username"/>
           </div>
+          {/* <div className="form-group">
+            <label>Phone</label>
+            <input className="form-control" ref={(phone) => this.phone = phone} placeholder="Phone"/>
+          </div> */}
           <div className="form-group">
             <label>Password</label>
             <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
