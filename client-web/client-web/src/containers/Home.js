@@ -27,25 +27,25 @@ class Home extends React.Component {
         <div className="container">
           <TitleSection lightTitle="PROPERTY" boldTitle="FOR RENT" />
           <div className="row">
-          {(this.state.propertyRent.length === 0)
+          {(!this.state.propertyRent)
           ? (<div className="no-data">
             <h5>No Data</h5>
-          </div>)
-          : this.state.propertyRent.map((data,index) => {
+            </div>)
+          : (this.state.propertyRent.map((data,index) => {
             return <CardView key={index} data={data} />
-          })
+          }))
         }
           </div>
           <hr/>
           <TitleSection lightTitle="PROPERTY" boldTitle="FOR SELL" />
           <div className="row">
-          {(this.state.propertySell.length === 0)
+          {(!this.state.propertySell)
           ? (<div className="no-data">
             <h5>No Data</h5>
-          </div>)
-          : this.state.propertySell.map((data,index) => {
+            </div>)
+          : (this.state.propertySell.map((data,index) => {
               return <CardView key={index} data={data} />
-          })
+          }))
         }
           </div>
         </div>
@@ -60,11 +60,10 @@ class Home extends React.Component {
   }
 
   componentWillReceiveProps(){
-    setTimeout(function() {
       this.setState({
         propertyRent : this.props.dataRent,
         propertySell : this.props.dataSell
-      })}.bind(this), 10);
+      })
     }
   }
 

@@ -197,7 +197,6 @@ class DetailProperty extends React.Component {
 
   componentDidMount(){
     setTimeout(()=>{
-      console.log(this.props.property);
       this.setState({
         lat: JSON.parse(this.props.property.location.lat),
         lng: JSON.parse(this.props.property.location.lng)
