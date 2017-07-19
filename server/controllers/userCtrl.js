@@ -61,9 +61,9 @@ const editUser = (req,res) => {
       if (typeof req.body.phone != 'undefined') user.phone = req.body.phone;
       if (typeof req.body.password != 'undefined') user.password = req.body.password;
       if (typeof req.body.name != 'undefined') user.name = req.body.name;
-      // if (typeof req.body.role != 'undefined') user.role = req.body.role;
-      //   if (typeof req.body.username != 'undefined') user.username = req.body.username;
+      if (typeof req.body.username != 'undefined') user.username = req.body.username;
       user.save((err,eduser)=> {
+      // if (typeof req.body.role != 'undefined') user.role = req.body.role;
         if (err) {
           let err_msg = '';
           for (let error in err.errors) err_msg+= err.errors[error].message+',';
