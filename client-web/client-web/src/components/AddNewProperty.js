@@ -70,7 +70,7 @@ class AddNewProperty extends React.Component {
                 <div className="col-lg-8 m-b-20">
                   <div className="input-group">
                     <progress value="0" max="100" id="uploader">0%</progress>
-                    <input type="file" value="upload" id="fileButton" className="form-control" ref="image" placeholder="add image url here" />
+                    <input type="file" defaultValue="upload" id="fileButton" className="form-control" ref="image" placeholder="add image url here" />
                   </div>
                 </div>
                 <div className="col-lg-3">
@@ -201,10 +201,10 @@ class AddNewProperty extends React.Component {
                   <p>Location</p>
                 </div>
                 <div className="col-lg-4 m-b-20">
-                  Lat <input type="text" value={this.state.lat}/>
+                  Lat <input type="text" defaultValue={this.state.lat}/>
                 </div>
                 <div className="col-lg-4 m-b-20">
-                  Lng <input type="text" value={this.state.lng}/>
+                  Lng <input type="text" defaultValue={this.state.lng}/>
                 </div>
                 <div className ="col-md-10 offset-lg-1">
                 <GoogleMapReact

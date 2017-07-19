@@ -35,12 +35,15 @@ class reactVR extends React.Component {
       space: 2,
       start: 0,
       rooms: [],
-      icons:
-        {
-        bathRoom : 'https://s3-ap-southeast-1.amazonaws.com/room360/teshome.jpg',
-        bedRoom : 'https://encrypted-tbn0.gstatic.com/rooms?q=tbn:ANd9GcSa7DiBD56aB4XGgEZFVYQtORUeszCUJIeAFowRXKQ-Su8SMI1H',
-        livingRoom: 'http://img.freepik.com/free-vector/modern-living-room-furniture_23-2147518147.jpg?size=338&ext=jpg'
-      }
+      hoverNext: 100,
+      hoverBack: 100,
+      hoverPic1: 100,
+      hoverPic2: 100,
+      hoverTitle: 100,
+      hoverDesc: 100,
+      hoverTitle: 100,
+      hoverText1: 100,
+      hoverText2: 100
     }
 
   }
@@ -51,7 +54,6 @@ class reactVR extends React.Component {
         {(this.state.isIcons === true)
          ? <View>
            {this.state.rooms.slice(this.state.start,this.state.space).map((img,index)=> {
-            // let icon = {uri: this.state.icons[img.type]};
             let icon = {uri:img.image}
             let x = -3
             let y = 0.5
@@ -70,11 +72,12 @@ class reactVR extends React.Component {
                 <Image
                 source={icon}
                 style={{width: 0.7,
-                        height: 0.7}} />
-                <Text style={{
+                        height: 0.7,
+                        }} />
+                <Text
+                  style={{
                   fontWeight: '300',
                   color: 'black',
-                  shadowColor: 'black',
                   shadowOffset:{width: 0.5, height: 0.5},
                   transform: [{rotateY: 5}]
                 }}>{img.name}</Text>
@@ -93,25 +96,31 @@ class reactVR extends React.Component {
             style={styles.descTitle}
             >{this.state.roomName}</Text>
             <Text
-          style={styles.desc}>
-          {this.state.desc}
+            style={styles.desc}>
+            {this.state.desc}
          </Text></View>
         :<VrButton></VrButton>
         }
         <VrButton onClick={()=> this.desc(this.state.img)}>
           <Image
+            onEnter={()=>this.hover(desc)}
+            onExit={()=> this.unhover(desc)}
             source={{uri:'http://i.imgur.com/pUcQRbV.png'}}
             style={{width: 0.5,
                     height: 0.5,
+                    opacity: this.state.hoverDesc,
                     transform: [{translate: [5.1, 2.5, 0]},
                                 {rotateY: -65}]}} />
         </VrButton>
         {(this.state.rooms.length > this.state.space && this.state.isIcons === true)
         ? <VrButton onClick={()=> this.next()}>
            <Image
+            onEnter={()=>this.hover(next)}
+            onExit={()=> this.unhover(next)}
             source={{uri:'http://i.imgur.com/BypPNZ9.png'}}
             style={{width : 0.7,
                     height: 0.7,
+                    opacity: this.state.hoverNext,
                     transform: [{translate: [-3.8, 2.7, -4.2]},
                                 {rotateX: 0},
                                 {rotateY: 215}]}} />
@@ -121,9 +130,12 @@ class reactVR extends React.Component {
         {(this.state.start > 0 && this.state.isIcons === true)
         ?<VrButton onClick={()=> this.back()}>
            <Image
+             onEnter={()=>this.hover(back)}
+             onExit={()=> this.unhover(back)}
             source={{uri:'http://i.imgur.com/BypPNZ9.png'}}
             style={{width: 0.7,
                     height: 0.7,
+                    opacity: this.state.hoverBack,
                     transform: [{translate: [-7, 2.9, -3.3]},
                                 {rotateX: 0},
                                 {rotateY: 35}]}} />
@@ -135,6 +147,7 @@ class reactVR extends React.Component {
            source={{uri:'http://i.imgur.com/SefE9C8.png'}}
            style={{width: 0.15,
                    height: 0.15,
+                   opacity: this.state.hover,
                    transform: [{translate: [-2.7, 4.7, -2]},
                                {rotateY: 35}]}} />
         </VrButton>
@@ -173,8 +186,11 @@ class reactVR extends React.Component {
          </Text>
       }
         <Text
+          onEnter={()=>this.hover(title)}
+          onExit={()=> this.unhover(title)}
           style={{
             backgroundColor: 'black',
+            opacity: this.state.hoverTitle,
             color: 'white',
             fontSize: 0.3,
             fontWeight: '200',
@@ -183,27 +199,45 @@ class reactVR extends React.Component {
             paddingRight: 0.2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            transform: [{translate: [0, 4.5, -3]}]
+            transform: [{translate: [0, 4.3, -3]}]
           }}>
           {this.state.roomName}
         </Text>
-        <Text
-          style={{
-            backgroundColor: 'black',
-            color: 'black',
-            fontSize: 0.3,
-            fontWeight: 'bold',
-            layoutOrigin: [0.5, 0.5],
-            paddingLeft: 0.2,
-            paddingRight: 0.2,
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            transform: [{translate: [0, 0, -3]}]
-          }}>
-          .
-        </Text>
       </View>
     );
+  }
+
+  unhover(e){
+    const full = 100
+    switch (e) {
+      case 'next':this.setState({hoverNext: full});break
+      case 'back':this.setState({hoverBack: full});break
+      case '0':this.setState({hoverPic1: full});break
+      case '1':this.setState({hoverPic2: full});break
+      case '0T':this.setState({hoverText1: full});break
+      case '1T':this.setState({hoverText2: full});break
+      case 'title':this.setState({hoverTitle: full});break
+      case 'desc':this.setState({hoverDesc: full});break
+      default:this.setState({hoverTitle: full});break
+    }
+  }
+
+  hover(e){
+    const shadow = 1
+    switch (e) {
+      case 'next':this.setState({hoverNext: shadow});break
+      case 'back':this.setState({hoverBack: shadow});break
+      case '0':this.setState({hoverPic1: shadow});break
+      case '1':this.setState({hoverPic2: shadow});break
+      case '0T':this.setState({hoverText1: shadow});break
+      case '1T':this.setState({hoverText2: shadow});break
+      case 'title':this.setState({hoverTitle: shadow});break
+      case 'desc':this.setState({hoverDesc: shadow});break
+      default:this.setState({hoverTitle: shadow});break
+    }
+    this.setState({
+      hover: 1
+    })
   }
 
   componentDidMount(){
@@ -286,7 +320,6 @@ desc: {
   fontWeight: '100',
   textAlign: 'center',
   textAlignVertical: 'center',
-
 },
 descBox:{
   backgroundColor: 'black',
