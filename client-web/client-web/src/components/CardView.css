@@ -34,4 +34,10 @@
   .image-container-card {
     height: 235px;
     overflow: hidden;
+    background: #dedede;
+  }
+  .absolute-center-image {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
   }

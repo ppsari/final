@@ -1,0 +1,16 @@
+.Notification {
+  position: fixed;
+  left: 35px;
+  top: 85px;
+  background-color: #71b100;
+  padding: 10px;
+  color: white;
+  border-radius: 5px;
+  transform: translateY(-150px);
+  transition: transform .3s ease;
+}
+
+.Notification.active {
+  transform: translateY(0);
+  transition: transform .3s ease;
+}

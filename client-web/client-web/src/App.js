@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
-
 import store from './store/configureStore';
 import './App.css';
 // import { firebaseAuth } from './config/constants';
@@ -14,6 +13,7 @@ import ListProperty from './containers/ListProperty';
 import DetailProperty from './containers/DetailProperty';
 import Dashboard from './containers/protected/Dashboard';
 import Documentation from './components/Documentation';
+import Notification from './components/Notification';
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -82,6 +82,7 @@ class App extends Component {
       <Provider store={store}>
         <BrowserRouter>
           <div>
+            <Notification />
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path='/detail/:status/:id' component={DetailProperty} />

@@ -31,7 +31,7 @@ export default class AccountNavbar extends React.Component {
                     <div className="row">
                         <div className="col-lg-12">
                             <Link to="/dashboard/profile"><p className="text-left m-t-10 m-b-10"><strong>Your Profile</strong></p></Link>
-                            <Link to="/dashboard/request"><p className="text-left small m-t-10 m-b-10">Request</p></Link>
+                            <Link to="/dashboard/requests"><p className="text-left small m-t-10 m-b-10">Request</p></Link>
                         </div>
                     </div>
                 </div>
