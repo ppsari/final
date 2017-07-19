@@ -12,7 +12,7 @@ const checkAuth = (req,res, next) => {
     if (decoded) {
       if (decoded.role === 'admin') next()
       else res.send({err: 'Invalid Access'})
-    }
+    } else res.send({err: 'Invalid Access'})
   }
   // if (req.headers.hasOwnProperty('token')){
 

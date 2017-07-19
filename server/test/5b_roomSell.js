@@ -199,7 +199,8 @@ describe('RoomSell', () => {
         else {
           nroomSell.should.have.status(200);
           nroomSell.body.should.be.a('object');
-          nroomSell.body.should.have.property('msg','deleted');
+          nroomSell.body.should.have.property('_id',data.roomSell[0]);
+          // nroomSell.body.should.have.property('msg','deleted');
 
           //buat data
           chai.request(server)

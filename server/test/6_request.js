@@ -17,25 +17,29 @@ describe('Request', () => {
     Request.remove({}, err=>{
       r1 = {
         duration: 50,
-        connections: {kind: 'PropertyRent', _propertyId:data.propertyRent[0]},
+        kind: 'PropertyRent',
+        _propertyId:data.propertyRent[0],
         _sellerId:data.user1.id,
         _userId: data.user2.id
       }
       r2 = {
         duration: 1,
-        connections: {kind: 'PropertyRent', _propertyId:data.propertyRent[1]},
+        kind: 'PropertyRent',
+        _propertyId:data.propertyRent[1],
         _sellerId:data.user1.id,
         _userId: data.user2.id
       }
       r3 = {
         duration: 1,
-        connections: {kind: 'PropertySell', _propertyId:data.propertyRent[0]},
+        kind: 'PropertySell',
+        _propertyId:data.propertyRent[0],
         _sellerId:data.user1.id,
         _userId: data.user2.id
       }
       rInvalid = {
         duration: 50,
-        connections: {kind: 'PropertyRent', _propertyId:data.propertyRent[0]},
+        kind: 'PropertyRent',
+        _propertyId:data.propertyRent[0],
         _sellerId:data.user1.id,
         _userId: data.user1.id
       }
@@ -210,7 +214,7 @@ describe('Request', () => {
         response: 'reject'
       }
       chai.request(server)
-      .delete(`/api/request/${data.request[0]}`)
+      .post(`/api/request/delete/${data.request[0]}`)
       .set('token',data.user1.token)
       .send(requestDt)
       .end((err,request) => {
@@ -229,29 +233,24 @@ describe('Request', () => {
       console.log('approved')
       let requestDt = {
         _sellerId : data.user1.id,
-        response: 'approved'
+        response: 'approved',
+        _propertyId: r2._propertyId,
+        kind: r2.kind,
+        note: 'ga mau aja'
       }
       chai.request(server)
-      .delete(`/api/request/${data.request[1]}`)
+      .post(`/api/request/delete/${data.request[1]}`)
       .set('token',data.user1.token)
       .send(requestDt)
       .end((err,request) => {
         if (err) done(err);
         else if (typeof request.body.err !== 'undefined') done(err);
         else {
+          console.log('deleted')?
           request.should.have.status(200);
           request.body.should.be.a('object');
-          // console.log(request.body)
-
-          chai.request(server)
-          .get(`/api/transaction/${request.body._id}`)
-          .set('token',data.admin.token)
-          .end((err,transaction) => {
-            //cek masuk transaksi ato kaga
-            data.transaction.push(transaction.body._id);
-            // console.log(transaction.body)
-            done();
-          });
+          request.body.should.have.property('_id',data.request[1]);
+          done()
         }
       })
     });
