@@ -1,8 +1,6 @@
 import firebase from 'firebase';
 
 export const upload = (idUploader, idFileButton,callback) => {
-
-  let uploader = document.getElementById('uploader')
   let fileButton = document.getElementById('fileButton')
   // console.log(firebase)
   fileButton.addEventListener('change', function(e) {
@@ -16,7 +14,6 @@ export const upload = (idUploader, idFileButton,callback) => {
       'state_changed',
       function progress(snapshot) {
         let percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-        uploader.value = percentage;
         if(percentage >= 100) {
           callback(snapshot.downloadURL)
         }
