@@ -70,7 +70,7 @@ class MyDetailProperty extends React.Component {
                   <small>Description</small>
                   <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>{this.state.property._categoryId.name}</span></p>
                 </div>
-                {(this.state.property.location !== null)
+                {(this.state.property.location)
                 ?(<div className="col-md-10 offset-lg-1">
                   <GoogleMapReact
                     defaultOptions={{scrollwheel: false}}
