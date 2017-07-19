@@ -5,6 +5,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, I
 import GoogleMapReact from 'google-map-react'
 
 import './MyDetailProperty.css';
+import Loader from './Loader'
 
 const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
 
@@ -35,10 +36,7 @@ class MyDetailProperty extends React.Component {
     return (
       <div>
         {(this.state.property === null)
-          ? <img
-            src='http://testmadina.com/Images/loading1.gif'
-            style={{height:200, width: 200,margin:'auto'}}
-            alt="load" />
+          ? <Loader />
           : (<div className="row p-t-20 p-b-20">
           <div className="col-lg-8 offset-lg-2">
             <div className="flex-space-between m-b-30">

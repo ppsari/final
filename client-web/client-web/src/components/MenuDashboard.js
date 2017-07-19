@@ -26,10 +26,10 @@ export default class MenuDashboard extends React.Component {
                 <span className="dashboard-menu-text">Requests</span>
               </li>
             </NavLink>
-            <NavLink to="/dashboard/transactions" className="menu-dashboard">
+            <NavLink to="/dashboard/how-to" className="menu-dashboard">
               <li className="text-center">
-                <span className="lnr lnr-pie-chart icon-dashboard"></span>
-                <span className="dashboard-menu-text">Transactions</span>
+                <span className="lnr lnr-magic-wand icon-dashboard"></span>
+                <span className="dashboard-menu-text">How To</span>
               </li>
             </NavLink>
           </ul>
