@@ -77,7 +77,7 @@ class DetailProperty extends React.Component {
                         <button type="button" onClick={()=> this.enter()} className="theme-btn btn-style-one btn-same"><span className="extra-bold">VISIT</span></button>
                         {(localStorage.getItem('token') && this.props.property._ownerId._id !== JSON.parse(localStorage.getItem('user'))._id)
                       ? <button type="button" className="theme-btn btn-style-three btn-same" onClick={this.toggle}><span className="extra-bold">REQUEST</span></button>
-                      : <h6></h6>
+                      : null
                       }
                       </div>
                     </div>
@@ -96,7 +96,7 @@ class DetailProperty extends React.Component {
                   {(this.props.property.location.lat !== "" && this.props.property.location.lng !== "")
                    ?(<div className='col-md-12 col-12'>
                        <GoogleMapReact
-                        style={{width:50, height:250,margin:10}}
+                        style={{width:50, height:100,margin:10}}
                          center={{lat: this.state.lat, lng: this.state.lng}}
                          zoom={this.state.zoom}
                        >
@@ -105,6 +105,7 @@ class DetailProperty extends React.Component {
                         lat={this.state.lat}
                         lng={this.state.lng}
                         src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
+                        alt="icon-home"
                       />
                     </GoogleMapReact></div>)
                   :(<h4>No location available</h4>)
@@ -214,7 +215,7 @@ request(){
 }
 
 enter(){
- let vr = 'http://vr.room360.ga/'
+ let vr = 'https://vr.room360.ga/'
    window.open(vr+`?key=${this.state.propStatus}/${this.state.id}`,'_newtab')
   }
 

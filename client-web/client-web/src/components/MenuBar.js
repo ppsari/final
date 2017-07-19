@@ -1,9 +1,8 @@
 import React from 'react';
 import $ from 'jquery';
-import { Collapse, Navbar, NavbarToggler, Nav, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Navbar, Nav, NavItem, NavLink } from 'reactstrap';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { logout } from '../helpers/auth';
 import './MenuBar.css'
 
 import AccountNavbar from './AccountNavbar';

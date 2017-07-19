@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import prettyMoney from '../helpers/prettyMoney'
 
-const api = `http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api`
+const api = 'https://api.room360.ga/api'
 
 class ListViewProperty extends React.Component {
   constructor(props){
@@ -20,7 +20,7 @@ class ListViewProperty extends React.Component {
           console.log(prp);
           return <div className="media m-t-20 shadow" key={index}>
             <div className="media-left" style={{minHeight: 124}}>
-              <div style={{width: 120, height: 124, overflow: 'hidden'}}>
+              <div style={{width: 120, height: 160, overflow: 'hidden'}}>
                 <img style={{height: '100%'}} src={prp.image} alt="64x64" />
               </div>
             </div>

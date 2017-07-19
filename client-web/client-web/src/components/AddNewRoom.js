@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
-const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+const api = 'https://api.room360.ga/api'
 
 class AddNewRoom extends React.Component {
   constructor () {
@@ -19,11 +19,11 @@ class AddNewRoom extends React.Component {
           <h5 className="text-center bg-gray padding-15" style={{borderRadius: '4px 4px 0 0'}}>Room Detail</h5>
           <div className='row'>
           {(this.state.rooms.length === 0)
-            ? (<h1></h1>)
+            ? null
             : (this.state.rooms.map((room,index)=>{
               return <div className='col-3' key={index}>
                       <h6>{room.name}</h6>
-                      <img src={room.image} key={index} className='img-responsive'/>
+                      <img src={room.image} key={index} className='img-responsive' alt="room"/>
                       <a className="btn btn-danger" onClick={()=>this.deleteRoom(room._id,index)}><span className="glyphicon glyphicon-trash">Delete</span></a>
                      </div>
             }))}

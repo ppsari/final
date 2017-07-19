@@ -1,5 +1,5 @@
 import axios from 'axios'
-const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+const api = 'https://api.room360.ga/api'
 
 export const searchProperty = (prop,city) => {
   return (dispatch) =>{

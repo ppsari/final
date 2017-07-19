@@ -36,7 +36,7 @@ class Login extends React.Component {
         this.props.login(user);
         localStorage.setItem('user', JSON.stringify(user));
         localStorage.setItem('token',JSON.stringify(data.data))
-        window.location = '/dashboard/profile'
+        window.location = '/dashboard/how-to'
       }
     })
     .catch((error) => {

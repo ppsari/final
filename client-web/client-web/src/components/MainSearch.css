@@ -18,7 +18,7 @@
   z-index: 9;
   pointer-events: none;
 }
-select.form-control:focus {
+.MainSearch select.form-control:focus {
   border-color: transparent;
 }
 select.form-control option:hover {
