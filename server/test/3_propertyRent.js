@@ -18,9 +18,9 @@ describe('PropertyRent', () => {
         image: 'apartemen.jpg',
         city: 'Jakarta Barat',
         descr: 'Apartemen baru bangun sangat indah sekali',
-        price: { amount: 1000000, descr: 'month'},
+        price_amount: 1000000,
+        price_descr: 'month',
         // _ownerId: data.user1.id,
-
         address: 'Jakarta barat blok a no 6',
         _categoryId: data.category[1],
         _accessId: [data.access[0], data.access[1]]
@@ -30,7 +30,8 @@ describe('PropertyRent', () => {
         image: 'apartemen.jpg',
         city: 'Jakarta Selatan',
         descr: 'Apartemen lama tempat obama waktu kecil',
-        price: { amount: 1250000, descr: 'day'},
+        price_amount: 1250000,
+        price_descr: 'day',
         address: 'Menteng',
         // _ownerId: data.user1.id,
         _categoryId: data.category[1],
@@ -42,7 +43,8 @@ describe('PropertyRent', () => {
         city: 'Jakarta Timur',
         address: 'Jakarta tim',
         descr: 'Villa mewah tempat raja salman menginap di jakarta',
-        price: { amount: 99999999, descr: 'hour'},
+        price_amount: 99999999,
+        price_descr: 'hour',
         // _ownerId: data.user2.id,
         _categoryId: data.category[0],
         _accessId: [data.access[0]]
@@ -53,7 +55,7 @@ describe('PropertyRent', () => {
         image: 'villa.jpg',
         city: 'Jakarta Timur',
         descr: 'Villa mewah tempat raja salman menginap di jakarta',
-        price: { amount: 99999999, descr: 'hourly'},
+        price_amount: 99999999, price_descr: 'hourly',
         // _ownerId: data.user2.id,
         _categoryId: data.category[0].id
       }
@@ -106,6 +108,7 @@ describe('PropertyRent', () => {
       .set('token',data.user1.token)
       .send(pr1)
       .end((err,npropertyRent) => {
+        // console.log(npropertyRent.body.err)
         if (err) done(err);
         else if (typeof npropertyRent.body.err !== 'undefined') done(err);
         else {
@@ -116,11 +119,14 @@ describe('PropertyRent', () => {
           npropertyRent.body.should.have.property('city',pr1.city);
           npropertyRent.body.should.have.property('descr',pr1.descr);
           npropertyRent.body.should.have.property('_categoryId',pr1._categoryId);
-          // npropertyRent.body.should.have.property('_accessId',pr1._accessId);
+          npropertyRent.body.should.have.property('address',pr1.address);
           npropertyRent.body.should.have.property('name',pr1.name);
           npropertyRent.body.should.have.property('_ownerId',data.user1.id);
           npropertyRent.body.should.have.property('_id');
           data.propertyRent.push(npropertyRent.body._id);
+          // console.log('====proprent==================')
+          // console.log(npropertyRent.body);
+          // console.log(npropertyRent.body._id)
           done();
         }
       })
@@ -187,7 +193,6 @@ describe('PropertyRent', () => {
         else {
           propertyRent.should.have.status(200);
           propertyRent.body.should.be.a('array');
-          // console.log(propertyRent.body)
           done();
         }
       });
@@ -195,17 +200,22 @@ describe('PropertyRent', () => {
   })
   describe('GET /api/propertyRent/:id', function(done) {
     it('should get propertyRent -- not login', done => {
+      console.log(data.propertyRent[0]);
       chai.request(server)
       .get(`/api/propertyRent/${data.propertyRent[0]}`)
       .end((err,propertyRent) => {
+          // console.log('-------------------------prop rent wo login-------------')
+          // console.log(err)
+          // console.log(propertyRent.body)
         if (err) done(err);
         else if (typeof propertyRent.body.err!== 'undefined') done(err);
         else {
+
           propertyRent.should.have.status(200);
           propertyRent.body.should.be.a('object');
           propertyRent.body.should.have.property('name');
 
-          // console.log(propertyRent.body)
+
           done();
         }
       });
@@ -215,43 +225,18 @@ describe('PropertyRent', () => {
   describe('SEARCH /api/propertyRent', function(done) {
     it('should search & populate propertyRent -- searchPropsENull', done => {
       chai.request(server)
-      .get(`/api/propertyRent/searchENull?city=Jakarta`)
+      .get(`/api/propertyRent/searchENull?city=Jakarta Barat&prop=apartment`)
       .end((err,propertyRent) => {
         if (err) done(err);
         else if (typeof propertyRent.body.err!== 'undefined') done(err);
         else {
           propertyRent.should.have.status(200);
-          propertyRent.body.should.be.a('object');
-          propertyRent.body.should.have.property('totalResult');
+          propertyRent.body.should.be.a('array');
+          // propertyRent.body.should.have.property('totalResult');
 
           // console.log(propertyRent.body)
           done();
         }
-      });
-    });
-    it('should search & populate propertyRent -- searchPropsENull kosong', done => {
-      chai.request(server)
-      .get(`/api/propertyRent/searchENull?city=`)
-      .end((err,propertyRent) => {
-        if (err) done(err);
-        else if (typeof propertyRent.body.err!== 'undefined') done(err);
-        else {
-          propertyRent.should.have.status(200);
-          propertyRent.body.should.be.a('object');
-          // console.log(propertyRent.body)
-          done();
-        }
-      });
-    });
-    it('shouldnt search & populate propertyRent -- searchPropsNNull', done => {
-      chai.request(server)
-      .get(`/api/propertyRent/searchPropsNNull?city=`)
-      .end((err,propertyRent) => {
-        propertyRent.should.have.status(200);
-        propertyRent.body.should.be.a('object');
-        propertyRent.body.should.have.property('err');
-        // console.log('err:\n'+propertyRent.body.err);
-        done();
       });
     });
     // it('should search & populate propertyRent -- searchPropsNNull', done => {});
@@ -307,7 +292,7 @@ describe('PropertyRent', () => {
           propertyRent.should.have.status(200);
           propertyRent.body.should.be.a('object');
           propertyRent.body.should.have.property('name',newname)
-          console.log(propertyRent.body)
+          // console.log(propertyRent.body)
           done();
         }
       })

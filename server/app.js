@@ -18,9 +18,13 @@ let admin = require('./routes/admin')
 let roomRent = require('./routes/roomRent')
 let roomSell = require('./routes/roomSell')
 let testimony = require('./routes/testimony')
+let upload = require('./routes/upload')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
+
+
+app.use(cors());
 
 app.use('/', index);
 app.use('/api/transaction', transaction);
@@ -34,20 +38,21 @@ app.use('/api/admin', admin);
 app.use('/api/roomRent', roomRent);
 app.use('/api/roomSell', roomSell);
 app.use('/api/testimony', testimony);
+app.use('/api/upload', upload);
 
 
-app.use(cors());
+let envi = 'test';
 // let env = 'local_dev'
-let env = app.settings.env;
+// let env = app.settings.env;
 let db_config = {
-  local_dev: 'mongodb://localhost/movie',
-  development: 'mongodb://admin:admin@ds159112.mlab.com:59112/room360db',
-  test: 'mongodb://admin:admin@ds159112.mlab.com:59112/room360dbtes'
+  // local_dev: 'mongodb://localhost/movie',
+  development: 'mongodb://room360:R4A3RKBkXDW4QMmH@cluster0-shard-00-00-6ubhn.mongodb.net:27017,cluster0-shard-00-01-6ubhn.mongodb.net:27017,cluster0-shard-00-02-6ubhn.mongodb.net:27017/room360?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
+  test: 'mongodb://room360:R4A3RKBkXDW4QMmH@cluster0-shard-00-00-6ubhn.mongodb.net:27017,cluster0-shard-00-01-6ubhn.mongodb.net:27017,cluster0-shard-00-02-6ubhn.mongodb.net:27017/room360?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'
 }
 
-mongoose.connect(db_config[env],(err,res)=>{
-  console.log(db_config[env])
-  console.log(err?err:'Berhasil connect ke db '+db_config[env]);
+mongoose.connect(db_config[envi],(err,res)=>{
+  console.log(db_config[envi])
+  console.log(err?err:'Berhasil connect ke db '+db_config[envi]);
 })
 
 

@@ -199,7 +199,7 @@ describe('RoomRent', () => {
         else {
           nroomRent.should.have.status(200);
           nroomRent.body.should.be.a('object');
-          nroomRent.body.should.have.property('msg',"deleted");
+          nroomRent.body.should.have.property('_id',data.roomRent[0]);
 
 
           //buat contoh data

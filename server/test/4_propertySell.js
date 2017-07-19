@@ -18,7 +18,7 @@ describe('PropertySell', () => {
         image: 'apartemen.jpg',
         city: 'Jakarta Barat',
         descr: 'Apartemen baru bangun sangat indah sekali',
-        price: {amount: 1000000000000},
+        price_amount: 1000000000000,
         address: 'Jakarta barat blok a no 6',
         // _ownerId: data.user1.id,
         _categoryId: data.category[1],
@@ -29,7 +29,7 @@ describe('PropertySell', () => {
         image: 'apartemen.jpg',
         city: 'Jakarta Selatan',
         descr: 'Apartemen lama tempat obama waktu kecil',
-        price: {amount: 1250000000000},
+        price_amount: 12500000000000,
         address: 'Menteng Raya',
         // _ownerId: data.user1.id,
         _categoryId: data.category[1],
@@ -40,7 +40,7 @@ describe('PropertySell', () => {
         image: 'villa.jpg',
         city: 'Jakarta Timur',
         descr: 'Villa mewah tempat raja salman menginap di jakarta',
-        price: {amount: 99999999999999999},
+        price_amount: 99999999999999999,
         // _ownerId: data.user2.id,
         address: 'Jaktim address',
         _categoryId: data.category[0],
@@ -52,7 +52,7 @@ describe('PropertySell', () => {
         image: 'villa.jpg',
         city: 'Jakarta Timur',
         descr: 'Villa mewah tempat raja salman menginap di jakarta',
-        price: 999999999,
+        price_amount: 999999999,
         // _ownerId: data.user2.id,
         _categoryId: data.category[0].id
       }
@@ -213,31 +213,31 @@ describe('PropertySell', () => {
   })
 
   describe('SEARCH /api/propertySell', function(done) {
-    it('should search & populate propertySell -- searchPropsENull', done => {
+    it('should search & populate propertySell -- searchPropsENull city', done => {
       chai.request(server)
-      .get(`/api/propertySell/searchENull?city=Jakarta`)
+      .get(`/api/propertySell/searchENull?city=Jakarta Barat`)
       .end((err,propertySell) => {
         if (err) done(err);
         else if (typeof propertySell.body.err!== 'undefined') done(err);
         else {
           propertySell.should.have.status(200);
-          propertySell.body.should.be.a('object');
-          propertySell.body.should.have.property('totalResult');
+          propertySell.body.should.be.a('array');
+          // propertySell.body.should.have.property('totalResult');
           // console.log(propertySell.body)
           done();
         }
       });
     });
-    it('should search & populate propertySell -- searchPropsENull kosong', done => {
+    it('should search & populate propertySell -- searchPropsENull city+prop', done => {
       chai.request(server)
-      .get(`/api/propertySell/searchENull?city=`)
+      .get(`/api/propertySell/searchENull?city=Jakarta Selatan&prop=kantor`)
       .end((err,propertySell) => {
         if (err) done(err);
         else if (typeof propertySell.body.err!== 'undefined') done(err);
         else {
           propertySell.should.have.status(200);
-          propertySell.body.should.be.a('object');
-          propertySell.body.should.have.property('totalResult');
+          propertySell.body.should.be.a('array');
+          // propertySell.body.should.have.property('totalResult');
           // console.log(propertySell.body)
           done();
         }

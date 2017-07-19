@@ -35,6 +35,7 @@ const getRequestsByBuyer = (req,res) => {
 
   Request.find({_userId: decoded._id})
   .populate('_userId _sellerId')
+  .populate('connections._propertyId')
   .exec( (err,requests) => {
     res.send(err? {err:err} : requests );
   })
@@ -44,7 +45,10 @@ const getRequestsBySeller = (req,res) => {
   let decoded = login.getUserDetail(req.headers.token);
 
   Request.find({_sellerId: decoded._id})
-  .populate('_userId _sellerId')
+  // .populate('_userId _sellerId')
+  .populate({path:'_userId', select:'phone username email name _id'})
+  .populate({path:'_sellerId', select:'phone username email name _id'})
+  .populate('connections._propertyId')
   .exec( (err,requests) => {
     res.send(err? {err:err} : requests );
   })
@@ -67,29 +71,37 @@ const addRequest = (req,res) => {
   let requestDt = req.body;
   let decoded = login.getUserDetail(req.headers.token);
   requestDt._userId = decoded._id;
-
-  let Prop = requestDt.connections.kind == 'PropertyRent' ? PropertyRent: PropertySell;
+  let Prop = requestDt.kind == 'PropertyRent' ? PropertyRent: PropertySell;
   if (requestDt._sellerId === requestDt._userId) res.send({err:'You cant rent/sell your own product'})
   else {
 
+    let body =  (typeof requestDt.note !== 'undefined' && requestDt.note !== '' ? requestDt.note: 'You got a request!')
     let msg = {
       subject: 'There is a request for you',
-      body: 'Please check your request page to approve/reject'
+      body: body
     }
 
-    Prop.findById(requestDt.connections._propertyId)
+    Prop.findById(requestDt._propertyId)
     .populate({path:'_ownerId', select:'phone username email name'})
     .exec((err,prop)=>{
       if (err){ res.send({err: 'Invalid Property'}); }
-      else if(requestDt.connections.kind === 'PropertyRent'){
-        let start = new Date(requestDt.connections.start);
-        let end = new Date(requestDt.connections.end);
+      // else if(requestDt.kind === 'PropertyRent'){
+        // let start = new Date(requestDt['connections.start']);
+        // let end = new Date(requestDt['connections.end']);
         //cek ketersediaan
-        let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
-        if (idx > -1) res.send({err:'Booking Date are not available'})
-      }
+        // let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
+        // if (idx > -1) res.send({err:'Booking Date are not available'})
+      // }
 
-      let newrequest = new Request(requestDt);
+      let newrequest = new Request({
+        note: requestDt.note,
+        connections: {
+          kind: requestDt.kind,
+          _propertyId: requestDt._propertyId
+        },
+        _sellerId : requestDt._sellerId,
+        _userId: requestDt._userId
+      });
       newrequest.save((err,request) => {
         if (err) res.send({err:err})
         else {
@@ -112,121 +124,73 @@ const deleteRequest = (req,res) => {
     else if (request._sellerId != decoded._id && decoded.role !== 'admin') res.send({err:'Invalid access'});
     else {
       let subject = 'Your request is ' +requestDt.response;
-      let body = 'Your request is ' +requestDt.response;
-      let msg = {
-        subject: subject,
-        body: body
-      }
-
+      let msg = { subject: subject  }
       User.findById(request._userId, (err,user)=> {
         if (err) res.send({err:err})
         else if (requestDt.response === 'approved') {
+          msg.body = `Your request has been approved. For further information please contact ${decoded.name} - ${decoded.phone} / ${decoded.email}`
+
           let transDt = req.body;
           transDt._userId = request._userId;
           transDt._sellerId = decoded._id;
           let trans = new Trans(transDt);
+
           let Prop = request.connections.kind === 'PropertyRent'? PropertyRent : PropertySell;
 
           Prop.findById( request.connections._propertyId, (err,prop) => {
             if (err) res.send({err : 'Invalid Property'});
-            else if (request.connections.kind === 'PropertyRent') {
-              let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
-              if (idx > -1) res.send({err:'Booking Date are not available'})
-              else {
-                trans.connections.detail =
-                  {
-                    start: request.connections.detail.start,
-                    end: request.connections.detail.end
-                  }
-
+            else {
+            // else if (request.connections.kind === 'PropertyRent') {
+              // let idx = prop.renter.findIndex(r => ( (start >= r.start && start <= r.end) || (end >= r.start && end <= r.end)  ))
+              // if (idx > -1) res.send({err:'Booking Date are not available'})
+              // else {
+                // trans.connections.detail = {
+                //     start: request.connections.detail.start,
+                //     end: request.connections.detail.end
+                //   }
                 trans.save((err,newtrans) => {
                   if (err) {
                     let err_msg = [];
                     for (let error in err.errors) err_msg.push(err.errors[error].message);
                     res.send({err : err_msg.join(',')});
-                  }
-                  else {
-                    prop.renter.push({
-                      start: request.connections.detail.start,
-                      end: request.connections.detail.end,
-                      _renterId: request._userId
-                    });
-                    prop.rentercount = prop.rentercount + 1;
-                    prop.save((err,nprop) => {
-                      res.send(err? {err:err} : newtrans);
-                      contact.contact(user,msg);
-                    })
-                  }
-                })
-
-
-              }
-            } else {
-              trans.save((err,newtrans) => {
-                if (err) {
-                  let err_msg = [];
-                  for (let error in err.errors) err_msg.push(err.errors[error].message);
-                  res.send({err : err_msg.join(',')});
-                }
-                else {
-                  prop.isActive = false;
-                  prop.save((err,nprop) => {
-                    res.send(err? {err:err} : newtrans);
-                    contact.contact(user,msg);
-                  })
-                }
-              })
-
-
-
-            }
-
-          })
-
-
-          //
-          // trans.save((err,newtrans) => {
-          //   if (err) {
-          //     let err_msg = [];
-          //     for (let error in err.errors) err_msg.push(err.errors[error].message);
-          //     res.send({err : err_msg.join(',')});
-          //   }
-            //  else {
-              // if (request.connections.kind === 'PropertyRent') {
-                  // PropertyRent.findById(request.connections._propertyId, (err,prop) => {
-                    // prop.connections.renter.push({
-                    //   start: request.detail.start,
-                    //   end: request.detail.end,
-                    //   _renderId: request._userId
+                  } 
+                  // else {
+                    // prop.renter.push({
+                    //   start: request.connections.detail.start,
+                    //   end: request.connections.detail.end,
+                    //   _renterId: request._userId
                     // });
+                    // prop.rentercount = prop.rentercount + 1;
                     // prop.save((err,nprop) => {
                     //   res.send(err? {err:err} : newtrans);
                     //   contact.contact(user,msg);
                     // })
-                  // })
+                  // }
+                })
               // }
-              // else if (request.connections.kind === 'PropertySell')
-              //   PropertySell.findById(request.connections._propertyId, (err,prop) => {
-              //     prop.isActive = false;
-              //     prop.save((err,nprop) => {
-              //       res.send(err? {err:err} : newtrans);
-              //       contact.contact(user,msg);
-              //     })
-              //   })
-
-            // }
-          // })
+            }
+            //else valid
+          })
+          //end propertyFindById
         }
         else {
-          request.remove((err,deleted) => {
-            if (err) {res.send({err : err});}
-            else {
-              res.send(deleted)
-              contact.contact(user,msg);
-            }
-          })
+          msg.body = `Your request has been rejected `;
+          msg.body += (typeof requestDt.note === 'undefined' || requestDt.note === '') ? '': `because ${requestDt.note}`;
+
         }
+        // contact.contact(user,msg);
+
+        // if (requestDt.response === 'rejected')
+        request.remove((err,deleted) => {
+          if (err) {res.send({err : err});}
+          else {
+            contact.contact(user,msg);
+            res.send(deleted)
+          }
+        })
+
       })
+      //end UserfindById
     }
   })
 }

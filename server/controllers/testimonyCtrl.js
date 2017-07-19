@@ -7,6 +7,8 @@ const checkAuth = (req,res, next) => {
   let method = req.method;
   let hasParam = req.path !== '/';
 
+  // if (method === 'GET') next();
+  // else res.send({err:'You must login'})
   if (req.headers.hasOwnProperty('token')){
     let decoded = login.getUserDetail(req.headers.token);
     if (decoded) next();

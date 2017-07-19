@@ -81,17 +81,18 @@ const editRoom = (req,res) => {
 }
 const deleteRoom = (req,res) => {
   let decoded = login.getUserDetail(req.headers.token);
-  Room.findById(req.params._roomId, (err,request) => {
+  Room.findById(req.params._roomId, (err,room) => {
     if (err) res.send({err: 'Invalid Request'})
-    else if (request._userId != decoded._id && decoded.role !== 'admin') res.send({err:'Invalid access'});
+    else if (room._userId != decoded._id && decoded.role !== 'admin') res.send({err:'Invalid access'});
     else {
-      PropertyRent.update({_id: request._propertyId}, { $pullAll : [{_roomId: request._id}] }).exec((error, result)=> {
-        if(error) {
-          res.send(error)
-        } else {
-          res.send({msg: "deleted"})
-        }
-      })
+      room.remove((err,deleted) => {res.send(err? err : deleted)})
+      // PropertyRent.update({_id: room._propertyId}, { $pullAll : [{_roomId: room._id}] }).exec((error, result)=> {
+      //   if(error) {
+      //     res.send(error)
+      //   } else {
+      //     res.send({msg: "deleted"})
+      //   }
+      // })
     }
   })
 }

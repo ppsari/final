@@ -37,6 +37,15 @@ const getProps = (req,res) => {
   })
 }
 
+const getPropsByOwner = (req,res) => {
+  let decoded = req.headers.hasOwnProperty('token') ? login.getUserDetail(req.headers.token) : false;
+  if (decoded)
+    Props.find({_ownerId: decoded._id}, (err,properties) => {
+      res.send(err ? {err: err} : properties);
+    })
+  else res.send({err : 'You dont have access'});
+}
+
 const getProp = (req,res) => {
   let id = req.params.id;
   Props.findById(id)
@@ -79,47 +88,86 @@ const getProp = (req,res) => {
     b. kosong ga error        => searchPropNNull
 */
 
-
 const searchPropsENull = (req,res) => {
-  let find = {}
+  // res.send(req.query.city)
+  let regCity  = new RegExp(req.query.city, 'i');
+  let find = {city: regCity}
+  Props.find(find)
+  .populate('_categoryId _accessId _roomId')
+  .populate({
+    path: '_ownerId',
+    select: 'username _id'
+  })
+  .exec( (err,properties)=> {
+    if (err) res.send({err:err})
+    else {
+      if (req.query.prop !== '') {
+        let regProp = new RegExp(req.query.prop, 'i')
+        let filtered = properties.filter(property => {
+          if ( (regProp.test(property._categoryId.name) || regProp.test(property.name)) ) {
+            return property
+          }
+        })
+        res.send(filtered)
+      } else res.send(properties)
 
-  let pageOptions = {
-    page: 0,
-    limit: 10
-  }
-
-  for (let key in req.query)
-    if (req.query[key] !== '' && key !='page' && key!= 'limit') find[key] = new RegExp(req.query[key], "i")
-    else if (key === 'page' && req.query[key]!='') pageOptions.page = req.query[key] -1 ;
-    else if (key === 'limit' && req.query[key]!='') pageOptions.limit = parseInt(req.query[key]);
-
-  Props.count(find, function(err, count) {
-    let countQuery = Math.ceil(count / pageOptions.limit);
-
-    Props.find(find)
-    .skip(pageOptions.page * pageOptions.limit)
-    .limit(pageOptions.limit)
-    .populate('_categoryId _accessId _roomId')
-    .populate({
-      path: '_ownerId',
-      select: 'username _id'
-    })
-    .exec( (err,property) => {
-      if (err) res.send({err:err})
-      else {
-        //hitung jumlah Room
-        let roomTotal = [];
-        for (let room in property._roomId)
-          roomTotal[room] =  (typeof property._roomId[room] === 'undefined')  ? 1 : (roomTotal[room]+1);
-        property.roomTotal = roomTotal;
-        // property.pageCount = countQuery;
-
-        // console.log(property)
-        res.send({property,countQuery,totalResult:count});
-      }
-    })
-  });
+    }
+  })
 }
+// const searchPropsENull = (req,res) => {
+//   let find = {}
+//
+//   Props.find()
+//   .populate('_categoryId _accessId _roomId')
+//   .populate({
+//     path: '_ownerId',
+//     select: 'username _id'
+//   })
+//   .exec( (err,properties)=> {
+//     if (err) res.send({err:err})
+//     else {
+//       let regCity  = new RegExp(req.query.city, 'i');
+//       let regProp = new RegExp(req.query.prop, 'i')
+//       let filtered = properties.filter(property => {
+//         if ( regCity.test(property.city)||(regProp.test(property._categoryId.name) || regProp.test(property.name)) )
+//         return property
+//       })
+//       res.send(filtered)
+//     }
+//   })
+//
+//   // for (let key in req.query)
+//   //   if (req.query[key] !== '' && key !='page' && key!= 'limit') find[key] = new RegExp(req.query[key], "i")
+//   //   else if (key === 'page' && req.query[key]!='') pageOptions.page = req.query[key] -1 ;
+//   //   else if (key === 'limit' && req.query[key]!='') pageOptions.limit = parseInt(req.query[key]);
+//   //
+//   // Props.count(find, function(err, count) {
+//   //   let countQuery = Math.ceil(count / pageOptions.limit);
+//   //
+//   //   Props.find(find)
+//   //   .skip(pageOptions.page * pageOptions.limit)
+//   //   .limit(pageOptions.limit)
+//   //   .populate('_categoryId _accessId _roomId')
+//   //   .populate({
+//   //     path: '_ownerId',
+//   //     select: 'username _id'
+//   //   })
+//   //   .exec( (err,property) => {
+//   //     if (err) res.send({err:err})
+//   //     else {
+//   //       //hitung jumlah Room
+//   //       let roomTotal = [];
+//   //       for (let room in property._roomId)
+//   //         roomTotal[room] =  (typeof property._roomId[room] === 'undefined')  ? 1 : (roomTotal[room]+1);
+//   //       property.roomTotal = roomTotal;
+//   //       // property.pageCount = countQuery;
+//   //
+//   //       // console.log(property)
+//   //       res.send({property,countQuery,totalResult:count});
+//   //     }
+//   //   })
+//   // });
+// }
 
 const searchPropsNNull = (req,res) => {
   let find = {}
@@ -212,9 +260,49 @@ const searchProps = (req,res) => {
 const addProp = (req,res) => {
   let propertyDt = req.body;
   let decoded = login.getUserDetail(req.headers.token);
-  propertyDt._ownerId = decoded._id;
+  // propertyDt._ownerId = decoded._id;
 
-  let property = new Props(propertyDt);
+  // let property = new Props(propertyDt);
+  //
+  // property.save((err,newproperty) => {
+  //   if (err) {
+  //     let err_msg = [];
+  //     for (let error in err.errors) err_msg.push(err.errors[error].message);
+  //     res.send({err : err_msg.join(',')});
+  //   } else res.send(newproperty)
+  // })
+
+  let newProp = {
+    name: propertyDt.name,
+    image: propertyDt.image,
+    city: propertyDt.city,
+    descr: propertyDt.descr,
+    price: {
+      amount: propertyDt.price_amount || null,
+      descr: propertyDt.price_descr || null
+    },
+    address: propertyDt.address,
+    _ownerId: decoded._id,
+    _categoryId: propertyDt._categoryId || null,
+    _accessId: propertyDt._accessId || [],
+    _roomId: propertyDt._roomId || [],
+  }
+  newProp.detail = {}
+  if (typeof propertyDt.detail_luasBangunan !== 'undefined') newProp.detail.luasBangunan = propertyDt.detail_luasBangunan;
+  if (typeof propertyDt.detail_luasTanah !== 'undefined') newProp.detail.detail_luasTanah = propertyDt.detail_detail_luasTanah;
+  if (typeof propertyDt.detail_perabotan !== 'undefined') newProp.detail.perabotan = propertyDt.detail_perabotan;
+  if (typeof propertyDt.detail_listrik !== 'undefined') newProp.detail.listrik = propertyDt.detail_listrik;
+  if (typeof propertyDt.detail_lantai !== 'undefined') newProp.detail.lantai = propertyDt.detail_lantai;
+  if (typeof propertyDt.detail_fasilitas !== 'undefined') newProp.detail.fasilitas = propertyDt.detail_fasilitas;
+
+  if (typeof propertyDt.lng !== 'undefined' && typeof propertyDt.lat !== 'undefined' ) {
+    newProp.location= {
+      lng: propertyDt.lng,
+      lat: propertyDt.lat
+    }
+  }
+
+  let property = new Props(newProp);
 
   property.save((err,newproperty) => {
     if (err) {
@@ -223,30 +311,81 @@ const addProp = (req,res) => {
       res.send({err : err_msg.join(',')});
     } else res.send(newproperty)
   })
+
 }
 
 const editProp = (req,res) => {
   let id = req.params.id;
   let decoded = login.getUserDetail(req.headers.token);
 
+  let propertyDt = req.body;
+
   Props.findById(id, (err,property) => {
     if (err) res.send({err: 'Invalid Property'})
     else if (decoded._id != property._ownerId) res.send({err : 'Invalid Access'})
     else {
-      if (typeof req.body.name != 'undefined') property.name = req.body.name;
-      if (typeof req.body.image != 'undefined') property.image = req.body.image;
-      if (typeof req.body.city != 'undefined') property.city = req.body.city;
-      if (typeof req.body.descr != 'undefined') property.descr = req.body.descr;
-      if (typeof req.body.price != 'undefined') property.price = req.body.price;
-      if (typeof req.body.isActive != 'undefined') property.isActive = req.body.isActive;
-      // if (typeof req.body._ownerId != 'undefined') property._ownerId = req.body._ownerId;
-      property._accessId = (typeof req.body._accessId != 'undefined') ? req.body._accessId : [];
-      if (typeof req.body.address != 'undefined') property.address = req.body.address;
-      // property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
 
-      property.save((err,edproperty)=> {res.send(err ? {err: err} : edproperty)} );
+      property.detail = {}
+      if (typeof req.body.name != 'undefined') property.name = propertyDt.name;
+      if (typeof propertyDt.image != 'undefined') property.image = propertyDt.image;
+      if (typeof propertyDt.city != 'undefined') property.city = propertyDt.city;
+      if (typeof propertyDt.descr != 'undefined') property.descr = propertyDt.descr;
+      if (typeof propertyDt.price_amount != 'undefined') property.price.amount = propertyDt.price_amount;
+      if (typeof propertyDt.price_descr != 'undefined') property.price.descr = propertyDt.price_descr;
+
+      if (typeof propertyDt.detail_luasBangunan !== 'undefined') property.detail.luasBangunan = propertyDt.detail_luasBangunan;
+      if (typeof propertyDt.detail_luasTanah !== 'undefined') property.detail.detail_luasTanah = propertyDt.detail_detail_luasTanah;
+      if (typeof propertyDt.detail_perabotan !== 'undefined') property.detail.perabotan = propertyDt.detail_perabotan;
+      if (typeof propertyDt.detail_listrik !== 'undefined') property.detail.listrik = propertyDt.detail_listrik;
+      if (typeof propertyDt.detail_lantai !== 'undefined') property.detail.lantai = propertyDt.detail_lantai;
+      if (typeof propertyDt.detail_fasilitas !== 'undefined') property.detail.fasilitas = propertyDt.detail_fasilitas;
+      if (typeof propertyDt.address != 'undefined') property.address = propertyDt.address;
+
+      if (typeof propertyDt._categoryId !== 'undefined') property._categoryId = propertyDt._categoryId;
+      if (typeof propertyDt._accessId !== 'undefined') property._accessId = propertyDt._accessId;
+      if (typeof propertyDt._roomId !== 'undefined') property._roomId = propertyDt._roomId;
+
+      if (typeof propertyDt.lng !== 'undefined' && typeof propertyDt.lat !== 'undefined' ) {
+        property.location= {
+          lng: propertyDt.lng,
+          lat: propertyDt.lat
+        }
+      }
+
+      property.save((err,edproperty)=> {
+        if (err) {
+          let err_msg = [];
+          for (let error in err.errors) err_msg.push(err.errors[error].message);
+          res.send({err : err_msg.join(',')});
+        } else res.send(edproperty)
+      } );
     }
   })
+
+  // Props.findById(id, (err,property) => {
+  //   if (err) res.send({err: 'Invalid Property'})
+  //   else if (decoded._id != property._ownerId) res.send({err : 'Invalid Access'})
+  //   else {
+  //     if (typeof req.body.name != 'undefined') property.name = req.body.name;
+  //     if (typeof req.body.image != 'undefined') property.image = req.body.image;
+  //     if (typeof req.body.city != 'undefined') property.city = req.body.city;
+  //     if (typeof req.body.descr != 'undefined') property.descr = req.body.descr;
+  //     if (typeof req.body['price.amount'] != 'undefined') property.price.amount = req.body['price.amount'];
+  //     if (typeof req.body.isActive != 'undefined') property.isActive = req.body.isActive;
+  //     // if (typeof req.body._ownerId != 'undefined') property._ownerId = req.body._ownerId;
+  //     property._accessId = (typeof req.body._accessId != 'undefined') ? req.body._accessId : [];
+  //     if (typeof req.body.address != 'undefined') property.address = req.body.address;
+  //     // property._testimonyId = (typeof req.body._testimonyId != 'undefined') ? req.body._testimonyId : [];
+  //
+  //     property.save((err,edproperty)=> {
+  //       if (err) {
+  //         let err_msg = [];
+  //         for (let error in err.errors) err_msg.push(err.errors[error].message);
+  //         res.send({err : err_msg.join(',')});
+  //       } else res.send(edproperty)
+  //     } );
+  //   }
+  // })
 }
 const deleteProp = (req,res) => {
   let id = req.params.id;
@@ -271,5 +410,6 @@ module.exports = {
   searchPropsNNull,
   searchPropENull,
   searchPropNNull,
-  getNewest
+  getNewest,
+  getPropsByOwner
 }

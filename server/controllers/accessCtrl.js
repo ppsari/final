@@ -6,14 +6,19 @@ const checkAuth = (req,res, next) => {
   let method = req.method;
   let hasParam = req.path === '/';
 
-  if (req.headers.hasOwnProperty('token')){
+  if (method === 'GET' ) next();
+  else {
     let decoded = login.getUserDetail(req.headers.token);
     if (decoded) {
       if (decoded.role === 'admin') next()
       else res.send({err: 'Invalid Access'})
-    }
-    else res.send({err:'You must login'})
-  } else res.send({err:'You must login'})
+    } else res.send({err: 'Invalid Access'})
+  }
+  // if (req.headers.hasOwnProperty('token')){
+
+  //
+  //   else res.send({err:'You must login'})
+  // } else res.send({err:'You must login'})
 }
 
 const getAccesses = (req,res) => {
@@ -45,7 +50,14 @@ const editAccess = (req,res) => {
     else {
       if (typeof req.body.name !== 'undefined') access.name = req.body.name;
       if (typeof req.body.icon !== 'undefined') access.icon = req.body.icon;
-      access.save((err,edaccess)=> {res.send(err ? {err: err} : edaccess)} );
+      access.save((err,edaccess)=> {
+        if (err) {
+          let err_msg = [];
+          for (let error in err.errors) err_msg.push(err.errors[error].message);
+          if (err.code == 11000) err_msg.push(`Access name already exist`);
+          res.send({err : err_msg.join(',')});
+        } else res.send(edaccess)
+      } );
     }
   })
 }

@@ -9,6 +9,8 @@ router.get('/searchENull',propertySellCtrl.searchPropsENull)
 router.get('/searchPropsNNull',propertySellCtrl.searchPropsNNull)
 router.get('/searchPropENull',propertySellCtrl.searchPropENull)
 router.get('/searchPropNNull',propertySellCtrl.searchPropNNull)
+router.get('/owner',propertySellCtrl.getPropsByOwner ); //
+
 
 router.get('/newest',propertySellCtrl.getNewest); //
 router.get('/',propertySellCtrl.getProps ); //
