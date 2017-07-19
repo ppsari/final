@@ -3,9 +3,11 @@ import {connect} from 'react-redux'
 import axios from 'axios'
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
-import {acceptRequest,rejectRequest,getRequest} from '../../actions/index.js'
+import {acceptRequest,rejectRequest,getRequest} from '../../actions/index.js';
+import Loader from '../../components/Loader.js';
+import TitleSection from '../../components/TitleSection'
 
-const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+const api = 'https://api.room360.ga/api'
 
 class Request extends React.Component {
   constructor(props) {
@@ -40,13 +42,10 @@ class Request extends React.Component {
     return (
       <div>
         <div className="col-lg-10 offset-lg-1">
-          <h4>Request List</h4>
+          <TitleSection lightTitle="REQUEST" boldTitle="LIST" />
             <div className="table-responsive m-t-30">
               {(this.state.request === null)
-              ? (
-                <img
-                src='http://testmadina.com/Images/loading1.gif'
-                style={{height:200, width: 200,margin:'auto'}}/>)
+              ? <Loader />
               : (<table className="table">
                 <tbody>
                   {this.state.request.map((r,index)=>{
@@ -96,7 +95,7 @@ class Request extends React.Component {
                       <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                       </ModalFooter>
                     </Modal>)
-                  :(<h1></h1>)
+                  :null
                   }
                   <tr style={this.state.active ? null : {display: 'none'}} >
                     <td colSpan="4" className="bg-gray">

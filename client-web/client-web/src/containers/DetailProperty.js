@@ -7,6 +7,7 @@ import prettyMoney from '../helpers/prettyMoney'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
 
 import {getDetailPropertyRent,getDetailPropertySell,sendRequest} from '../actions/index.js'
+import './DetailProperty.css'
 
 class DetailProperty extends React.Component {
   constructor (props) {
@@ -17,7 +18,7 @@ class DetailProperty extends React.Component {
       propStatus: "",
       modal: false,
       request: "",
-      zoom: 15,
+      zoom: 17,
       lat: 10,
       lng: 10
     }
@@ -41,14 +42,14 @@ class DetailProperty extends React.Component {
           : (<div className="DetailProperty" >
             <div className="container">
               <div className="row p-t-20">
-                <div className="col-6">
+                <div className="col-12 col-md-6">
                   <span className="italic light">A Few words about this property</span>
                   <h2><span className="extra-bold green">Property</span><span className="light"> Description</span> </h2>
                 </div>
               </div>
               <div className="shadow p-r-15">
                 <div className="row">
-                  <div className="col-8 relative">
+                  <div className="col-md-8 col-12 relative">
                     <img src={this.props.property.image} alt="preview" className="img-responsive" />
                     <div className="price-container">
                       <h5 className="text-right">{prettyMoney(this.props.property.price.amount)}</h5>
@@ -58,54 +59,64 @@ class DetailProperty extends React.Component {
                       }
                     </div>
                   </div>
-                  <div className="col-4">
-                    <div className="m-t-20 m-b-20">
-                      <span className="light title-text left-title">{this.props.property.name}</span><br/>
-                    </div>
-                    <span className="lnr lnr-map-marker m-r-5"></span><span className="m-r-5">{this.props.property.city}</span>|
-                    <span className="lnr lnr-home m-l-5 m-r-5"></span>{this.props.property.status}
-                    <br/>
-                    <h5 className="light m-t-20">Address</h5>
-                    <p className="m-t-0">{this.props.property.address}</p>
-                    <h5 className="light m-t-20">Owner</h5>
-                    <p className="m-t-0">{this.props.property._ownerId.username}</p>
-                    <h5 className="light m-t-20">Post On</h5>
-                    <p className="m-t-0">{this.props.property.createdDate.split('T')[0]}</p>
-                    <div className="absolute-bottom flex-center">
-                      <button type="button" onClick={()=> this.enter()} className="theme-btn btn-style-one btn-same"><span className="extra-bold">VISIT</span></button>
-                      {(localStorage.getItem('token') && this.props.property._ownerId._id !== JSON.parse(localStorage.getItem('user'))._id)
-                    ? <button type="button" className="theme-btn btn-style-three btn-same" onClick={this.toggle}><span className="extra-bold">REQUEST</span></button>
-                    : <h6></h6>
-                    }
+                  <div className="col-md-4 col-12">
+                    <div className="descr-content">
+                      <div className="m-t-20 m-b-20">
+                        <span className="light title-text left-title">{this.props.property.name}</span><br/>
+                      </div>
+                      <span className="lnr lnr-map-marker m-r-5"></span><span className="m-r-5">{this.props.property.city}</span>|
+                      <span className="lnr lnr-home m-l-5 m-r-5"></span>{this.props.property.status}
+                      <br/>
+                      <h5 className="light m-t-20">Address</h5>
+                      <p className="m-t-0">{this.props.property.address}</p>
+                      <h5 className="light m-t-20">Owner</h5>
+                      <p className="m-t-0">{this.props.property._ownerId.username}</p>
+                      <h5 className="light m-t-20">Post On</h5>
+                      <p className="m-t-0">{this.props.property.createdDate.split('T')[0]}</p>
+                      <div className="absolute-bottom flex-center">
+                        <button type="button" onClick={()=> this.enter()} className="theme-btn btn-style-one btn-same"><span className="extra-bold">VISIT</span></button>
+                        {(localStorage.getItem('token') && this.props.property._ownerId._id !== JSON.parse(localStorage.getItem('user'))._id)
+                      ? <button type="button" className="theme-btn btn-style-three btn-same" onClick={this.toggle}><span className="extra-bold">REQUEST</span></button>
+                      : null
+                      }
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="container">
-              <h5 className="light m-t-20">Description</h5>
-              <p>{this.props.property.descr}</p>
-              {/* <button onClick={()=>this.tes()}></button> */}
-            {(this.props.property.location.lat !== "" && this.props.property.location.lng !== "")
-             ?(<div className='col-md-6'>
-               <GoogleMapReact
-                style={{width:50, height:250,margin:10}}
-                 center={{lat: this.state.lat, lng: this.state.lng}}
-                 zoom={this.state.zoom}
-               >
-                <img
-                  style={{width:20,height:20}}
-                  lat={this.state.lat}
-                  lng={this.state.lng}
-                  src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
-                />
-              </GoogleMapReact></div>)
-            :(<h4>No location available</h4>)
-          }
+              <div className="row">
+                <div className="col-12 col-md-6">
+                  <h5 className="light m-t-20">Description</h5>
+                  <p>{this.props.property.descr}</p>
+                </div>
+                <div className='col-md-6 col-12'>
+                  <h5 className="light m-t-20">Location On Map</h5>
+                  {(this.props.property.location.lat !== "" && this.props.property.location.lng !== "")
+                   ?(<div className='col-md-12 col-12'>
+                       <GoogleMapReact
+                        style={{width:50, height:100,margin:10}}
+                         center={{lat: this.state.lat, lng: this.state.lng}}
+                         zoom={this.state.zoom}
+                       >
+                      <img
+                        style={{width:20,height:20}}
+                        lat={this.state.lat}
+                        lng={this.state.lng}
+                        src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
+                        alt="icon-home"
+                      />
+                    </GoogleMapReact></div>)
+                  :(<h4>No location available</h4>)
+                }
+              </div>
+            </div>
             </div>
             <div className="container">
-              <div className="row p-t-20">
-                <div className="col-4">
+              <hr />
+              <div className="row">
+                <div className="col-md-4 col-12 col">
                   <h5 className="light m-t-20">Detail</h5>
                   <div className="b-a b-grey" style={{padding: '20px 20px 20px 10px'}}>
                     <div className="flex-justify">
@@ -140,9 +151,9 @@ class DetailProperty extends React.Component {
                     </div>
                   </div>
                 </div>
-                <div className="col-8">
-                  <h5 className="light m-t-20">Akses</h5>
-                  <div className="row">{this.props.property._accessId.map((access, index) => {
+                <div className="col-md-8 col-12">
+                  <h5 className="light m-t-20">Access</h5>
+                  <div className="row p-l-15 p-r-15">{this.props.property._accessId.map((access, index) => {
                       return (<div key={index} className="b-a b-grey col-3 flex-center padding-20">
                         <div className="m-b-20">
                           <img src={access.icon} alt="icon" style={{width: 60}}/>
@@ -184,15 +195,6 @@ class DetailProperty extends React.Component {
     )
   }
 
-  // componentWillReceiveProps(){
-  //   setTimeout(()=>{
-  //     this.setState({
-  //       lat: this.props.property.location.lat,
-  //       lng: this.props.property.location.lng
-  //     })
-  //   },2000)
-  // }
-
   componentDidMount(){
     setTimeout(()=>{
       console.log(this.props.property);
@@ -213,7 +215,7 @@ request(){
 }
 
 enter(){
- let vr = 'http://aws-website-room-23fnj.s3-website-us-east-1.amazonaws.com/'
+ let vr = 'https://vr.room360.ga/'
    window.open(vr+`?key=${this.state.propStatus}/${this.state.id}`,'_newtab')
   }
 

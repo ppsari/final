@@ -31,7 +31,7 @@ export default class Example extends React.Component {
         <MenuBar />
         <div className="container m-t-30">
           <div className="row p-t-65 p-b-65">
-            <div className="col-4 offset-md-4">
+            <div className="col-12 col-md-4 offset-md-4">
               <Nav tabs>
                 <NavItem>
                   <NavLink

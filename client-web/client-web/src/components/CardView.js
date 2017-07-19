@@ -7,7 +7,7 @@ import prettyMoney from '../helpers/prettyMoney'
 const CardView = (props) => {
   let data = props.data
   return (
-    <div className="col-4">
+    <div className="col-12 col-md-4">
       <div className="thumbnail-view">
         <div className="thumbnail">
           {(data === null)

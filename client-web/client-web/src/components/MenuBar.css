@@ -7,3 +7,27 @@
   z-index: 99;
   width: 100%;
 }
+@media only screen and (max-width: 500px) {
+  .MenuBar .container {
+    width: 100% !important;
+  }
+  .MenuBar .navbar {
+    padding: 1rem 1rem;
+  }
+  .collapse.navbar-collapse ul {
+    margin-top: 20px;
+  }
+  span.Logo {
+    width: 100%;
+    padding: 20px 20px 20px 0;
+  }
+  .navbar-toggler.navbar-toggler-right {
+    z-index: 999;
+  }
+  .nav-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.41);
+  }
+  .nav-item:last-child {
+    border-bottom: none;
+  }
+}

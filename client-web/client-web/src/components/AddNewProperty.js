@@ -5,9 +5,8 @@ import GoogleMapReact from 'google-map-react'
 import { upload } from '../helpers/upload'
 import geocoder from 'geocoder'
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
-const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+const api = 'https://api.room360.ga/api'
 let property = {}
 
 class AddNewProperty extends React.Component {
@@ -19,7 +18,8 @@ class AddNewProperty extends React.Component {
       cities: [],
       lat: -6.260750,
       lng: 106.781920,
-      zoom: 19
+      zoom: 19,
+      stats: 'Rent'
     }
   }
 
@@ -61,7 +61,7 @@ class AddNewProperty extends React.Component {
                 </div>
                 <div className="col-lg-8 m-b-20">
                   <div className="input-group">
-                    <input type="text" className="form-control" ref="name" required />
+                    <input type="text" className="form-control" ref="name" required placeholder="Your Property Name" />
                   </div>
                 </div>
                 <div className="col-lg-3">
@@ -69,7 +69,6 @@ class AddNewProperty extends React.Component {
                 </div>
                 <div className="col-lg-8 m-b-20">
                   <div className="input-group">
-                    <progress value="0" max="100" id="uploader">0%</progress>
                     <input type="file" defaultValue="upload" id="fileButton" className="form-control" ref="image" placeholder="add image url here" />
                   </div>
                 </div>
@@ -87,7 +86,7 @@ class AddNewProperty extends React.Component {
                   <p>Property Status</p>
                 </div>
                 <div className="col-lg-8 m-b-20">
-                  <select type="select" className="form-control" ref="status">
+                  <select type="select" className="form-control" ref="status" onChange={(e)=>this.setState({stats: e.target.value})}>
                     <option value='Rent'>Rent</option>
                     <option value='Sell'>Sell</option>
                   </select>
@@ -107,14 +106,17 @@ class AddNewProperty extends React.Component {
                     <input type="number" className="form-control" ref="price_amount" required />
                   </div>
                 </div>
-                <div className="col-lg-3 m-b-20">
+              {(this.state.stats === 'Rent')
+                ?(<div className="col-lg-3 m-b-20">
                   <select type="select" className="form-control" ref="price_descr">
                     <option value="hour">/ hour</option>
                     <option value="day">/ day</option>
                     <option value="month">/ month</option>
                     <option value="year">/ year</option>
                   </select>
-                </div>
+                 </div>)
+                :(<div className="col-lg-3 m-b-20"></div>)
+              }
                 <div className="col-lg-3">
                   <p>Detail</p>
                 </div>
@@ -222,6 +224,7 @@ class AddNewProperty extends React.Component {
                     lat={this.state.lat}
                     lng={this.state.lng}
                     src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
+                    alt="icon-home"
                   />
                 </GoogleMapReact>
                 </div>

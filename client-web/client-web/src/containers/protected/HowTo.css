@@ -1,0 +1,18 @@
+.how-to {
+  background-color: #253d4a;
+  color: white;
+  padding: 0;
+  font-size: 16px;
+}
+.how-to .media-left {
+  max-width: 50%;
+}
+.how-to-step {
+  right: 25px;
+  font-size: 110px;
+  font-weight: 800;
+  color: #71b100;
+}
+.how-to .media-body p {
+  margin-top: 30%;
+}

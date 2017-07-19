@@ -241,7 +241,7 @@ class reactVR extends React.Component {
   }
 
   componentDidMount(){
-    const api = `http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com`
+    const api = `https://api.room360.ga/api`
     const params = Location.href.split('?')[1].split('=')[1]
     const status = params.split('/')[0]
     const propId = params.split('/')[1]

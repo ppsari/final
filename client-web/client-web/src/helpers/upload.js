@@ -1,4 +1,3 @@
-import { storageRef } from '../config/constants';
 import firebase from 'firebase';
 
 export const upload = (idUploader, idFileButton,callback) => {
