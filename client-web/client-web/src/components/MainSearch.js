@@ -59,7 +59,7 @@ class MainSearch extends React.Component {
               : (<div className="shadow bg-white">
                   <div className="row category-search">
                       <div className="col-12">
-                        <h6><span className="bold">Property For Sell</span></h6>
+                        <h6><span className="bold">Property For Rent</span></h6>
                       </div>
                   </div>
                 { (this.state.propertyRent.length === 0)
@@ -155,7 +155,7 @@ class MainSearch extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    dataSell: state.propertiesSell,
+    dataSell: state.searchPropertiesSell,
     dataRent: state.searchPropertiesRent,
   }
 }

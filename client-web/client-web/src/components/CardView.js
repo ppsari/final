@@ -17,7 +17,9 @@ const CardView = (props) => {
               <img src={data.image} alt="thumbnail" className="img-responsive" />
             </div>
             <div className="caption">
-              <h5>{prettyMoney(data.price.amount)}</h5>
+              <h5>{prettyMoney(data.price.amount)}
+              {data.price.descr === null ? null : (<small> / {data.price.descr}</small>)}
+              </h5>
               <h4><strong>{data.name}</strong></h4>
               <p className="location"><i className="fa fa-map-marker"></i> {data.city}</p>
             </div>
