@@ -2,3 +2,15 @@
   background-color: #f1f4f9;
   padding: 2rem 2rem 0.5rem;
 }
+
+@media only screen and (max-width: 500px) {
+  .MainBanner .jumbotron {
+    padding: 10px;
+  }
+  h1.display-3.m-t-50 {
+    font-size: 3rem;
+  }
+  .MainBanner .text-right {
+    text-align: center !important;
+  }
+}

@@ -1,0 +1,11 @@
+@media only screen and (max-width: 500px) {
+  .DetailProperty .shadow.p-r-15 {
+    padding-right: 0 !important;
+  }
+  .left-title {
+    margin-left: 0;
+  }
+  .descr-content {
+    padding: 20px;
+  }
+}

@@ -17,7 +17,8 @@ export default class Register extends React.Component {
     user.username = this.username.value
     user.email = this.email.value
     user.password = this.pw.value
-    // user.phone = this.phone.value
+    user.phone = '+62' + this.phone.value
+    console.log(user.phone);
     axios.post(`${api}/register`, user)
     .then((data) => {
        window.location = '/login'
@@ -32,19 +33,22 @@ export default class Register extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label>Email</label>
-            <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
+            <input className="form-control" ref={(email) => this.email = email} placeholder="Email" required/>
           </div>
           <div className="form-group">
             <label>Username</label>
-            <input className="form-control" ref={(username) => this.username = username} placeholder="Username"/>
+            <input className="form-control" ref={(username) => this.username = username} placeholder="Username" required/>
           </div>
-          {/* <div className="form-group">
+          <div className="form-group">
             <label>Phone</label>
-            <input className="form-control" ref={(phone) => this.phone = phone} placeholder="Phone"/>
-          </div> */}
+            <div className="input-group">
+              <span className="input-group-addon">+62</span>
+              <input className="form-control" ref={(phone) => this.phone = phone} placeholder="Phone" type="number" required/>
+            </div>
+          </div>
           <div className="form-group">
             <label>Password</label>
-            <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
+            <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} required />
           </div>
           {
             this.state.registerError &&
