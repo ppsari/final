@@ -7,7 +7,7 @@ import geocoder from 'geocoder'
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
-const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+const api = 'https://api.room360.ga/api'
 let property = {}
 
 class AddNewProperty extends React.Component {

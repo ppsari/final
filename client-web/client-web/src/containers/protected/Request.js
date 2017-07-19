@@ -5,7 +5,7 @@ import axios from 'axios'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
 import {acceptRequest,rejectRequest,getRequest} from '../../actions/index.js'
 
-const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+const api = 'https://api.room360.ga/api'
 
 class Request extends React.Component {
   constructor(props) {

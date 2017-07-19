@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 
-const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+const api = 'https://api.room360.ga/api'
 
 class AddNewRoom extends React.Component {
   constructor () {

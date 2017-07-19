@@ -61,6 +61,7 @@ class Home extends React.Component {
 
   componentWillReceiveProps(){
     setTimeout(function() {
+      console.log(this.props.dataRent);
       this.setState({
         propertyRent : this.props.dataRent,
         propertySell : this.props.dataSell

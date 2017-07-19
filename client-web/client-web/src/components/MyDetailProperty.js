@@ -6,7 +6,7 @@ import GoogleMapReact from 'google-map-react'
 
 import './MyDetailProperty.css';
 
-const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+const api = 'https://api.room360.ga/api'
 
 class MyDetailProperty extends React.Component {
   constructor(props) {
@@ -20,9 +20,11 @@ class MyDetailProperty extends React.Component {
       index: 0,
       zoom: 17,
       lat: 0,
-      lng: 0
+      lng: 0,
+      gmap: null
     };
     this.toggle = this.toggle.bind(this);
+
   }
 
   toggle() {
@@ -70,7 +72,7 @@ class MyDetailProperty extends React.Component {
                   <small>Description</small>
                   <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>{this.state.property._categoryId.name}</span></p>
                 </div>
-                {(this.state.property.location)
+                {(this.state.property.location && this.state.gmap === true)
                 ?(<div className="col-md-10 offset-lg-1">
                   <GoogleMapReact
                     defaultOptions={{scrollwheel: false}}
@@ -168,7 +170,7 @@ class MyDetailProperty extends React.Component {
   visit(){
     const propId = this.props.match.params.id
     const propStatus = this.props.match.params.status[0].toUpperCase()+this.props.match.params.status.substr(1)
-    let vr = 'http://vr.room360.ga/'
+    let vr = 'https://vr.room360.ga/'
       window.open(vr+`?key=property${propStatus}/${propId}`,'_newtab')
   }
 
@@ -225,7 +227,8 @@ class MyDetailProperty extends React.Component {
         this.setState({
           property: pr.data,
           lat: JSON.parse(pr.data.location.lat),
-          lng: JSON.parse(pr.data.location.lng)
+          lng: JSON.parse(pr.data.location.lng),
+          gmap: true
         })
       })
     } else{
@@ -235,7 +238,8 @@ class MyDetailProperty extends React.Component {
         this.setState({
           property: ps.data,
           lat: JSON.parse(ps.data.location.lat),
-          lng: JSON.parse(ps.data.location.lng)
+          lng: JSON.parse(ps.data.location.lng),
+          gmap: true
         })
       })
     }

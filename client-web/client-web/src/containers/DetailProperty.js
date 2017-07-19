@@ -91,13 +91,13 @@ class DetailProperty extends React.Component {
              ?(<div className='col-md-6'>
                <GoogleMapReact
                 style={{width:50, height:250,margin:10}}
-                 center={{lat: this.state.lat, lng: this.state.lng}}
+                 center={{lat: JSON.parse(this.props.property.location.lat), lng: JSON.parse(this.props.property.location.lng)}}
                  zoom={this.state.zoom}
                >
                 <img
                   style={{width:20,height:20}}
-                  lat={this.state.lat}
-                  lng={this.state.lng}
+                  lat={JSON.parse(this.props.property.location.lat)}
+                  lng={JSON.parse(this.props.property.location.lng)}
                   src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
                 />
               </GoogleMapReact></div>)
@@ -194,16 +194,6 @@ class DetailProperty extends React.Component {
   //   },2000)
   // }
 
-  componentDidMount(){
-    setTimeout(()=>{
-      console.log(this.props.property);
-      this.setState({
-        lat: JSON.parse(this.props.property.location.lat),
-        lng: JSON.parse(this.props.property.location.lng)
-      })
-    },2000)
-  }
-
 request(){
   const token = JSON.parse(localStorage.getItem('token')).token
   const message = this.state.request
@@ -214,7 +204,7 @@ request(){
 }
 
 enter(){
- let vr = 'http://vr.room360.ga/'
+ let vr = 'https://vr.room360.ga/'
    window.open(vr+`?key=${this.state.propStatus}/${this.state.id}`,'_newtab')
   }
 

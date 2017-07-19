@@ -105,7 +105,7 @@ class reactVR extends React.Component {
           <Image
             onEnter={()=>this.hover(desc)}
             onExit={()=> this.unhover(desc)}
-            source={{uri:'http://i.imgur.com/pUcQRbV.png'}}
+            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/help-web-button.png'}}
             style={{width: 0.5,
                     height: 0.5,
                     opacity: this.state.hoverDesc,
@@ -117,7 +117,7 @@ class reactVR extends React.Component {
            <Image
             onEnter={()=>this.hover(next)}
             onExit={()=> this.unhover(next)}
-            source={{uri:'http://i.imgur.com/BypPNZ9.png'}}
+            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/arrow-back-button.png'}}
             style={{width : 0.7,
                     height: 0.7,
                     opacity: this.state.hoverNext,
@@ -132,7 +132,7 @@ class reactVR extends React.Component {
            <Image
              onEnter={()=>this.hover(back)}
              onExit={()=> this.unhover(back)}
-            source={{uri:'http://i.imgur.com/BypPNZ9.png'}}
+            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/arrow-back-button.png'}}
             style={{width: 0.7,
                     height: 0.7,
                     opacity: this.state.hoverBack,
@@ -144,7 +144,7 @@ class reactVR extends React.Component {
        }
        <VrButton onClick={()=> this.minimize()}>
           <Image
-           source={{uri:'http://i.imgur.com/SefE9C8.png'}}
+           source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/Arrow_Up_Button.png'}}
            style={{width: 0.15,
                    height: 0.15,
                    opacity: this.state.hover,

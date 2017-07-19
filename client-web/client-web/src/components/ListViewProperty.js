@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-const api = `http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api`
+const api = `https://api.room360.ga/api`
 
 class ListViewProperty extends React.Component {
   constructor(props){
@@ -89,6 +89,7 @@ class ListViewProperty extends React.Component {
     axios.get(api+`/propertySell/owner`,{headers:{token:token}})
     .then(ps=>{
       if(ps.data.length > 0){
+        console.log(ps.data);
         this.setState({
           properties: this.state.properties.concat(ps.data)
         })
