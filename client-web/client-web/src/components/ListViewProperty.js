@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
+import prettyMoney from '../helpers/prettyMoney'
+
 const api = `http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api`
 
 class ListViewProperty extends React.Component {
@@ -15,6 +17,7 @@ class ListViewProperty extends React.Component {
     return (
       <div className="ListViewProperty">
         {this.state.properties.map((prp,index)=>{
+          console.log(prp);
           return <div className="media m-t-20 shadow" key={index}>
             <div className="media-left" style={{minHeight: 124}}>
               <div style={{width: 120, height: 124, overflow: 'hidden'}}>
@@ -22,9 +25,11 @@ class ListViewProperty extends React.Component {
               </div>
             </div>
             <div className="media-body padding-15">
-              <span className="lnr lnr-map-marker m-r-5"></span><span>{prp.city}</span>
               <h5 className="extra-bold">{prp.name}</h5>
-              <p className="excerpt">{prp.description}</p>
+              <span className="lnr lnr-map-marker m-r-5 green"></span><span>{prp.city}</span> |
+              <span className="lnr lnr-home m-r-5 m-l-5 green"></span><span> For {prp.status}</span><br/>
+              <small className="excerpt italic">Price : {prettyMoney(prp.price.amount)}</small><br/>
+              <small className="excerpt italic">Posted At : {prp.createdDate.split('T')[0]}</small>
             </div>
             <div className="media-right padding-15">
               <div className="pull-right">
