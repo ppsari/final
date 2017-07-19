@@ -57,8 +57,8 @@ class Request extends React.Component {
                       </div>
                     </td>
                     <td>
-                      <small className="italic">{r.connections._propertyId.name}</small>
-                      <h6><span className="lnr lnr-home green m-r-10"></span><span className="bold">Pondok Indah Permai</span></h6>
+                      <small className="italic">Property Requested</small>
+                      <h6><span className="lnr lnr-home green m-r-10"></span><span className="bold">{r.connections._propertyId.name}</span></h6>
                       <h6><span className="lnr lnr-map-marker green m-r-10"></span>{r.connections._propertyId.city}</h6>
                     </td>
                     <td>
