@@ -19,7 +19,8 @@ class AddNewProperty extends React.Component {
       cities: [],
       lat: -6.260750,
       lng: 106.781920,
-      zoom: 19
+      zoom: 19,
+      stats: 'Rent'
     }
   }
 
@@ -87,7 +88,7 @@ class AddNewProperty extends React.Component {
                   <p>Property Status</p>
                 </div>
                 <div className="col-lg-8 m-b-20">
-                  <select type="select" className="form-control" ref="status">
+                  <select type="select" className="form-control" ref="status" onChange={(e)=>this.setState({stats: e.target.value})}>
                     <option value='Rent'>Rent</option>
                     <option value='Sell'>Sell</option>
                   </select>
@@ -107,14 +108,17 @@ class AddNewProperty extends React.Component {
                     <input type="number" className="form-control" ref="price_amount" required />
                   </div>
                 </div>
-                <div className="col-lg-3 m-b-20">
+              {(this.state.stats === 'Rent')
+                ?(<div className="col-lg-3 m-b-20">
                   <select type="select" className="form-control" ref="price_descr">
                     <option value="hour">/ hour</option>
                     <option value="day">/ day</option>
                     <option value="month">/ month</option>
                     <option value="year">/ year</option>
                   </select>
-                </div>
+                 </div>)
+                :(<div className="col-lg-3 m-b-20"></div>)
+              }
                 <div className="col-lg-3">
                   <p>Detail</p>
                 </div>
