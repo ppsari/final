@@ -38,7 +38,7 @@ const getRequestsByBuyer = (req,res) => {
   .populate('connections._propertyId')
   .exec( (err,requests) => {
     let filtered = requests.filter(rq => {if(rq._userId !== null && rq._sellerId !== null && rq.connections._propertyId !== null) {return rq} })
-    res.send(err? {err:err} : requests );
+    res.send(err? {err:err} : filtered );
   })
 
 }
@@ -52,7 +52,7 @@ const getRequestsBySeller = (req,res) => {
   .populate('connections._propertyId')
   .exec( (err,requests) => {
     let filtered = requests.filter(rq => {if(rq._userId !== null && rq._sellerId !== null && rq.connections._propertyId !== null) {return rq} })
-    res.send(err? {err:err} : requests );
+    res.send(err? {err:err} : filtered );
   })
 }
 
