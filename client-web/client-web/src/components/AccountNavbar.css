@@ -1,0 +1,28 @@
+.navbar-login {
+  width: 305px;
+  padding: 10px;
+  padding-bottom: 0px;
+}
+
+.navbar-login-session {
+  padding: 10px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+.icon-size {
+  font-size: 87px;
+}
+.open>.dropdown-menu {
+    display: block;
+}
+dropdown-menu {
+  position: absolute;
+  top: 113% !important;
+}
+@media (min-width: 768px){
+  .dropdown .dropdown-menu {
+    left: auto;
+    right: 0;
+  }
+}

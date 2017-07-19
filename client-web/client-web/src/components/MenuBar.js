@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { logout } from '../helpers/auth';
 import './MenuBar.css'
 
+import AccountNavbar from './AccountNavbar';
+
 class MenuBar extends React.Component {
   constructor(props) {
     super(props);
@@ -62,6 +64,10 @@ class MenuBar extends React.Component {
                   : (<NavItem>
                       <Link to="/login" className="nav-link">Login / Register</Link>
                     </NavItem>)
+                }
+                { localStorage.getItem('user') !== null
+                  ? (<AccountNavbar />)
+                  : null
                 }
               </Nav>
             </Collapse>
