@@ -7,6 +7,9 @@ import {acceptRequest,rejectRequest,getRequest} from '../../actions/index.js';
 import Loader from '../../components/Loader.js';
 import TitleSection from '../../components/TitleSection'
 
+import {request} from '../../helpers/request';
+
+
 const api = 'https://api.room360.ga/api'
 
 class Request extends React.Component {
@@ -25,6 +28,8 @@ class Request extends React.Component {
       kind: "",
       modal: false,
     }
+    const userId = JSON.parse(localStorage.getItem('user'))._id;
+    request(userId,'delete')
   }
   toggleClass() {
     const currentState = this.state.active;
