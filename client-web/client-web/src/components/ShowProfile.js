@@ -98,7 +98,6 @@ class ShowProfile extends React.Component {
 
   componentWillReceiveProps(){
     setTimeout(()=>{
-          console.log(this.props.user);
       this.setState({
         user: this.props.user
       })

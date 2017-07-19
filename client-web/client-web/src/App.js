@@ -13,7 +13,6 @@ import ListProperty from './containers/ListProperty';
 import DetailProperty from './containers/DetailProperty';
 import Dashboard from './containers/protected/Dashboard';
 import Documentation from './components/Documentation';
-import Notification from './components/Notification';
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
   return (
@@ -82,7 +81,6 @@ class App extends Component {
       <Provider store={store}>
         <BrowserRouter>
           <div>
-            <Notification />
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path='/detail/:status/:id' component={DetailProperty} />
