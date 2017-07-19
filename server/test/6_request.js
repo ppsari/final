@@ -246,7 +246,7 @@ describe('Request', () => {
         if (err) done(err);
         else if (typeof request.body.err !== 'undefined') done(err);
         else {
-          console.log('deleted')?
+          console.log('deleted');
           request.should.have.status(200);
           request.body.should.be.a('object');
           request.body.should.have.property('_id',data.request[1]);
