@@ -6,6 +6,13 @@
     margin-left: 0;
   }
   .descr-content {
-    padding: 20px;
+    padding: 0 20px 20px 20px;
+  }
+  .footer-right h4 {
+    text-align: left !important;
+  }
+  .footer-distributed {
+    padding: 10px;
+    margin-top: 20px;
   }
 }
