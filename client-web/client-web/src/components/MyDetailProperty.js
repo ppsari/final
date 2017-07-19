@@ -17,7 +17,10 @@ class MyDetailProperty extends React.Component {
       name: "",
       image: "",
       descr: "",
-      index: 0
+      index: 0,
+      zoom: 18,
+      lat: 0,
+      lng: 0
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -36,7 +39,7 @@ class MyDetailProperty extends React.Component {
             src='http://testmadina.com/Images/loading1.gif'
             style={{height:200, width: 200,margin:'auto'}}
             alt="load" />
-          : <div className="row p-t-20 p-b-20">
+          : (<div className="row p-t-20 p-b-20">
           <div className="col-lg-8 offset-lg-2">
             <div className="flex-space-between m-b-30">
               <div>
@@ -67,19 +70,21 @@ class MyDetailProperty extends React.Component {
                   <small>Description</small>
                   <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>{this.state.property._categoryId.name}</span></p>
                 </div>
-                {(typeof this.state.property.location !== 'undefined' && typeof this.state.property.location.lat !== 'undefined' && typeof this.props.property.location.lng !== 'undefined')
-                ?(<div className="col-md-10 offset-lg-1"><GoogleMapReact
-                  style={{width:50, height:250,margin:10}}
-                   defaultCenter={{lat:this.state.property.location.lat, lng:this.state.property.location.lng}}
-                   defaultZoom= '15'
-                 >
-                   <img
-                     style={{width:20,height:20}}
-                     lat={this.state.property.location.lat}
-                     lng={this.state.property.location.lng}
-                     src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
-                   />
-                 </GoogleMapReact></div>)
+                {(this.state.property.location !== null)
+                ?(<div className="col-md-10 offset-lg-1">
+                  <GoogleMapReact
+                    defaultOptions={{scrollwheel: false}}
+                    style={{width:50, height:250,margin:10}}
+                     center={{lat: this.state.lat, lng: this.state.lng}}
+                     zoom={this.state.zoom}
+                   >
+                    <img
+                      style={{width:20,height:20}}
+                      lat={this.state.lat}
+                      lng={this.state.lng}
+                      src='http://www.clker.com/cliparts/l/a/V/x/F/r/house-icon-dark-green-hi.png'
+                    />
+                  </GoogleMapReact></div>)
                 :(<h4>No location available</h4>)
               }
               </div>
@@ -154,7 +159,7 @@ class MyDetailProperty extends React.Component {
               <small>red*****ca</small>
             </div>
           </div>
-        </div>
+        </div>)
       }
       </div>
     )
@@ -213,19 +218,24 @@ class MyDetailProperty extends React.Component {
     this.setState({
       status: propStatus
     })
-
     if(propStatus === `rent`){
       axios.get(api+`/propertyRent/${propId}`)
       .then(pr=>{
+        console.log(pr.data);
         this.setState({
-          property: pr.data
+          property: pr.data,
+          lat: JSON.parse(pr.data.location.lat),
+          lng: JSON.parse(pr.data.location.lng)
         })
       })
     } else{
       axios.get(api+`/propertySell/${propId}`)
       .then(ps=>{
+        console.log(ps.data);
         this.setState({
-          property: ps.data
+          property: ps.data,
+          lat: JSON.parse(ps.data.location.lat),
+          lng: JSON.parse(ps.data.location.lng)
         })
       })
     }

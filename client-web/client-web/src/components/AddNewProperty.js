@@ -311,6 +311,7 @@ class AddNewProperty extends React.Component {
           console.log(response.data.err);
         } else {
           alert('Success Add New Property')
+          window.location = '/dashboard/property'
         }
         console.log(`${JSON.stringify(response.data)}`);
       })
@@ -319,8 +320,8 @@ class AddNewProperty extends React.Component {
         headers: {token: token}
       })
       .then(response=>{
-        this.props.save()
-        console.log(`${JSON.stringify(response.data)}`);
+        alert('Success Add New Property')
+        window.location = '/dashboard/property'
       })
     }
   }
