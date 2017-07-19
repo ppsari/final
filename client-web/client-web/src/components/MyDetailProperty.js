@@ -18,7 +18,7 @@ class MyDetailProperty extends React.Component {
       image: "",
       descr: "",
       index: 0,
-      zoom: 18,
+      zoom: 17,
       lat: 0,
       lng: 0
     };

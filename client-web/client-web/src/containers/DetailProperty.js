@@ -18,7 +18,7 @@ class DetailProperty extends React.Component {
       propStatus: "",
       modal: false,
       request: "",
-      zoom: 15,
+      zoom: 17,
       lat: 10,
       lng: 10
     }
