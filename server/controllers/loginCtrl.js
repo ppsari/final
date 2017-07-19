@@ -25,7 +25,9 @@ const register = (req,res) => {
     email: `${req.body.email}` || '',
     password: req.body.password || '',
     username: req.body.username || '',
-    role: 'user'
+    role: 'user',
+    phone: req.body.phone || '',
+    name: req.body.name || '',
   });
 
   user.save((err,n_user)=> {
