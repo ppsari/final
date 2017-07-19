@@ -50,24 +50,29 @@ class ListViewProperty extends React.Component {
   }
 
   deleteProp(status,id,index){
-    const token = JSON.parse(localStorage.getItem('token')).token
-    if(status === 'rent'){
-      axios.delete(api+`/propertyRent/${id}`,{headers:{token: token}})
-      .then(response=>{
-        this.state.properties.splice(index,1)
-        this.setState({
-          properties: this.state.properties
+    if(window.confirm(`Are you sure you want to delete this property?`)){
+      const token = JSON.parse(localStorage.getItem('token')).token
+      if(status === 'rent'){
+        axios.delete(api+`/propertyRent/${id}`,{headers:{token: token}})
+        .then(response=>{
+          this.state.properties.splice(index,1)
+          this.setState({
+            properties: this.state.properties
+          })
+        })
+      } else{
+        axios.delete(api+`/propertySell/${id}`,{headers:{token: token}})
+        .then(response=>{
+          this.state.properties.splice(index,1)
+          this.setState({
+            properties: this.state.properties
         })
       })
-    } else{
-      axios.delete(api+`/propertySell/${id}`,{headers:{token: token}})
-      .then(response=>{
-        this.state.properties.splice(index,1)
-        this.setState({
-          properties: this.state.properties
-      })
-    })
+    }
+  } else {
+    return false
   }
+
 }
 
 
