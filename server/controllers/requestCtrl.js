@@ -37,7 +37,8 @@ const getRequestsByBuyer = (req,res) => {
   .populate('_userId _sellerId')
   .populate('connections._propertyId')
   .exec( (err,requests) => {
-    res.send(err? {err:err} : requests );
+    let filtered = requests.filter(rq => {if(rq._userId !== null && rq._sellerId !== null && rq.connections._propertyId !== null) {return rq} })
+    res.send(err? {err:err} : filtered );
   })
 
 }
@@ -50,7 +51,8 @@ const getRequestsBySeller = (req,res) => {
   .populate({path:'_sellerId', select:'phone username email name _id'})
   .populate('connections._propertyId')
   .exec( (err,requests) => {
-    res.send(err? {err:err} : requests );
+    let filtered = requests.filter(rq => {if(rq._userId !== null && rq._sellerId !== null && rq.connections._propertyId !== null) {return rq} })
+    res.send(err? {err:err} : filtered );
   })
 }
 
@@ -102,11 +104,17 @@ const addRequest = (req,res) => {
         _sellerId : requestDt._sellerId,
         _userId: requestDt._userId
       });
+      // console.log(prop._ownerId);
       newrequest.save((err,request) => {
         if (err) res.send({err:err})
         else {
-          if (typeof prop._ownerId !== 'undefined') contact.contact(prop._ownerId,msg);
+          // console.log(prop._ownerId);
+          if (typeof prop._ownerId !== 'undefined') {
+            contact.contact(prop._ownerId,msg);
+
+          }
           res.send(request);
+
         }
       })
     })
@@ -119,6 +127,9 @@ const deleteRequest = (req,res) => {
   let requestDt = req.body;
   let decoded = login.getUserDetail(req.headers.token);
   let id = req.params.id;
+
+  // Request.collection.drop();
+
   Request.findById(id, (err,request) => {
     if (err) res.send({err: 'Invalid Request'})
     else if (request._sellerId != decoded._id && decoded.role !== 'admin') res.send({err:'Invalid access'});
@@ -126,6 +137,7 @@ const deleteRequest = (req,res) => {
       let subject = 'Your request is ' +requestDt.response;
       let msg = { subject: subject  }
       User.findById(request._userId, (err,user)=> {
+        // console.log('masuk find by id')
         if (err) res.send({err:err})
         else if (requestDt.response === 'approved') {
           msg.body = `Your request has been approved. For further information please contact ${decoded.name} - ${decoded.phone} / ${decoded.email}`
@@ -153,7 +165,7 @@ const deleteRequest = (req,res) => {
                     let err_msg = [];
                     for (let error in err.errors) err_msg.push(err.errors[error].message);
                     res.send({err : err_msg.join(',')});
-                  } 
+                  }
                   // else {
                     // prop.renter.push({
                     //   start: request.connections.detail.start,
@@ -178,9 +190,8 @@ const deleteRequest = (req,res) => {
           msg.body += (typeof requestDt.note === 'undefined' || requestDt.note === '') ? '': `because ${requestDt.note}`;
 
         }
-        // contact.contact(user,msg);
+        // console.log(user);
 
-        // if (requestDt.response === 'rejected')
         request.remove((err,deleted) => {
           if (err) {res.send({err : err});}
           else {

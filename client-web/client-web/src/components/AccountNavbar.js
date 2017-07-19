@@ -4,9 +4,14 @@ import { Link } from 'react-router-dom';
 
 import './AccountNavbar.css'
 import { logout } from '../helpers/auth';
+import { listenRequest } from '../helpers/request';
+
+
 
 export default class AccountNavbar extends React.Component {
   componentDidMount () {
+    const userId = JSON.parse(localStorage.getItem('user'))._id;
+    listenRequest(userId, (tot) => {console.log('totalnya adalah: '+JSON.stringify(tot))});
     $('.dropdown').click(function(){
       $('.dropdown').toggleClass('open')
     })

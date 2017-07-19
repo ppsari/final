@@ -41,11 +41,11 @@ app.use('/api/testimony', testimony);
 // app.use('/api/upload', upload);
 
 
-let envi = 'test';
+let envi = 'development';
 // let env = 'local_dev'
 // let env = app.settings.env;
 let db_config = {
-  test: 'mongodb://localhost/movie',
+  local_dev: 'mongodb://localhost/movie',
   development: 'mongodb://room360:R4A3RKBkXDW4QMmH@cluster0-shard-00-00-6ubhn.mongodb.net:27017,cluster0-shard-00-01-6ubhn.mongodb.net:27017,cluster0-shard-00-02-6ubhn.mongodb.net:27017/room360?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
   // test: 'mongodb://room360:R4A3RKBkXDW4QMmH@cluster0-shard-00-00-6ubhn.mongodb.net:27017,cluster0-shard-00-01-6ubhn.mongodb.net:27017,cluster0-shard-00-02-6ubhn.mongodb.net:27017/room360?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'
 }

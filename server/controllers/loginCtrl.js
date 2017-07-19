@@ -21,14 +21,11 @@ const login = (req,res) => {
 }
 
 const register = (req,res) => {
-  let user = new User({
-    email: `${req.body.email}` || '',
-    password: req.body.password || '',
-    username: req.body.username || '',
-    role: 'user',
-    phone: req.body.phone || '',
-    name: req.body.name || '',
-  });
+  let newUser = {}
+  for (let key in req.body) newUser[key] = req.body[key];
+  newUser.role = 'user'
+
+  let user = new User(newUser);
 
   user.save((err,n_user)=> {
     if (err){

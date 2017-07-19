@@ -8,6 +8,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, I
 
 import {getDetailPropertyRent,getDetailPropertySell,sendRequest} from '../actions/index.js'
 import './DetailProperty.css'
+import {request} from '../helpers/request';
+
 
 class DetailProperty extends React.Component {
   constructor (props) {
@@ -211,6 +213,9 @@ request(){
   const sellerId = this.props.property._ownerId
   const status = this.props.property.status
   this.props.sendRequest(token,message,propId,sellerId,status)
+  // console.log('ini di detail')
+  // console.log(sellerId)
+  request(sellerId._id,'add');
 }
 
 enter(){
