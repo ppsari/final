@@ -7,6 +7,7 @@ import prettyMoney from '../helpers/prettyMoney'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
 
 import {getDetailPropertyRent,getDetailPropertySell,sendRequest} from '../actions/index.js'
+import './DetailProperty.css'
 
 class DetailProperty extends React.Component {
   constructor (props) {
@@ -41,14 +42,14 @@ class DetailProperty extends React.Component {
           : (<div className="DetailProperty" >
             <div className="container">
               <div className="row p-t-20">
-                <div className="col-6">
+                <div className="col-12 col-md-6">
                   <span className="italic light">A Few words about this property</span>
                   <h2><span className="extra-bold green">Property</span><span className="light"> Description</span> </h2>
                 </div>
               </div>
               <div className="shadow p-r-15">
                 <div className="row">
-                  <div className="col-8 relative">
+                  <div className="col-md-8 col-12 relative">
                     <img src={this.props.property.image} alt="preview" className="img-responsive" />
                     <div className="price-container">
                       <h5 className="text-right">{prettyMoney(this.props.property.price.amount)}</h5>
@@ -58,7 +59,7 @@ class DetailProperty extends React.Component {
                       }
                     </div>
                   </div>
-                  <div className="col-4">
+                  <div className="col-md-4 col-12 descr-content">
                     <div className="m-t-20 m-b-20">
                       <span className="light title-text left-title">{this.props.property.name}</span><br/>
                     </div>
@@ -213,7 +214,7 @@ request(){
 }
 
 enter(){
- let vr = 'http://aws-website-room-23fnj.s3-website-us-east-1.amazonaws.com/'
+ let vr = 'http://vr.room360.ga/'
    window.open(vr+`?key=${this.state.propStatus}/${this.state.id}`,'_newtab')
   }
 

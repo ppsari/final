@@ -168,7 +168,7 @@ class MyDetailProperty extends React.Component {
   visit(){
     const propId = this.props.match.params.id
     const propStatus = this.props.match.params.status[0].toUpperCase()+this.props.match.params.status.substr(1)
-    let vr = 'http://aws-website-room-23fnj.s3-website-us-east-1.amazonaws.com/'
+    let vr = 'http://vr.room360.ga/'
       window.open(vr+`?key=property${propStatus}/${propId}`,'_newtab')
   }
 
