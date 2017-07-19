@@ -54,7 +54,8 @@ class Request extends React.Component {
               : (<table className="table">
                 <tbody>
                   {this.state.request.map((r,index)=>{
-                  return <tr className={this.state.active ? 'active' : null} key={index}>
+                  return <div key={index}>
+                  <tr className={this.state.active ? 'active' : null}>
                     <td style={{width: '20%'}}>
                       <div className="image-small">
                         <img className="img-responsive" src={r.connections._propertyId.image} alt="" />
@@ -70,7 +71,7 @@ class Request extends React.Component {
                       <h6><span className="lnr lnr-user green m-r-10"></span>{r._userId.name}</h6>
                       <h6><span className="lnr lnr-phone-handset green m-r-10"></span>{r._userId.phone}</h6>
                       <h6><span className="lnr lnr-bubble green m-r-10"></span>
-                        <button type="button" onClick={()=> this.see(r.note)} className="btn-link">See Message</button>
+                        <button type="button" onClick={()=> this.see(r.note,r._id)} className="btn-link">See Message</button>
                       </h6>
                     </td>
                     <td className="list-table p-b-0 p-t-25">
@@ -82,6 +83,15 @@ class Request extends React.Component {
                       </button>
                     </td>
                   </tr>
+                  <tr style={this.state.active && r._id === this.state.idx ? null : {display: 'none'}} >
+                    <td colSpan="4" className="bg-gray">
+                      <small className="italic">Message:</small>
+                      <p>
+                        {r.note}
+                      </p>
+                    </td>
+                  </tr>
+                  </div>
                   })}
                   {(this.state.modal === true)
                   ?(<Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
@@ -102,14 +112,6 @@ class Request extends React.Component {
                     </Modal>)
                   :null
                   }
-                  <tr style={this.state.active ? null : {display: 'none'}} >
-                    <td colSpan="4" className="bg-gray">
-                      <small className="italic">Message:</small>
-                      <p>
-                        {this.state.message}
-                      </p>
-                    </td>
-                  </tr>
                 </tbody>
               </table>)
             }
@@ -146,13 +148,15 @@ class Request extends React.Component {
       isReason: false,
       request: this.state.request
     })
+
   }
 
-  see(message){
+  see(message,id){
     const currentState = this.state.active;
     this.setState({
       active: !currentState,
-      message: message
+      message: message,
+      idx: id
     })
   }
 

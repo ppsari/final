@@ -1,17 +1,41 @@
 import React from 'react';
 import $ from 'jquery';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import './AccountNavbar.css'
 import { logout } from '../helpers/auth';
 import { listenRequest } from '../helpers/request';
+import Notification from './Notification'
 
 
+class AccountNavbar extends React.Component {
+  constructor () {
+    super()
+    this.state = {
+      request: 0,
+    }
+  }
 
-export default class AccountNavbar extends React.Component {
   componentDidMount () {
     const userId = JSON.parse(localStorage.getItem('user'))._id;
-    listenRequest(userId, (tot) => {console.log('totalnya adalah: '+JSON.stringify(tot))});
+    listenRequest(userId, (tot) => {
+      // console.log('totalnya adalah: '+JSON.stringify(tot))
+      // console.log(userId);
+      // console.log(this.props.user._id);
+      // console.log(JSON.stringify(tot) != 0);
+      // console.log(tot)
+      if(this.props.user._id == userId && JSON.stringify(tot) !== '0'){
+        $('.Notification').addClass('active')
+        this.setState({
+          request: JSON.stringify(tot),
+        })
+
+        setTimeout(function(){
+          $('.Notification').removeClass('active')
+        }, 10000)
+      }
+    });
     $('.dropdown').click(function(){
       $('.dropdown').toggleClass('open')
     })
@@ -21,8 +45,7 @@ export default class AccountNavbar extends React.Component {
     return (
       <li className="dropdown">
         <a className="dropdown-toggle nav-link">
-            <span className="glyphicon glyphicon-user"></span> 
-            <strong>{this.props.name || 'Hello!'}</strong>
+            <strong>{this.props.user.name || 'Hello!'} <span className="badge pull-right">{this.state.request || null}</span></strong>
             <span className="glyphicon glyphicon-chevron-down"></span>
         </a>
         <ul className="dropdown-menu">
@@ -31,7 +54,11 @@ export default class AccountNavbar extends React.Component {
                     <div className="row">
                         <div className="col-lg-12">
                             <Link to="/dashboard/profile"><p className="text-left m-t-10 m-b-10"><strong>Your Profile</strong></p></Link>
-                            <Link to="/dashboard/requests"><p className="text-left small m-t-10 m-b-10">Request</p></Link>
+                            <Link to="/dashboard/requests">
+                              <p className="text-left small m-t-10 m-b-10">
+                                Request
+                              </p>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -55,7 +82,16 @@ export default class AccountNavbar extends React.Component {
                 </div>
             </li>
         </ul>
+        <Notification count={this.state.request} />
     </li>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+}
+
+export default connect(mapStateToProps, null)(AccountNavbar);

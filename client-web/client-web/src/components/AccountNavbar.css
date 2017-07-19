@@ -23,6 +23,12 @@ dropdown-menu {
   position: absolute;
   top: 113% !important;
 }
+.badge.pull-right {
+  margin-left: 5px;
+  background-color: #71b100;
+  padding: 6px 8px;
+  border-radius: 50%;
+}
 @media (min-width: 768px){
   .dropdown .dropdown-menu {
     left: auto;

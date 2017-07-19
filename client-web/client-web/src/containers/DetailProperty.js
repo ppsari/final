@@ -98,7 +98,7 @@ class DetailProperty extends React.Component {
                   {(this.props.property.location.lat !== "" && this.props.property.location.lng !== "")
                    ?(<div className='col-md-12 col-12'>
                        <GoogleMapReact
-                        style={{width:50, height:100,margin:10}}
+                        style={{width:50, height:200,margin:10}}
                          center={{lat: this.state.lat, lng: this.state.lng}}
                          zoom={this.state.zoom}
                        >
@@ -215,7 +215,8 @@ request(){
   this.props.sendRequest(token,message,propId,sellerId,status)
   // console.log('ini di detail')
   // console.log(sellerId)
-  request(sellerId._id,'add');
+
+  request(sellerId._id,this.props,'add');
 }
 
 enter(){
