@@ -203,10 +203,10 @@ class AddNewProperty extends React.Component {
                   <p>Location</p>
                 </div>
                 <div className="col-lg-4 m-b-20">
-                  Lat <input type="text" defaultValue={this.state.lat}/>
+                  Lat <input type="text" value={this.state.lat} onChange={(e)=>console.log(e.target.value)}/>
                 </div>
                 <div className="col-lg-4 m-b-20">
-                  Lng <input type="text" defaultValue={this.state.lng}/>
+                  Lng <input type="text" value={this.state.lng} onChange={(e)=>console.log(e.target.value)}/>
                 </div>
                 <div className ="col-md-10 offset-lg-1">
                 <GoogleMapReact
