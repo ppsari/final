@@ -7,7 +7,7 @@ import {acceptRequest,rejectRequest,getRequest} from '../../actions/index.js';
 import Loader from '../../components/Loader.js';
 import TitleSection from '../../components/TitleSection'
 
-const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+const api = 'https://api.room360.ga/api'
 
 class Request extends React.Component {
   constructor(props) {

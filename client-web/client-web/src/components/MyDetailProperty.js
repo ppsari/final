@@ -8,7 +8,7 @@ import './MyDetailProperty.css';
 import Loader from './Loader'
 import prettyMoney from '../helpers/prettyMoney'
 
-const api = 'http://dev-env.zcwmcsi6ny.us-west-2.elasticbeanstalk.com/api'
+const api = 'https://api.room360.ga/api'
 
 class MyDetailProperty extends React.Component {
   constructor(props) {
