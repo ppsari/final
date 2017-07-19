@@ -11,7 +11,10 @@ import { listenRequest } from '../helpers/request';
 export default class AccountNavbar extends React.Component {
   componentDidMount () {
     const userId = JSON.parse(localStorage.getItem('user'))._id;
-    listenRequest(userId, (tot) => {console.log('totalnya adalah: '+JSON.stringify(tot))});
+
+    listenRequest(userId,  (data) => {
+      console.log(data.val())
+    });
     $('.dropdown').click(function(){
       $('.dropdown').toggleClass('open')
     })

@@ -199,7 +199,7 @@ class DetailProperty extends React.Component {
 
   componentDidMount(){
     setTimeout(()=>{
-      console.log(this.props.property);
+      // console.log(this.props.property);
       this.setState({
         lat: JSON.parse(this.props.property.location.lat),
         lng: JSON.parse(this.props.property.location.lng)
@@ -214,9 +214,17 @@ request(){
   const sellerId = this.props.property._ownerId
   const status = this.props.property.status
   this.props.sendRequest(token,message,propId,sellerId,status)
-  // console.log('ini di detail')
-  // console.log(sellerId)
-  request(sellerId._id,'add');
+
+  let props = {
+    img : this.props.property.image,
+    status : status,
+    sellerId: sellerId._id,
+    username: JSON.parse(localStorage.getItem('user')).username,
+    propertyName:  this.props.property.name,
+    message: message
+  }
+
+  request(props,'add');
 }
 
 enter(){

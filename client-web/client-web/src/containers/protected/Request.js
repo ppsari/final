@@ -29,7 +29,7 @@ class Request extends React.Component {
       modal: false,
     }
     const userId = JSON.parse(localStorage.getItem('user'))._id;
-    request(userId,'delete')
+    request({sellerId : userId},'delete')
   }
   toggleClass() {
     const currentState = this.state.active;
@@ -120,7 +120,7 @@ class Request extends React.Component {
   }
 
   reason(id,index){
-    console.log('masuk');
+    // console.log('masuk');
     this.setState({
       modal: true,
       id: id,
