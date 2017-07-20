@@ -103,9 +103,9 @@ class reactVR extends React.Component {
         }
         <VrButton onClick={()=> this.desc(this.state.img)}>
           <Image
-            onEnter={()=>this.hover(desc)}
-            onExit={()=> this.unhover(desc)}
-            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/help-web-button.png'}}
+            onEnter={()=>this.hover('desc')}
+            onExit={()=> this.unhover('desc')}
+            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/help-web-button.png?v=0.1'}}
             style={{width: 0.5,
                     height: 0.5,
                     opacity: this.state.hoverDesc,
@@ -115,9 +115,9 @@ class reactVR extends React.Component {
         {(this.state.rooms.length > this.state.space && this.state.isIcons === true)
         ? <VrButton onClick={()=> this.next()}>
            <Image
-            onEnter={()=>this.hover(next)}
-            onExit={()=> this.unhover(next)}
-            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/arrow-back-button.png'}}
+            onEnter={()=>this.hover('next')}
+            onExit={()=> this.unhover('next')}
+            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/arrow-back-button.png?v=0.1'}}
             style={{width : 0.7,
                     height: 0.7,
                     opacity: this.state.hoverNext,
@@ -130,9 +130,9 @@ class reactVR extends React.Component {
         {(this.state.start > 0 && this.state.isIcons === true)
         ?<VrButton onClick={()=> this.back()}>
            <Image
-             onEnter={()=>this.hover(back)}
-             onExit={()=> this.unhover(back)}
-            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/arrow-back-button.png'}}
+             onEnter={()=>this.hover('back')}
+             onExit={()=> this.unhover('back')}
+            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/arrow-back-button.png?v=0.1'}}
             style={{width: 0.7,
                     height: 0.7,
                     opacity: this.state.hoverBack,
@@ -144,7 +144,7 @@ class reactVR extends React.Component {
        }
        <VrButton onClick={()=> this.minimize()}>
           <Image
-           source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/Arrow_Up_Button.png'}}
+           source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/Arrow_Up_Button.png?v=0.1'}}
            style={{width: 0.15,
                    height: 0.15,
                    opacity: this.state.hover,
@@ -186,8 +186,8 @@ class reactVR extends React.Component {
          </Text>
       }
         <Text
-          onEnter={()=>this.hover(title)}
-          onExit={()=> this.unhover(title)}
+          onEnter={()=>this.hover('title')}
+          onExit={()=> this.unhover('title')}
           style={{
             backgroundColor: 'black',
             opacity: this.state.hoverTitle,
@@ -223,7 +223,7 @@ class reactVR extends React.Component {
   }
 
   hover(e){
-    const shadow = 1
+    const shadow = 0.8
     switch (e) {
       case 'next':this.setState({hoverNext: shadow});break
       case 'back':this.setState({hoverBack: shadow});break
@@ -235,9 +235,6 @@ class reactVR extends React.Component {
       case 'desc':this.setState({hoverDesc: shadow});break
       default:this.setState({hoverTitle: shadow});break
     }
-    this.setState({
-      hover: 1
-    })
   }
 
   componentDidMount(){
