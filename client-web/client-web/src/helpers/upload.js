@@ -6,22 +6,23 @@ export const upload = (idUploader, idFileButton,callback) => {
   fileButton.addEventListener('change', function(e) {
     //Get file
     let file = e.target.files[0];
-    //create a storage ref
-    let storageRef = firebase.storage().ref('room360/'+file.name);
-    //upload
-    let task = storageRef.put(file);
-    task.on(
-      'state_changed',
-      function progress(snapshot) {
-        let percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-        if(percentage >= 100) {
-          callback(snapshot.downloadURL)
+    if (typeof file.name !== 'undefined') {
+
+      //create a storage ref
+      let storageRef = firebase.storage().ref('room360/'+file.name);
+      //upload
+      let task = storageRef.put(file);
+      task.on(
+        'state_changed',
+        function progress(snapshot) {
+
+        },
+        function error(err) {
+        },
+        function () {
+          callback(task.snapshot.downloadURL)
         }
-      },
-      function error(err) {
-      },
-      function complete() {
-      },
-  )
+      )
+    }
   })
 }
