@@ -216,7 +216,15 @@ request(){
   // console.log('ini di detail')
   // console.log(sellerId)
 
-  request(sellerId._id,this.props,'add');
+  let props = {
+   img : this.props.property.image,
+    status : status,
+    sellerId: sellerId._id,
+    username: JSON.parse(localStorage.getItem('user')).username,
+    propertyName:  this.props.property.name,
+    message: message
+  }
+  request(props,'add');
 }
 
 enter(){

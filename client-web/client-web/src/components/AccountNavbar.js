@@ -19,21 +19,26 @@ class AccountNavbar extends React.Component {
 
   componentDidMount () {
     const userId = JSON.parse(localStorage.getItem('user'))._id;
-    listenRequest(userId, (tot) => {
+    listenRequest(userId, (data) => {
       // console.log('totalnya adalah: '+JSON.stringify(tot))
       // console.log(userId);
       // console.log(this.props.user._id);
       // console.log(JSON.stringify(tot) != 0);
       // console.log(tot)
-      if(this.props.user._id == userId && JSON.stringify(tot) !== '0'){
-        $('.Notification').addClass('active')
-        this.setState({
-          request: JSON.stringify(tot),
-        })
+      console.log(JSON.parse(data.val()))
+      if(data.val() !== null){
+        let total = JSON.parse(data.val()).tot
+        console.log(total);
+        if(this.props.user._id === userId && total !== 0){
+          $('.Notification').addClass('active')
+          this.setState({
+            request: JSON.stringify(total),
+          })
 
-        setTimeout(function(){
-          $('.Notification').removeClass('active')
-        }, 10000)
+          setTimeout(function(){
+            $('.Notification').removeClass('active')
+          }, 10000)
+        }
       }
     });
     $('.dropdown').click(function(){
