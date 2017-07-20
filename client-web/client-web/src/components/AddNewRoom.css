@@ -1,0 +1,12 @@
+.room-image {
+  max-height: 115px;
+  overflow: hidden;
+}
+.list-room h6 {
+  min-height: 50px;
+  margin-top: 10px;
+}
+.col-md-3.list-room {
+  margin-bottom: 20px;
+  min-height: 220px;
+}

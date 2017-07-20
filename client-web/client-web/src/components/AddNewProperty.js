@@ -45,6 +45,7 @@ class AddNewProperty extends React.Component {
   componentDidMount() {
     upload('uploader', 'fileButton',(url)=>{
       property.image = url
+      console.log(url);
     })
   }
 
@@ -210,7 +211,7 @@ class AddNewProperty extends React.Component {
                 </div>
                 <div className ="col-md-10 offset-lg-1">
                 <GoogleMapReact
-                   style={{width:'100%', height:250,margin:10}}
+                   style={{width:50, height:250,margin:10}}
                    center={{lat: this.state.lat, lng: this.state.lng}}
                    zoom={this.state.zoom}
                    onClick={(e)=> this.getDot(e)}
@@ -284,7 +285,11 @@ class AddNewProperty extends React.Component {
     property.city = this.refs.city.value
     property.descr = this.refs.descr.value
     property.price_amount = this.refs.price_amount.value
-    property.price_descr = this.refs.price_descr.value
+    if(this.state.stats === 'Rent'){
+      property.price_descr = this.refs.price_descr.value
+    } else {
+      property.price_descr = '/forever'
+    }
     property.detail_luasBangunan = this.refs.detail_luasBangunan.value
     property.detail_luasTanah = this.refs.detail_luasTanah.value
     property.detail_perabotan = this.refs.detail_perabotan.value
@@ -297,7 +302,7 @@ class AddNewProperty extends React.Component {
     property.lng = this.state.lng
 
     property._accessId = []
-    console.log(property);
+    // console.log(property);
     var inputElements = document.getElementsByClassName('checkbox-access');
     for(var i=0; inputElements[i]; ++i){
       if(inputElements[i].checked){
@@ -323,8 +328,12 @@ class AddNewProperty extends React.Component {
         headers: {token: token}
       })
       .then(response=>{
-        alert('Success Add New Property')
-        window.location = '/dashboard/property'
+        if(typeof response.data.err !== 'undefined'){
+          alert('please complete the form')
+        } else {
+          alert('Success Add New Property')
+          window.location = '/dashboard/property'
+        }
       })
     }
   }

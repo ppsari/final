@@ -1,7 +1,10 @@
 import React from 'react'
 import axios from 'axios'
+import { upload } from '../helpers/upload'
 
+import './AddNewRoom.css'
 const api = 'https://api.room360.ga/api'
+let newRoom = {}
 
 class AddNewRoom extends React.Component {
   constructor () {
@@ -17,17 +20,6 @@ class AddNewRoom extends React.Component {
       <div>
         <div className="b-a b-grey" style={{borderRadius:4}}>
           <h5 className="text-center bg-gray padding-15" style={{borderRadius: '4px 4px 0 0'}}>Room Detail</h5>
-          <div className='row'>
-          {(this.state.rooms.length === 0)
-            ? null
-            : (this.state.rooms.map((room,index)=>{
-              return <div className='col-3' key={index}>
-                      <h6>{room.name}</h6>
-                      <img src={room.image} key={index} className='img-responsive' alt="room"/>
-                      <a className="btn btn-danger" onClick={()=>this.deleteRoom(room._id,index)}><span className="glyphicon glyphicon-trash">Delete</span></a>
-                     </div>
-            }))}
-          </div>
           <div className="padding-15">
             <div className="panel panel-default">
               <div className="panel-heading">
@@ -35,17 +27,29 @@ class AddNewRoom extends React.Component {
               </div>
               <div className="panel-body">
                 <div className="row">
-                  <div className="col-2">
-                    <div>
-                      <img src="http://via.placeholder.com/200x200" className="img-responsive" alt="placeholder" />
-                    </div>
-                  </div>
-                  <div className="col-2 ">
+                  {(this.state.rooms.length === 0)
+                    ? (<div className="col-2">
+                        <div>
+                          <img src="http://via.placeholder.com/200x200" className="img-responsive" alt="placeholder" />
+                        </div>
+                      </div>)
+                    : (this.state.rooms.map((room,index)=>{
+                      return <div className='col-md-3 list-room' key={index}>
+                                <div className="room-image">
+                                  <img src={room.image} key={index} className='img-responsive' alt="room"/>
+                                </div>
+                                <h6>{room.name}</h6>
+                                <a className="btn btn-danger text-white" onClick={()=>this.deleteRoom(room._id,index)}><span className="glyphicon glyphicon-trash">Delete</span></a>
+                             </div>
+                    }))}
+                  <div className="col-md-3 list-room ">
                     <div className="relative bg-gray add-button-image">
                       <div className="pull-center-flex">
                         <h2 className="text-center">+</h2>
                       </div>
-                      <button type="button" onClick={() => {this.isAdd()}}><small>New Room</small></button>
+                      <button type="button" onClick={() => {
+                          this.isAdd()
+                        }}><small>New Room</small></button>
                     </div>
                   </div>
                 </div>
@@ -72,7 +76,7 @@ class AddNewRoom extends React.Component {
                     </div>
                     <div className="col-lg-8 m-b-20">
                       <div className="input-group">
-                        <input type="text" className="form-control" ref="image" placeholder="your image url here" />
+                        <input type="file" defaultValue="upload" id="fileButton" className="form-control" ref="image" placeholder="add image url here" />
                       </div>
                     </div>
                     <div className="col-lg-3">
@@ -82,7 +86,9 @@ class AddNewRoom extends React.Component {
                       <textarea type="textarea" className="form-control" ref="descr" required />
                     </div>
                     <div className="col-12 text-center m-t-20">
-                      <button type="submit" className="button btn-round" onClick={(e)=>this.addRoom(e)}>
+                      <button type="submit" className="button btn-round" onClick={(e)=>{
+                          this.addRoom(e)
+                        }}>
                         Save Room
                       </button>
                     </div>
@@ -98,10 +104,15 @@ class AddNewRoom extends React.Component {
     )
   }
 
-  isAdd(){
+  isAdd(callback){
     this.setState({
       isAddRoom: true,
     })
+    // upload('uploader', 'fileButton',(url)=>{
+    //   newRoom.image = url
+    //   console.log(url);
+    // })
+    // callback()
   }
 
   addRoom(e){
@@ -109,11 +120,9 @@ class AddNewRoom extends React.Component {
     const token = JSON.parse(localStorage.getItem('token')).token
     const status = this.props.match.params.status
     const propId = this.props.match.params.idproperty
-    let newRoom = {
-      name: this.refs.name.value,
-      image: this.refs.image.value,
-      descr: this.refs.descr.value,
-    }
+    newRoom.name = this.refs.name.value;
+    newRoom.descr = this.refs.descr.value
+
     if(status === 'rent'){
       axios.post(api+`/roomRent/${propId}`,newRoom,{headers:{token:token}})
       .then(pr=>{
@@ -177,9 +186,7 @@ class AddNewRoom extends React.Component {
         })
       })
     }
-
   }
-
 }
 
 

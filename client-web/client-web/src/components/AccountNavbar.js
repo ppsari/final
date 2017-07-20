@@ -38,10 +38,10 @@ listRequest(){
       // console.log(this.props.user._id);
       // console.log(JSON.stringify(tot) != 0);
       // console.log(tot)
-      console.log(JSON.parse(data.val()))
+      // console.log(JSON.parse(data.val()))
       if(data.val() !== null){
         let total = JSON.parse(data.val()).tot
-        console.log(total);
+        // console.log(total);
         if(this.props.user._id === userId && total !== 0){
           $('.Notification').addClass('active')
           this.setState({
@@ -73,15 +73,22 @@ listRequest(){
                         <div className="col-lg-12">
                             <Link to="/dashboard/profile"><p className="text-left m-t-10 m-b-10"><strong>Your Profile</strong></p></Link>
                             <Link to="/dashboard/requests">
-                              {this.state.list.map((l,index)=>{
+                              { this.state.list === null
+                                ? null
+                                : this.state.list.map((l,index)=>{
                                 return <div className=""><div className="row" key={index}>
-                                  <div className="col-md-4 p-r-0"><img className="img-responsive"
+                                  <div className="col-md-4 p-r-0 request-container">
+                                    <img className="img-responsive"
                                     src={l.connections._propertyId.image}
-                                    alt="pic" /></div>
+                                    alt="pic"
+                                    style={{height: "100%"}}
+                                    />
+                                    </div>
                                 <div className="col-md-8">
-                                  <p>{l._userId.name}</p>
+                                  <small className="italic" style={{fontSize: 10}}>new request from</small>
+                                  <p className="m-b-0"  style={{fontSize: 12}}>{l._userId.name}</p>
                                 </div>
-                              </div><hr /></div>
+                              </div><hr className="m-b-5 m-t-5" /></div>
                               })}
                             </Link>
                         </div>

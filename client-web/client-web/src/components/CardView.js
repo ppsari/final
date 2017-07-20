@@ -22,9 +22,7 @@ const CardView = (props) => {
             </h6>
               <h5><strong>{data.name}</strong></h5>
               <p className="location"><i className="fa fa-map-marker"></i> {data.city}</p>
-            </div>
-            <div>
-              <p>{data._ownerId.username}</p>
+              <p>Posted By: {data._ownerId.username}</p>
             </div>
           </Link>
         }
