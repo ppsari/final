@@ -98,7 +98,7 @@ class DetailProperty extends React.Component {
                   {(this.props.property.location.lat !== "" && this.props.property.location.lng !== "")
                    ?(<div className='col-md-12 col-12'>
                        <GoogleMapReact
-                        style={{width:50, height:200,margin:10}}
+                        style={{width:'100%', height:200,margin:10}}
                          center={{lat: this.state.lat, lng: this.state.lng}}
                          zoom={this.state.zoom}
                        >

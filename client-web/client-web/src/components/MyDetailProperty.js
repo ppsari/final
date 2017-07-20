@@ -70,9 +70,9 @@ class MyDetailProperty extends React.Component {
                   <p><span className="label label-default"><span className="lnr lnr-home m-r-5"></span>{this.state.property._categoryId.name}</span></p>
                 </div>
                 {(this.state.property.location.lat)
-                ?(<div className="col-md-10 offset-lg-1">
+                ?(<div className="col-md-12">
                   <GoogleMapReact
-                    style={{width:50, height:100,margin:10}}
+                    style={{width:'100%', height:100,margin:10}}
                      center={{lat: this.state.lat, lng:this.state.lng}}
                      zoom={this.state.zoom}
                    >
