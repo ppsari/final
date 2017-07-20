@@ -29,7 +29,7 @@ class Request extends React.Component {
       modal: false,
     }
     const userId = JSON.parse(localStorage.getItem('user'))._id;
-    request(userId,'delete')
+    request({sellerId : userId},'delete')
   }
   toggleClass() {
     const currentState = this.state.active;
@@ -164,7 +164,7 @@ class Request extends React.Component {
     const token = JSON.parse(localStorage.getItem('token')).token
     axios.get(api+`/request`,{headers:{token:token}})
     .then(response=>{
-      console.log(response.data);
+      // console.log(response.data);
       this.setState({
         request: response.data
         })
