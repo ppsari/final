@@ -74,7 +74,7 @@ class Login extends React.Component {
               &nbsp;{this.state.loginMessage} <a onClick={this.resetPassword} className="alert-link">Forgot Password?</a>
             </div>
           }
-          <button type="submit" className="btn btn-primary">Login</button>
+          <button type="submit" className="btn btn-theme-btn btn-style-one btn-same">Login</button>
         </form>
       </div>
     )

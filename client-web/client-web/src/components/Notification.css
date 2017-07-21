@@ -8,6 +8,7 @@
   border-radius: 5px;
   transform: translateY(-150px);
   transition: transform .3s ease;
+  z-index: 99;
 }
 
 .Notification.active {

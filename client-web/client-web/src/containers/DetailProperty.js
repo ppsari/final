@@ -5,7 +5,9 @@ import MenuBar from '../components/MenuBar'
 import Footer from '../components/Footer'
 import prettyMoney from '../helpers/prettyMoney'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
+import $ from 'jquery';
 
+import Notification from '../components/Notification'
 import {getDetailPropertyRent,getDetailPropertySell,sendRequest} from '../actions/index.js'
 import './DetailProperty.css'
 import {request} from '../helpers/request';
@@ -37,6 +39,7 @@ class DetailProperty extends React.Component {
     return (
       <div>
         <MenuBar />
+        <Notification success message="request sent" />
         { this.props.property == null
           ? (<div className="flex-loader">
               <div className="loader"></div>
@@ -225,6 +228,10 @@ request(){
     message: message
   }
   request(props,'add');
+  $('.Success').addClass('active')
+  setTimeout(function(){
+    $('.Success').removeClass('active')
+  }, 3000)
 }
 
 enter(){

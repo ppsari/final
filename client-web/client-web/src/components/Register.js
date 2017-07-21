@@ -59,7 +59,7 @@ export default class Register extends React.Component {
               &nbsp;{this.state.registerError}
             </div>
           }
-          <button type="submit" className="btn btn-primary">Register</button>
+          <button type="submit" className="btn btn-theme-btn btn-style-one btn-same">Register</button>
         </form>
       </div>
     )

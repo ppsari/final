@@ -1,11 +1,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import axios from 'axios'
+import $ from 'jquery'
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Label, Input } from 'reactstrap';
 import {acceptRequest,rejectRequest,getRequest} from '../../actions/index.js';
 import Loader from '../../components/Loader.js';
 import TitleSection from '../../components/TitleSection'
+import Notification from '../../components/Notification'
 
 import {request} from '../../helpers/request';
 
@@ -46,6 +48,7 @@ class Request extends React.Component {
   render () {
     return (
       <div>
+        <Notification success />
         <div className="col-lg-10 offset-lg-1">
           <TitleSection lightTitle="REQUEST" boldTitle="LIST" />
             <div className="table-responsive m-t-30">
@@ -137,7 +140,11 @@ class Request extends React.Component {
     this.setState({
       request: this.state.request
     })
-    console.log(token);
+    // console.log(token);
+    $('.Success').addClass('active')
+    setTimeout(function(){
+      $('.Success').removeClass('active')
+    }, 3000)
   }
 
   reject(index){
