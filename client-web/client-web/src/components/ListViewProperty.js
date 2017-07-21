@@ -17,7 +17,7 @@ class ListViewProperty extends React.Component {
     return (
       <div className="ListViewProperty">
         {this.state.properties.map((prp,index)=>{
-          console.log(prp);
+          // console.log(prp);
           return <div className="media m-t-20 shadow" key={index}>
             <div className="media-left" style={{minHeight: 124}}>
               <div style={{width: 120, height: 160, overflow: 'hidden'}}>
@@ -44,7 +44,7 @@ class ListViewProperty extends React.Component {
                   </button>
                 </Link>
                 <button type="submit" className="btn-round m-t-0 p-l-20 p-r-20 p-t-5 p-b-5 btn-danger btn-same" onClick={()=>this.deleteProp(prp.status,prp._id,index)}>
-                  <small>Delete Room</small>
+                  <small>Delete</small>
                 </button>
               </div>
             </div>

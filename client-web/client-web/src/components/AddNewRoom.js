@@ -10,12 +10,13 @@ class AddNewRoom extends React.Component {
   constructor () {
     super()
     this.state = {
-      isAddRoom: false,
+      isAddRoom: true,
       rooms: []
     }
   }
 
   render () {
+    // console.log(this.state.rooms);
     return (
       <div>
         <div className="b-a b-grey" style={{borderRadius:4}}>
@@ -34,24 +35,24 @@ class AddNewRoom extends React.Component {
                         </div>
                       </div>)
                     : (this.state.rooms.map((room,index)=>{
-                      return <div className='col-md-3 list-room' key={index}>
-                                <div className="room-image">
-                                  <img src={room.image} key={index} className='img-responsive' alt="room"/>
+                      return <div className='col-md-3 m-b-20' key={index}>
+                                <div className="room-grid-view p-b-10">
+                                  <div className="room-img-container">
+                                    <img src={room.image} key={index} className='img-responsive' alt="room"/>
+                                  </div>
+                                  <div className="padding-20">
+                                    <h6>{room.name}</h6>
+                                    {/*
+                                      <a className="btn btn-danger
+                                      text-white"
+                                      onClick={()=>this.deleteRoom(room._id,index)}>
+                                        <span className="glyphicon glyphicon-trash">Delete</span>
+                                      </a>
+                                    */}
+                                  </div>
                                 </div>
-                                <h6>{room.name}</h6>
-                                <a className="btn btn-danger text-white" onClick={()=>this.deleteRoom(room._id,index)}><span className="glyphicon glyphicon-trash">Delete</span></a>
                              </div>
                     }))}
-                  <div className="col-md-3 list-room ">
-                    <div className="relative bg-gray add-button-image">
-                      <div className="pull-center-flex">
-                        <h2 className="text-center">+</h2>
-                      </div>
-                      <button type="button" onClick={() => {
-                          this.isAdd()
-                        }}><small>New Room</small></button>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -108,11 +109,6 @@ class AddNewRoom extends React.Component {
     this.setState({
       isAddRoom: true,
     })
-    // upload('uploader', 'fileButton',(url)=>{
-    //   newRoom.image = url
-    //   console.log(url);
-    // })
-    // callback()
   }
 
   addRoom(e){
@@ -172,20 +168,27 @@ class AddNewRoom extends React.Component {
     const token = JSON.parse(localStorage.getItem('token')).token
     const propId = this.props.match.params.idproperty
     if(status === 'rent'){
-      axios.get(api+`/roomRent/all/${propId}`,{headers:{token:token}})
+      axios.get(api+`/propertyRent/${propId}`,{headers:{token:token}})
       .then(pr=>{
         this.setState({
-          rooms: pr.data
+          rooms: pr.data._roomId
         })
       })
     } else{
-      axios.get(api+`/roomRent/all/${propId}`,{headers:{token:token}})
+      axios.get(api+`/propertySell/${propId}`,{headers:{token:token}})
       .then(ps=>{
         this.setState({
-          rooms: ps.data
+          rooms: ps.data._roomId
         })
       })
     }
+  }
+
+  componentDidMount () {
+    upload('uploader', 'fileButton',(url)=>{
+      newRoom.image = url
+      console.log(url);
+    })
   }
 }
 

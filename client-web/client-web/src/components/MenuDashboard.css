@@ -19,6 +19,10 @@
   position: relative;
 }
 
+.active.menu-dashboard {
+  color: #63a300 !important;
+}
+
 .MenuDashboard a.active:after {
   content: '';
   display: block;

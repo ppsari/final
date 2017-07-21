@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const port = process.env.PORT || 3000
+const port = 3001
 let index = require('./routes/index');
 let transaction = require('./routes/transaction')
 let propertySell = require('./routes/propertySell')
@@ -41,13 +41,14 @@ app.use('/api/testimony', testimony);
 // app.use('/api/upload', upload);
 
 
-let envi = 'development';
+// let envi = 'development';
 // let env = 'local_dev'
-// let env = app.settings.env;
+let envi = app.settings.env;
 let db_config = {
-  local_dev: 'mongodb://localhost/movie',
-  development: 'mongodb://room360:R4A3RKBkXDW4QMmH@cluster0-shard-00-00-6ubhn.mongodb.net:27017,cluster0-shard-00-01-6ubhn.mongodb.net:27017,cluster0-shard-00-02-6ubhn.mongodb.net:27017/room360?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
-  // test: 'mongodb://room360:R4A3RKBkXDW4QMmH@cluster0-shard-00-00-6ubhn.mongodb.net:27017,cluster0-shard-00-01-6ubhn.mongodb.net:27017,cluster0-shard-00-02-6ubhn.mongodb.net:27017/room360?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'
+  test: 'mongodb://localhost/movie',
+  development: 'mongodb://localhost/movie2',
+  // development: 'mongodb://room360:R4A3RKBkXDW4QMmH@cluster0-shard-00-00-6ubhn.mongodb.net:27017,cluster0-shard-00-01-6ubhn.mongodb.net:27017,cluster0-shard-00-02-6ubhn.mongodb.net:27017/room360?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin',
+  // development: 'mongodb://room360:R4A3RKBkXDW4QMmH@cluster0-shard-00-00-6ubhn.mongodb.net:27017,cluster0-shard-00-01-6ubhn.mongodb.net:27017,cluster0-shard-00-02-6ubhn.mongodb.net:27017/room360?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin'
 }
 
 mongoose.connect(db_config[envi],(err,res)=>{

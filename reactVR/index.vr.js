@@ -54,7 +54,7 @@ class reactVR extends React.Component {
         {(this.state.isIcons === true)
          ? <View>
            {this.state.rooms.slice(this.state.start,this.state.space).map((img,index)=> {
-            let icon = {uri:img.image+'?=v.01'}
+            let icon = {uri:img.image}
             let x = -3
             let y = 0.5
             let z = -2
@@ -70,12 +70,9 @@ class reactVR extends React.Component {
                 key={index}>
               <VrButton onClick={()=>this.go(img)}>
                 <Image
-                onEnter={()=>this.hover(index)}
-                onExit={()=> this.unhover(index)}
                 source={icon}
-                style={{width: 0.7,
-                        height: 0.7,
-                        opacity: this.state.hoverPic+index
+                style={{width: 0.65,
+                        height: 0.65
                         }} />
                 <Text
                   style={{
@@ -120,7 +117,7 @@ class reactVR extends React.Component {
            <Image
             onEnter={()=>this.hover('next')}
             onExit={()=> this.unhover('next')}
-            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/arrow-back-button.png?v=0.1'}}
+            source={{uri:'https://s3.amazonaws.com/aws-website-room-23fnj/arrow-back-button.png?v=0.2'}}
             style={{width : 0.7,
                     height: 0.7,
                     opacity: this.state.hoverNext,

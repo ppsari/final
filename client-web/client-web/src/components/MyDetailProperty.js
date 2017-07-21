@@ -218,7 +218,7 @@ class MyDetailProperty extends React.Component {
     if(propStatus === `rent`){
       axios.get(api+`/propertyRent/${propId}`)
       .then(pr=>{
-        console.log(pr.data.location.lat);
+        // console.log(pr.data.location.lat);
         this.setState({
           property: pr.data,
           lat: JSON.parse(pr.data.location.lat),
